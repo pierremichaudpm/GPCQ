@@ -698,11 +698,11 @@ function initModalBindings() {
 // Initialize broadcast CTAs to open app or store
 function initBroadcastCtas() {
     try {
-        const tvaCta = document.querySelector('.broadcast-card.broadcast-tva .broadcast-cta');
-        if (tvaCta) {
-            tvaCta.addEventListener('click', function(e) {
+        const broadcastAppBtn = document.getElementById('broadcastAppBtn');
+        if (broadcastAppBtn) {
+            broadcastAppBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                openAppOrStore(currentLanguage === 'en' ? 'cbc' : 'tva');
+                openBroadcastApp(e);
             }, { passive: false });
         }
     } catch(_) {}
@@ -1351,6 +1351,38 @@ function closeInstallPrompt() {
     if (prompt) {
         prompt.classList.add('hidden');
         localStorage.setItem('installPromptDismissed', 'true');
+    }
+}
+
+// Broadcast App Links Function (TVA Sports FR / CBC Gem EN)
+function openBroadcastApp(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isFrench = (currentLanguage || 'fr') === 'fr';
+
+    // App deep links and store URLs
+    const tvDeepLink = 'tvasports://';
+    const tvAppStore = 'https://apps.apple.com/ca/app/tva-sports/id909307725';
+    const tvPlayStore = 'https://play.google.com/store/apps/details?id=com.nurun.tva_sports';
+
+    const gemDeepLink = 'cbcgem://';
+    const gemAppStore = 'https://apps.apple.com/ca/app/cbc-gem-shows-live-tv/id422191503';
+    const gemPlayStore = 'https://play.google.com/store/apps/details?id=ca.cbc.android.cbctv';
+
+    const deepLink = isFrench ? tvDeepLink : gemDeepLink;
+    const appStoreUrl = isFrench ? tvAppStore : gemAppStore;
+    const playStoreUrl = isFrench ? tvPlayStore : gemPlayStore;
+
+    // Aller directement vers l'App Store sans deep link
+    if (isIOS) {
+        window.open(appStoreUrl, '_blank', 'noopener');
+    } else if (isAndroid) {
+        window.open(playStoreUrl, '_blank', 'noopener');
+    } else {
+        // Desktop fallback: app landing pages
+        window.open(isFrench ? 'https://www.tvasports.ca/application' : 'https://gem.cbc.ca/', '_blank', 'noopener');
     }
 }
 
