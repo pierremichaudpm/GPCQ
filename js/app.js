@@ -1023,7 +1023,8 @@ function toggleMenu() {
 function initMobileMenuTouch() {
     const menuButton = document.querySelector('.menu-toggle');
     const menuClose = document.querySelector('.menu-close');
-    const mobileMenu = document.getElementById('mobileMenu');
+    const langBtnFr = document.getElementById('langBtnFr');
+    const langBtnEn = document.getElementById('langBtnEn');
     
     if (menuButton) {
         // Add touch event listener for menu button
@@ -1033,6 +1034,15 @@ function initMobileMenuTouch() {
     if (menuClose) {
         // Add touch event listener for close button
         addSafeTapListener(menuClose, toggleMenu);
+    }
+    
+    // Fix language buttons with proper touch events
+    if (langBtnFr) {
+        addSafeTapListener(langBtnFr, () => setLanguage('fr'));
+    }
+    
+    if (langBtnEn) {
+        addSafeTapListener(langBtnEn, () => setLanguage('en'));
     }
     
     const menuOverlay = document.getElementById('menuOverlay');
