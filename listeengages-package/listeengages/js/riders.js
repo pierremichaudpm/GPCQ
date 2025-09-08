@@ -552,7 +552,9 @@ function loadTeamsView() {
                 </div>
                 <div class="team-riders">
                     <div class="team-jersey-display">
-                        <div class="team-jersey-bg" data-team="${team.name}"></div>
+                        <div class="team-jersey-bg" data-team="${team.name}">
+                            <img src="/listeengages-package/listeengages/images/jerseys/${getJerseyFile(team)}" alt="${team.name} Jersey" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='/listeengages-package/listeengages/images/jerseys/maillot-generique.png'">
+                        </div>
                     </div>
                     <div class="riders-grid">
                         ${team.riders.map(rider => `
