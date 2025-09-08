@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPCQM 2025 - Hors ligne</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #6BA053 0%, #C8D83F 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .offline-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #1D5077;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: #6C757D;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #6BA053;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background: #1D5077;
+            transform: translateY(-2px);
+        }
+        
+        .countdown-offline {
+            background: #F8F9FA;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .countdown-offline h2 {
+            font-size: 18px;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .race-date {
+            font-size: 24px;
+            color: #6BA053;
+            font-weight: 700;
+        }
+        
+        .features-list {
+            text-align: left;
+            margin: 30px 0;
+            padding: 20px;
+            background: #F8F9FA;
+            border-radius: 12px;
+        }
+        
+        .features-list h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .features-list ul {
+            list-style: none;
+        }
+        
+        .features-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #6C757D;
+        }
+        
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #6BA053;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📵</div>
+        <h1 id="title">Mode hors ligne</h1>
+        <p id="message">
+            Vous êtes actuellement hors ligne. Certaines fonctionnalités nécessitent une connexion Internet pour fonctionner correctement.
+        </p>
+        
+        <button class="btn" onclick="window.location.reload()">
+            <span id="retry">Réessayer</span>
+        </button>
+        
+        <div class="countdown-offline">
+            <h2 id="raceTitle">Grand Prix Cycliste de Québec</h2>
+            <div class="race-date">12 septembre 2025</div>
+        </div>
+        
+        <div class="features-list">
+            <h3 id="availableOffline">Disponible hors ligne :</h3>
+            <ul>
+                <li id="feature1">Programme et horaires</li>
+                <li id="feature2">Carte du parcours</li>
+                <li id="feature3">Informations des Zones animées</li>
+                <li id="feature4">Compte à rebours</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Language detection and translation
+        const lang = localStorage.getItem('language') || 'fr';
+        
+        const translations = {
+            fr: {
+                title: 'Mode hors ligne',
+                message: 'Vous êtes actuellement hors ligne. Certaines fonctionnalités nécessitent une connexion Internet pour fonctionner correctement.',
+                retry: 'Réessayer',
+                raceTitle: 'Grand Prix Cycliste de Québec',
+                availableOffline: 'Disponible hors ligne :',
+                feature1: 'Programme et horaires',
+                feature2: 'Carte du parcours',
+                feature3: 'Informations des Zones animées',
+                feature4: 'Compte à rebours'
+            },
+            en: {
+                title: 'Offline Mode',
+                message: 'You are currently offline. Some features require an Internet connection to work properly.',
+                retry: 'Retry',
+                raceTitle: 'Quebec City Cycling Grand Prix',
+                availableOffline: 'Available offline:',
+                feature1: 'Schedule and times',
+                feature2: 'Course map',
+                feature3: 'Fan Zones information',
+                feature4: 'Countdown timer'
+            }
+        };
+        
+        // Apply translations
+        if (lang === 'en') {
+            document.getElementById('title').textContent = translations.en.title;
+            document.getElementById('message').textContent = translations.en.message;
+            document.getElementById('retry').textContent = translations.en.retry;
+            document.getElementById('raceTitle').textContent = translations.en.raceTitle;
+            document.getElementById('availableOffline').textContent = translations.en.availableOffline;
+            document.getElementById('feature1').textContent = translations.en.feature1;
+            document.getElementById('feature2').textContent = translations.en.feature2;
+            document.getElementById('feature3').textContent = translations.en.feature3;
+            document.getElementById('feature4').textContent = translations.en.feature4;
+            document.documentElement.lang = 'en';
+        }
+        
+        // Check connection periodically
+        setInterval(() => {
+            if (navigator.onLine) {
+                window.location.href = '/';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

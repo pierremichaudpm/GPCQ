@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icône Placeholder</title>
+</head>
+<body>
+    <h3>Icône Temporaire PWA</h3>
+    <p>Cette icône est temporaire. Générez les vraies icônes avec generate-icons.html</p>
+    <canvas id="canvas" width="192" height="192"></canvas>
+    <script>
+        // Créer une icône placeholder simple
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fond vert
+        ctx.fillStyle = '#6BA053';
+        ctx.fillRect(0, 0, 192, 192);
+        
+        // Texte blanc
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 48px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('GPCQM', 96, 80);
+        ctx.font = '32px Arial';
+        ctx.fillText('2025', 96, 120);
+        
+        // Sauvegarder comme PNG
+        canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'icon-192x192.png';
+            document.body.appendChild(a);
+            
+            // Afficher le lien
+            const p = document.createElement('p');
+            p.innerHTML = `<a href="${url}" download="icon-192x192.png">Télécharger icon-192x192.png</a>`;
+            document.body.appendChild(p);
+        });
+    </script>
+</body>
+</html>

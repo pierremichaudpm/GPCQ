@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240">
+  <!-- Jersey Outline -->
+  <path d="M50 60 L50 40 Q50 20 70 20 L80 20 L85 10 L115 10 L120 20 L130 20 Q150 20 150 40 L150 60 L180 80 L180 120 L160 100 L160 180 Q160 200 150 200 L50 200 Q40 200 40 180 L40 100 L20 120 L20 80 L50 60 Z" 
+        fill="#f0f0f0" 
+        stroke="#333" 
+        stroke-width="2"/>
+  
+  <!-- Text -->
+  <text x="100" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666">
+    MAILLOT
+  </text>
+  <text x="100" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#999">
+    Placeholder
+  </text>
+</svg>

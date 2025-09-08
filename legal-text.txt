@@ -1,0 +1,131 @@
+Politique de Confidentialité - GPCQM 2025
+Dernière mise à jour : Septembre 2025
+
+1. Qui sommes-nous ?
+Cette application mobile est gérée par les organisateurs du Grand Prix Cycliste de Montréal (GPCQM).
+Nous nous engageons à protéger votre vie privée et vos données personnelles conformément aux lois
+applicables, notamment la Loi sur la protection des renseignements personnels et les documents
+électroniques (LPRPDE) et le Règlement général sur la protection des données (RGPD).
+
+2. Données que nous collectons
+Données automatiquement collectées :
+Informations techniques (type d'appareil, système d'exploitation, navigateur)
+Données d'utilisation de l'application (pages visitées, temps passé)
+Adresse IP et données de géolocalisation approximative
+Cookies et technologies similaires
+
+Données que vous fournissez volontairement :
+Informations lors de votre participation aux concours
+Commentaires et retours d'expérience
+Préférences de langue
+
+3. Comment nous utilisons vos données
+Nous utilisons vos informations pour :
+Améliorer le fonctionnement de l'application
+Fournir des informations personnalisées sur l'événement
+Analyser l'utilisation de l'application
+Gérer les concours et promotions
+Assurer la sécurité de l'application
+
+4. Partage des données
+Nous ne vendons jamais vos données personnelles. Nous pouvons partager des données avec :
+Nos partenaires techniques pour le fonctionnement de l'application
+Les autorités compétentes si requis par la loi
+Nos partenaires commerciaux pour les concours (avec votre consentement)
+
+5. Données d'analyse
+Nous utilisons Google Analytics pour comprendre l'utilisation de notre application. Ces données sont
+anonymisées et agrégées. Vous pouvez désactiver le suivi dans les paramètres de votre navigateur.
+
+6. Vos droits
+Vous avez le droit de :
+Accéder à vos données personnelles
+Corriger des informations incorrectes
+Demander la suppression de vos données
+Retirer votre consentement à tout moment
+Déposer une plainte auprès d'une autorité de protection des données
+
+7. Sécurité
+Nous mettons en place des mesures techniques et organisationnelles appropriées pour protéger vos
+données contre l'accès non autorisé, la perte ou la destruction.
+
+8. Conservation des données
+Nous conservons vos données personnelles uniquement le temps nécessaire aux fins pour lesquelles
+elles ont été collectées, généralement pas plus de 2 ans après l'événement.
+
+9. Contact
+Pour toute question concernant cette politique de confidentialité :
+Site web : https://gpcqm.ca
+Courriel : [insérer adresse email de contact]
+
+Conditions d'Utilisation - GPCQM 2025
+Dernière mise à jour : Septembre 2025
+
+1. Acceptation des conditions
+En utilisant cette application mobile du Grand Prix Cycliste de Montréal, vous acceptez les présentes
+conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser l'application.
+
+2. Description du service
+Cette application fournit des informations sur le Grand Prix Cycliste de Montréal 2025, incluant :
+
+Informations sur l'événement et le parcours
+Liste des participants
+Diffusions en direct
+Concours et promotions
+Services de géolocalisation
+
+3. Utilisation autorisée
+L'application est destinée à un usage personnel et non commercial. Il est interdit de :
+Reproduire, distribuer ou modifier le contenu sans autorisation
+Utiliser l'application à des fins illégales ou non autorisées
+Tenter de perturber le fonctionnement de l'application
+Extraire automatiquement des données (scraping)
+
+4. Contenu et propriété intellectuelle
+Tous les contenus de l'application (textes, images, logos, vidéos) sont protégés par les droits d'auteur et
+autres droits de propriété intellectuelle. Les marques GPCQM et logos associés sont des marques
+déposées.
+
+5. Disponibilité du service
+Nous nous efforçons de maintenir l'application disponible 24h/24, mais nous ne pouvons garantir un
+fonctionnement ininterrompu. Nous nous réservons le droit de :
+Modifier ou interrompre temporairement le service
+Effectuer des maintenances
+Mettre à jour l'application
+
+6. Concours et promotions
+La participation aux concours est soumise à des règlements spécifiques. Les participants doivent
+respecter les conditions particulières de chaque concours.
+
+7. Données météorologiques et informations
+Les informations météorologiques et autres données fournies le sont à titre indicatif. Nous ne
+garantissons pas leur exactitude absolue.
+
+8. Limitation de responsabilité
+Dans les limites autorisées par la loi, nous ne sommes pas responsables de :
+
+Dommages indirects ou consécutifs
+Perte de données
+Interruption de service
+Utilisation inappropriée de l'application
+
+9. Liens externes
+L'application peut contenir des liens vers des sites externes. Nous ne sommes pas responsables du
+contenu ou des pratiques de ces sites tiers.
+
+10. Modification des conditions
+Nous nous réservons le droit de modifier ces conditions à tout moment. Les modifications prendront
+effet dès leur publication dans l'application.
+
+11. Résiliation
+Nous pouvons suspendre ou résilier votre accès à l'application en cas de violation de ces conditions.
+
+12. Droit applicable
+Ces conditions sont régies par les lois du Québec et du Canada. Tout litige sera soumis à la juridiction
+des tribunaux compétents du Québec.
+
+13. Contact
+Pour toute question concernant ces conditions d'utilisation :
+Site web : https://gpcqm.ca
+Courriel : [insérer adresse email de contact]
+

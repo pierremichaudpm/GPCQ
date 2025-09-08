@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Partants - 2025</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/riders-styles.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Bouton pour ouvrir la modal (si nécessaire dans votre intégration) -->
+    <button onclick="openRidersModal()" class="open-modal-btn">
+        🚴 Ouvrir la Liste des Partants
+    </button>
+
+    <!-- Riders Modal -->
+    <div id="ridersModal" class="riders-modal" style="display: none;">
+        <div class="riders-modal-overlay" onclick="closeRidersModal()"></div>
+        <div class="riders-modal-content">
+            <!-- Modal Header -->
+            <div class="riders-modal-header">
+                <h2 data-lang="ridersTitle">Liste des Partants - 2025</h2>
+                <button class="riders-modal-close" onclick="closeRidersModal()" aria-label="Fermer">×</button>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="riders-stats">
+                <div class="stat-item">
+                    <span class="stat-number">190</span>
+                    <span class="stat-label">Coureurs</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24</span>
+                    <span class="stat-label">Équipes UCI</span>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="riders-search-container">
+                <input type="text" 
+                       id="ridersSearch" 
+                       class="riders-search-input" 
+                       placeholder="Rechercher un coureur, une équipe..." 
+                       data-lang-placeholder="searchRider"
+                       onkeyup="searchRiders()">
+                <span class="riders-search-icon">🔍</span>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="riders-modal-body">
+                <!-- Teams View -->
+                <div id="teamsView" class="riders-view active">
+                    <div class="teams-accordion" id="teamsAccordion">
+                        <!-- Teams will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <div id="searchResultsView" class="riders-view" style="display: none;">
+                    <div class="search-results-list" id="searchResultsList">
+                        <!-- Search results will appear here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="riders-modal-footer">
+                <p class="riders-info" data-lang="ridersInfo">
+                    <span class="info-icon">ℹ️</span>
+                    Données officielles UCI WorldTour 2025
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Charger les données depuis riders.json
+        let ridersData = { teams: [] };
+        
+        async function loadRidersData() {
+            try {
+                const response = await fetch('/riders.json');
+                if (response.ok) {
+                    ridersData = await response.json();
+                    console.log('Données chargées:', ridersData.teams.length, 'équipes');
+                    // Réinitialiser l'affichage
+                    if (typeof renderRidersModal === 'function') {
+                        renderRidersModal();
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                // Utiliser les données par défaut
+            }
+        }
+        
+        // Charger au démarrage
+        document.addEventListener('DOMContentLoaded', loadRidersData);
+    </script>
+    <script src="js/riders.js"></script>
+    
+    <!-- Initialize on page load -->
+    <script>
+        // Pour ouvrir automatiquement la modal au chargement (optionnel)
+        // window.addEventListener('DOMContentLoaded', function() {
+        //     openRidersModal();
+        // });
+    </script>
+
+    <style>
+        /* Style pour le bouton d'ouverture (optionnel) */
+        .open-modal-btn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #6BA053 0%, #5a8f44 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .open-modal-btn:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+        }
+    </style>
+</body>
+</html>

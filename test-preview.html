@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Preview - GPCQM PWA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+        .preview-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #6BA053;
+            border-bottom: 2px solid #C8D83F;
+            padding-bottom: 10px;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .ok { background: #6BA053; color: white; }
+        .warning { background: #C8D83F; color: #333; }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .check { color: #6BA053; font-weight: bold; }
+        .preview-frame {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #6BA053;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .mobile-preview {
+            max-width: 375px;
+            margin: 0 auto;
+            border: 10px solid #333;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .instructions {
+            background: #f0f8ff;
+            padding: 15px;
+            border-left: 4px solid #1D5077;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚴 Test Preview - GPCQM 2025 PWA</h1>
+    
+    <div class="preview-section">
+        <h2>✅ Modifications Appliquées</h2>
+        <ul>
+            <li><span class="check">✓</span> <strong>Header:</strong> Titre fixé "Grand Prix Cycliste de Montréal" (sans traduction)</li>
+            <li><span class="check">✓</span> <strong>Décompte:</strong> Sur une ligne, centré, taille optimisée mobile</li>
+            <li><span class="check">✓</span> <strong>Timeline:</strong> Plus compacte avec texte réduit pour mobile</li>
+            <li><span class="check">✓</span> <strong>Instagram:</strong> Titre "Suivez-nous sur Instagram"</li>
+            <li><span class="check">✓</span> <strong>Village des Fans:</strong> Layout plus compact, texte réduit</li>
+            <li><span class="check">✓</span> <strong>Logos:</strong> Chemin correct vers /images/logos/</li>
+        </ul>
+    </div>
+    
+    <div class="preview-section">
+        <h2>📱 Optimisations Mobile</h2>
+        <p><strong>Décompte mobile:</strong></p>
+        <ul>
+            <li>• Font-size: 1.25rem (valeurs)</li>
+            <li>• Font-size: 0.65rem (labels)</li>
+            <li>• Min-width: 55px par item</li>
+            <li>• Flex nowrap (reste sur une ligne)</li>
+        </ul>
+        
+        <p><strong>Timeline mobile:</strong></p>
+        <ul>
+            <li>• Padding réduit: spacing-sm</li>
+            <li>• Titres: 0.95rem</li>
+            <li>• Descriptions: 0.75rem</li>
+            <li>• Espacement vertical compact</li>
+        </ul>
+        
+        <p><strong>Fan Village mobile:</strong></p>
+        <ul>
+            <li>• Padding cards: spacing-md</li>
+            <li>• Font-size: 0.8rem</li>
+            <li>• Line-height: 1.4</li>
+            <li>• Gap réduit entre cards</li>
+        </ul>
+    </div>
+    
+    <div class="preview-section">
+        <h2>🚀 Test Rapide</h2>
+        <div class="instructions">
+            <h3>Option 1: Test Local</h3>
+            <ol>
+                <li>Ouvrir un terminal dans ce dossier</li>
+                <li>Exécuter: <code>npm start</code></li>
+                <li>Ouvrir: <code>http://localhost:3000</code></li>
+                <li>Tester sur mobile avec Chrome DevTools (F12 > Toggle device)</li>
+            </ol>
+            
+            <h3>Option 2: Déploiement Netlify</h3>
+            <ol>
+                <li>Aller sur <a href="https://app.netlify.com/drop" target="_blank">app.netlify.com/drop</a></li>
+                <li>Glisser-déposer ce dossier</li>
+                <li>Tester sur votre téléphone avec l'URL générée</li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="preview-section">
+        <h2>📊 Statut des Fichiers</h2>
+        <p>
+            <span class="status ok">✓ index.html</span>
+            <span class="status ok">✓ css/style.css</span>
+            <span class="status ok">✓ css/responsive.css</span>
+            <span class="status ok">✓ js/app.js</span>
+            <span class="status ok">✓ manifest.json</span>
+            <span class="status ok">✓ sw.js</span>
+            <span class="status ok">✓ netlify.toml</span>
+        </p>
+    </div>
+    
+    <div class="preview-section">
+        <h2>🎯 Preview Direct</h2>
+        <p>Ouvrir directement <a href="index.html" target="_blank">index.html</a> dans le navigateur pour un aperçu rapide (certaines fonctionnalités PWA nécessitent un serveur).</p>
+        
+        <div class="mobile-preview">
+            <iframe src="index.html" class="preview-frame"></iframe>
+        </div>
+    </div>
+    
+    <script>
+        // Afficher la date/heure de génération
+        const now = new Date();
+        const footer = document.createElement('div');
+        footer.style.textAlign = 'center';
+        footer.style.padding = '20px';
+        footer.style.color = '#666';
+        footer.innerHTML = `Généré le ${now.toLocaleDateString('fr-CA')} à ${now.toLocaleTimeString('fr-CA')}`;
+        document.body.appendChild(footer);
+    </script>
+</body>
+</html>

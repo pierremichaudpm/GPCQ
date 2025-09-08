@@ -1,0 +1,55 @@
+===============================================
+     PACKAGE "LISTE DES PARTANTS" - GPCQM 2025
+===============================================
+
+✅ PACKAGE CRÉÉ AVEC SUCCÈS !
+
+CONTENU DU DOSSIER "listeengages" :
+------------------------------------
+📁 listeengages/
+   ├── 📄 listeengages.html         (Page autonome complète)
+   ├── 📄 README.md                  (Guide rapide)
+   ├── 📄 INSTRUCTIONS-INTEGRATION.md (Guide détaillé)
+   ├── 📁 css/
+   │   └── riders-styles.css        (Tous les styles)
+   ├── 📁 js/
+   │   └── riders.js                (Code + données des 190 coureurs)
+   └── 📁 images/jerseys/
+       └── (Images des maillots)
+
+COMMENT TRANSFÉRER :
+-------------------
+1. Zippez le dossier "listeengages" complet
+2. Envoyez le fichier ZIP à votre collègue
+3. Il pourra dézipper et suivre les instructions
+
+UTILISATION RAPIDE :
+-------------------
+Option 1 - Test immédiat :
+- Ouvrir listeengages.html dans un navigateur
+- Cliquer sur le bouton pour voir la liste
+
+Option 2 - Intégration :
+- Suivre INSTRUCTIONS-INTEGRATION.md
+
+FONCTIONNALITÉS INCLUSES :
+-------------------------
+✓ 24 équipes UCI World Tour
+✓ 190 coureurs avec numéros de dossard
+✓ Recherche en temps réel
+✓ Design responsive (mobile/desktop)
+✓ Modal interactive avec accordéon
+✓ Affichage des maillots d'équipes
+✓ Raccourcis clavier (ESC, /)
+
+NOTES TECHNIQUES :
+-----------------
+- Aucune dépendance externe requise
+- Compatible tous navigateurs modernes
+- Code JavaScript autonome avec données intégrées
+- CSS complet inclus
+- Images optionnelles (fallback SVG automatique)
+
+===============================================
+Package prêt pour le transfert !
+===============================================

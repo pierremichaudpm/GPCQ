@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Grand Prix Cycliste de Québec 2025 - Application mobile officielle pour suivre la course cycliste du 12 septembre 2025. Parcours interactif, météo en temps réel, liste des partants UCI WorldTour.">
+    <meta name="theme-color" content="#6BA053">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- PWA Meta Tags - Mobile Optimized -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GPCQM 2025">
+    <meta name="apple-touch-fullscreen" content="yes">
+    
+    <title>Grand Prix Cycliste de Québec 2025</title>
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+    
+    <!-- Preconnections for Mobile Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://snapwidget.com">
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://www.youtube.com">
+    <link rel="preconnect" href="https://i.ytimg.com">
+    <link rel="preconnect" href="https://www.youtube-nocookie.com">
+    
+    <!-- Critical CSS First - Mobile Optimized -->
+    <link rel="stylesheet" href="css/style.css?v=10.1">
+    <link rel="stylesheet" href="css/responsive.css?v=3.5">
+    <link rel="stylesheet" href="css/overrides.css?v=4.4">
+    <link rel="stylesheet" href="listeengages-package/listeengages/css/riders-styles.css?v=3.2">
+    
+    <!-- Optimized Font Loading for Mobile -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=latin" rel="stylesheet">
+    <style>
+        /* Font fallbacks for mobile performance */
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+    
+    <!-- Google Analytics - Mobile Optimized Loading -->
+    <script>
+        // Lazy load GA for mobile performance
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        
+        // Mobile-first loading strategy
+        function loadAnalytics() {
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
+            document.head.appendChild(script);
+            
+            script.onload = function() {
+                gtag('js', new Date());
+                gtag('config', 'G-XXXXXXXXXX', {
+                    send_page_view: false // We'll send this later from app.js
+                });
+            };
+        }
+        
+        // Load on mobile after user interaction or idle time
+        if (window.innerWidth <= 768) {
+            // Mobile: load after user interaction or after 3 seconds
+            let loaded = false;
+            const load = () => {
+                if (!loaded) {
+                    loaded = true;
+                    loadAnalytics();
+                }
+            };
+            ['touchstart', 'scroll', 'mousemove'].forEach(event => 
+                document.addEventListener(event, load, { once: true, passive: true })
+            );
+            setTimeout(load, 3000);
+        } else {
+            // Desktop: load immediately
+            loadAnalytics();
+        }
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loader" class="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt hidden">
+        <div class="install-content">
+            <button class="install-close" onclick="closeInstallPrompt()">×</button>
+            <h3 data-lang="installTitle">Installer l'application</h3>
+            <p data-lang="installText">Ajoutez GPCQM à votre écran d'accueil pour un accès rapide</p>
+            <button class="install-btn" id="installBtn" data-lang="installButton">Installer</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="images/logos/new logo.png" alt="GPCQM Logo" class="logo" onerror="this.style.display='none'" fetchpriority="high" decoding="async">
+            </div>
+            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" type="button">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+        </div>
+        <nav class="mobile-menu" id="mobileMenu">
+            <div class="menu-content">
+                <button class="menu-close" onclick="toggleMenu()">×</button>
+                <div class="menu-language">
+                    <button onclick="setLanguage('fr')" class="lang-btn">Français</button>
+                    <button onclick="setLanguage('en')" class="lang-btn">English</button>
+                </div>
+                <div class="menu-links">
+                    <a href="#riders" onclick="toggleMenu()" data-lang="ridersList">Liste des Partants</a>
+                    <a href="#broadcast" onclick="toggleMenu()" data-lang="webStreamTitle">Webdiffusion</a>
+                    <a href="#map" onclick="toggleMenu()" data-lang="viewCourse">Parcours</a>
+                    <a href="#contest" onclick="toggleMenu()" data-lang="contestTitle">Concours</a>
+                    <a href="#auction" onclick="toggleMenu()" data-lang="silentAuction">Encan silencieux</a>
+                    <a href="#social" onclick="toggleMenu()" data-lang="socialMedia">Instagram</a>
+                    <a href="#fanvillage" onclick="toggleMenu()" data-lang="fanVillageInfo">Village des Fans</a>
+                    <a href="https://gpcqm.ca" onclick="toggleMenu()" target="_blank" rel="noopener" data-lang="officialWebsite">Site officiel</a>
+                    <a href="#quebec" onclick="toggleMenu()" data-lang="quebecMenu">Grand Prix Cycliste de Montréal</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" data-lang="heroTitle">GRAND PRIX CYCLISTE DE QUÉBEC</h1>
+            <p class="hero-subtitle" data-lang="heroSubtitle">12 septembre 2025 - Épreuve UCI WorldTour</p>
+            
+            <!-- Countdown Timer -->
+            <div class="countdown-container">
+                <h2 class="countdown-title" data-lang="countdownTitle">Départ de la course dans :</h2>
+                <div class="countdown" id="mainCountdown">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="days">--</span>
+                        <span class="countdown-label" data-lang="days">Jours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="hours">--</span>
+                        <span class="countdown-label" data-lang="hours">Heures</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="minutes">--</span>
+                        <span class="countdown-label" data-lang="minutes">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="seconds">--</span>
+                        <span class="countdown-label" data-lang="seconds">Secondes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn secondary" onclick="scrollToSection('map')" aria-describedby="course-desc">
+                    <span data-lang="viewCourse">Voir le parcours</span>
+                </button>
+                <button class="action-btn secondary" onclick="scrollToSection('riders')" aria-describedby="riders-desc">
+                    <span data-lang="ridersList">Liste des Partants</span>
+                </button>
+                <button class="action-btn secondary" onclick="scrollToSection('broadcast')">
+                    <span data-lang="diffusionCta">Diffusions</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Weather Widget -->
+    <section class="weather-section">
+        <div class="container">
+            <h2 data-lang="weatherTitle">Météo</h2>
+            <div class="weather-widget" id="weatherWidget">
+                <div class="weather-loading">
+                    <span data-lang="loadingWeather">Chargement météo...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section class="shop-section">
+        <div class="container">
+            <a href="https://rafalsports.com/collections/gpcqm" target="_blank" rel="noopener" class="shop-bigbox-link">
+                <div class="shop-bigbox">
+                    <img id="shopBigboxImage" src="images/bannieres web - boutique_boutique-bigbox-fr_qc.png" alt="Boutique GPCQM" class="shop-bigbox-image" loading="lazy" decoding="async" />
+                </div>
+            </a>
+            <a href="https://rafalsports.com/collections/gpcqm" target="_blank" rel="noopener" class="shop-bigbox-btn" data-lang="shopCta">Découvrez</a>
+        </div>
+    </section>
+
+
+    
+    
+    <!-- Riders List (replaces Race Status) -->
+    <section id="riders" class="race-status riders-section">
+        <div class="container">
+            <h2 data-lang="ridersList">Liste des Partants</h2>
+            <div class="riders-tile-container">
+                <button class="riders-tile riders-card" aria-haspopup="dialog" aria-controls="ridersModal" type="button">
+                    <div class="riders-tile-content">
+                        <div class="jersey-icon" aria-hidden="true"></div>
+                        <div class="riders-tile-text">
+                            <h3 data-lang="ridersListTitle">Découvrez les coureurs</h3>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Riders Modal (Overhauled) -->
+    <div id="ridersModal" class="riders-modal" style="display: none;">
+        <div class="riders-modal-overlay" onclick="window.RidersModal && RidersModal.close()"></div>
+        <div class="riders-modal-content">
+            <div class="riders-modal-header">
+                <h2 data-lang="ridersTitle">Liste des Partants - 2025</h2>
+                <button class="modal-close riders-modal-close" type="button" onclick="window.RidersModal && RidersModal.close()" aria-label="Fermer">×</button>
+            </div>
+            <div class="riders-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="ridersCount">161</span>
+                    <span class="stat-label" id="ridersLabel" data-lang="ridersLabel">Coureurs</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="teamsCount">23</span>
+                    <span class="stat-label" id="teamsLabel" data-lang="teamsLabel">Équipes UCI</span>
+                </div>
+            </div>
+            <div class="riders-search-container">
+                <input type="text" id="ridersSearch" class="riders-search-input" placeholder="Rechercher un coureur, une équipe..." data-lang-placeholder="searchRider" onkeyup="searchRiders()">
+                <span class="riders-search-icon">🔍</span>
+            </div>
+            <div class="riders-modal-body">
+                <div id="teamsView" class="riders-view active">
+                    <div class="teams-accordion" id="teamsAccordion"></div>
+                </div>
+                <div id="searchResultsView" class="riders-view" style="display: none;">
+                    <div class="search-results-list" id="searchResultsList"></div>
+                </div>
+            </div>
+            <div class="riders-modal-footer">
+                <p class="riders-info" data-lang="ridersInfo">
+                    <span class="info-icon">ℹ️</span>
+                    Données officielles UCI WorldTour 2025
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="schedule-section">
+        <div class="container">
+            <h2 data-lang="scheduleTitle">Programme</h2>
+            <div class="schedule-timeline">
+                <div class="timeline-item" data-time="09:30">
+                    <div class="timeline-time">9 h 30</div>
+                    <div class="timeline-content">
+                        <h3 data-lang="fanVillageOpening">Ouverture du Village des Fans</h3>
+                        <p class="timeline-desc" data-lang="fanVillageDesc">Plaines d'Abraham – Animation, activité et kiosques d'exposants</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-time="09:50">
+                    <div class="timeline-time">9 h 50</div>
+                    <div class="timeline-content">
+                        <h3 data-lang="teamPresentation">Présentation des équipes</h3>
+                        <p class="timeline-desc" data-lang="teamPresentationDesc">Plaines d'Abraham – Découvrez les équipes participantes</p>
+                    </div>
+                </div>
+                <div class="timeline-item highlight" data-time="11:00">
+                    <div class="timeline-time">11 h</div>
+                    <div class="timeline-content">
+                        <h3 data-lang="raceStart">Départ du Grand Prix Cycliste de Québec</h3>
+                        <p class="timeline-desc" data-lang="raceStartDesc">Avenue George-VI / Devant le Manège Militaire Voltigeurs de Québec  – 216 km • 17 tours</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-time="16:05">
+                    <div class="timeline-time">16 h 05</div>
+                    <div class="timeline-content">
+                        <h3 data-lang="raceFinish">Arrivée de la course</h3>
+                        <p class="timeline-desc" data-lang="raceFinishDesc">Avenue George-VI / Devant le Manège Militaire Voltigeurs de Québec</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-time="16:25">
+                    <div class="timeline-time">16 h 25</div>
+                    <div class="timeline-content">
+                        <h3 data-lang="ceremonies">Cérémonies Protocolaires</h3>
+                        <p class="timeline-desc" data-lang="ceremoniesDesc">Plaines d'Abraham - Remise des prix</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Map Section -->
+    <section id="map" class="map-section">
+        <div class="container">
+            <h2 data-lang="courseTitle">Parcours</h2>
+            <div class="course-stats">
+                <div class="stat-card stat-card-1">
+                    <span class="stat-value">12 km</span>
+                    <span class="stat-label" data-lang="lapDistance">Par tour</span>
+                </div>
+                <div class="stat-card stat-card-2">
+                    <span class="stat-value">18</span>
+                    <span class="stat-label" data-lang="totalLaps">Tours</span>
+                </div>
+                <div class="stat-card stat-card-3">
+                    <span class="stat-value">216 km</span>
+                    <span class="stat-label" data-lang="totalDistance">Distance totale</span>
+                </div>
+                <div class="stat-card stat-card-4">
+                    <span class="stat-value">2 610 m</span>
+                    <span class="stat-label" data-lang="elevation">Dénivelé total</span>
+                </div>
+            </div>
+            
+            <div class="map-actions">
+                <button class="map-action-btn" type="button" onclick="openMapModal()" aria-describedby="map-desc">
+                    <span data-lang="viewMap">Voir la carte</span>
+                </button>
+                <button class="map-action-btn" type="button" onclick="openWatchModal()" aria-describedby="watch-desc">
+                    <span data-lang="whereToWatch">Où regarder la course</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animated Course Section -->
+    <section class="animated-course-section">
+        <div class="container">
+            <h2 data-lang="animatedCourseTitle">Parcours animé</h2>
+            <div class="map-video">
+                <div class="video-embed">
+                    <iframe id="animatedCourseFrame" src="https://player.vimeo.com/video/1089677103" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Vidéo du parcours" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Modal -->
+    <div id="mapModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="mapModalTitle">
+        <div class="modal-overlay" onclick="closeMapModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeMapModal()" aria-label="Fermer">×</button>
+            <h3 id="mapModalTitle" class="modal-title" data-lang="courseTitle">Parcours</h3>
+            <div class="modal-body">
+                <img id="mapModalImage" src="images/225318-gpcq_parcours_fr_(13-06-25).png" alt="Parcours GPCQM 2025" class="modal-image" loading="lazy" decoding="async" onerror="this.style.display='none'"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Where to Watch Modal -->
+    <div id="watchModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Où regarder la course">
+        <div class="modal-overlay" onclick="closeWatchModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeWatchModal()" aria-label="Fermer">×</button>
+            <div class="modal-body">
+                <img id="watchModalImage" src="images/meilleurs_endroits_qc_fr.png" alt="Où regarder la course" class="modal-image" loading="lazy" decoding="async" onerror="this.style.display='none'"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+        <div class="modal-overlay" onclick="closePrivacyModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closePrivacyModal()" aria-label="Fermer">×</button>
+            <h3 id="privacyModalTitle" class="modal-title" data-lang="privacyTitle">Confidentialité</h3>
+            <div class="modal-body">
+                <div class="legal-content lang-fr">
+                    <h4>Politique de Confidentialité - GPCQM 2025</h4>
+                    <p><em>Dernière mise à jour : Septembre 2025</em></p>
+                    <h5>1. Qui sommes-nous ?</h5>
+                    <p>Cette application mobile est gérée par les organisateurs du Grand Prix Cycliste de Montréal (GPCQM). Nous nous engageons à protéger votre vie privée et vos données personnelles conformément aux lois applicables, notamment la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) et le Règlement général sur la protection des données (RGPD).</p>
+                    <h5>2. Données que nous collectons</h5>
+                    <p><strong>Données automatiquement collectées :</strong></p>
+                    <ul>
+                        <li>Informations techniques (type d'appareil, système d'exploitation, navigateur)</li>
+                        <li>Données d'utilisation de l'application (pages visitées, temps passé)</li>
+                        <li>Adresse IP et données de géolocalisation approximative</li>
+                        <li>Cookies et technologies similaires</li>
+                    </ul>
+                    <p><strong>Données que vous fournissez volontairement :</strong></p>
+                    <ul>
+                        <li>Informations lors de votre participation aux concours</li>
+                        <li>Commentaires et retours d'expérience</li>
+                        <li>Préférences de langue</li>
+                    </ul>
+                    <h5>3. Comment nous utilisons vos données</h5>
+                    <p>Nous utilisons vos informations pour :</p>
+                    <ul>
+                        <li>Améliorer le fonctionnement de l'application</li>
+                        <li>Fournir des informations personnalisées sur l'événement</li>
+                        <li>Analyser l'utilisation de l'application</li>
+                        <li>Gérer les concours et promotions</li>
+                        <li>Assurer la sécurité de l'application</li>
+                    </ul>
+                    <h5>4. Partage des données</h5>
+                    <p>Nous ne vendons jamais vos données personnelles. Nous pouvons partager des données avec :</p>
+                    <ul>
+                        <li>Nos partenaires techniques pour le fonctionnement de l'application</li>
+                        <li>Les autorités compétentes si requis par la loi</li>
+                        <li>Nos partenaires commerciaux pour les concours (avec votre consentement)</li>
+                    </ul>
+                    <h5>5. Données d'analyse</h5>
+                    <p>Nous utilisons Google Analytics pour comprendre l'utilisation de notre application. Ces données sont anonymisées et agrégées. Vous pouvez désactiver le suivi dans les paramètres de votre navigateur.</p>
+                    <h5>6. Vos droits</h5>
+                    <p>Vous avez le droit de :</p>
+                    <ul>
+                        <li>Accéder à vos données personnelles</li>
+                        <li>Corriger des informations incorrectes</li>
+                        <li>Demander la suppression de vos données</li>
+                        <li>Retirer votre consentement à tout moment</li>
+                        <li>Déposer une plainte auprès d'une autorité de protection des données</li>
+                    </ul>
+                    <h5>7. Sécurité</h5>
+                    <p>Nous mettons en place des mesures techniques et organisationnelles appropriées pour protéger vos données contre l'accès non autorisé, la perte ou la destruction.</p>
+                    <h5>8. Conservation des données</h5>
+                    <p>Nous conservons vos données personnelles uniquement le temps nécessaire aux fins pour lesquelles elles ont été collectées, généralement pas plus de 2 ans après l'événement.</p>
+                    <h5>9. Contact</h5>
+                    <p>Pour toute question concernant cette politique de confidentialité :</p>
+                    <ul>
+                        <li>Site web : <a href="https://gpcqm.ca" target="_blank" rel="noopener">https://gpcqm.ca</a></li>
+                        <li>Courriel : [insérer adresse email de contact]</li>
+                    </ul>
+                </div>
+                <div class="legal-content lang-en" style="display:none;">
+                    <h4>Privacy Policy - GPCQM 2025</h4>
+                    <p><em>Last updated: September 2025</em></p>
+                    <h5>1. Who we are</h5>
+                    <p>This mobile application is operated by the organizers of the Montreal Cycling Grand Prix (GPCQM). We are committed to protecting your privacy and personal data in accordance with applicable laws, including PIPEDA and the GDPR.</p>
+                    <h5>2. Data we collect</h5>
+                    <p><strong>Automatically collected data:</strong></p>
+                    <ul>
+                        <li>Technical information (device type, operating system, browser)</li>
+                        <li>App usage data (pages viewed, time spent)</li>
+                        <li>IP address and approximate geolocation</li>
+                        <li>Cookies and similar technologies</li>
+                    </ul>
+                    <p><strong>Data you provide voluntarily:</strong></p>
+                    <ul>
+                        <li>Information when participating in contests</li>
+                        <li>Comments and feedback</li>
+                        <li>Language preferences</li>
+                    </ul>
+                    <h5>3. How we use your data</h5>
+                    <p>We use your information to:</p>
+                    <ul>
+                        <li>Improve the app's functionality</li>
+                        <li>Provide personalized information about the event</li>
+                        <li>Analyze app usage</li>
+                        <li>Manage contests and promotions</li>
+                        <li>Ensure app security</li>
+                    </ul>
+                    <h5>4. Data sharing</h5>
+                    <p>We never sell your personal data. We may share data with:</p>
+                    <ul>
+                        <li>Our technical partners to operate the app</li>
+                        <li>Competent authorities if required by law</li>
+                        <li>Commercial partners for contests (with your consent)</li>
+                    </ul>
+                    <h5>5. Analytics data</h5>
+                    <p>We use Google Analytics to understand how our app is used. This data is anonymized and aggregated. You can disable tracking in your browser settings.</p>
+                    <h5>6. Your rights</h5>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Access your personal data</li>
+                        <li>Correct inaccurate information</li>
+                        <li>Request deletion of your data</li>
+                        <li>Withdraw your consent at any time</li>
+                        <li>Lodge a complaint with a data protection authority</li>
+                    </ul>
+                    <h5>7. Security</h5>
+                    <p>We implement appropriate technical and organizational measures to protect your data against unauthorized access, loss or destruction.</p>
+                    <h5>8. Data retention</h5>
+                    <p>We retain your personal data only as long as necessary for the purposes for which it was collected, generally no more than 2 years after the event.</p>
+                    <h5>9. Contact</h5>
+                    <p>For any questions regarding this privacy policy:</p>
+                    <ul>
+                        <li>Website: <a href="https://gpcqm.ca" target="_blank" rel="noopener">https://gpcqm.ca</a></li>
+                        <li>Email: [insert contact email]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions Modal -->
+    <div id="termsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="termsModalTitle">
+        <div class="modal-overlay" onclick="closeTermsModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTermsModal()" aria-label="Fermer">×</button>
+            <h3 id="termsModalTitle" class="modal-title" data-lang="termsTitle">Conditions</h3>
+            <div class="modal-body">
+                <div class="legal-content lang-fr">
+                    <h4>Conditions d'Utilisation - GPCQM 2025</h4>
+                    <p><em>Dernière mise à jour : Septembre 2025</em></p>
+                    <h5>1. Acceptation des conditions</h5>
+                    <p>En utilisant cette application mobile du Grand Prix Cycliste de Montréal, vous acceptez les présentes conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser l'application.</p>
+                    <h5>2. Description du service</h5>
+                    <p>Cette application fournit des informations sur le Grand Prix Cycliste de Montréal 2025, incluant :</p>
+                    <ul>
+                        <li>Informations sur l'événement et le parcours</li>
+                        <li>Liste des participants</li>
+                        <li>Diffusions en direct</li>
+                        <li>Concours et promotions</li>
+                        <li>Services de géolocalisation</li>
+                    </ul>
+                    <h5>3. Utilisation autorisée</h5>
+                    <p>L'application est destinée à un usage personnel et non commercial. Il est interdit de :</p>
+                    <ul>
+                        <li>Reproduire, distribuer ou modifier le contenu sans autorisation</li>
+                        <li>Utiliser l'application à des fins illégales ou non autorisées</li>
+                        <li>Tenter de perturber le fonctionnement de l'application</li>
+                        <li>Extraire automatiquement des données (scraping)</li>
+                    </ul>
+                    <h5>4. Contenu et propriété intellectuelle</h5>
+                    <p>Tous les contenus de l'application (textes, images, logos, vidéos) sont protégés par les droits d'auteur et autres droits de propriété intellectuelle. Les marques GPCQM et logos associés sont des marques déposées.</p>
+                    <h5>5. Disponibilité du service</h5>
+                    <p>Nous nous efforçons de maintenir l'application disponible 24h/24, mais nous ne pouvons garantir un fonctionnement ininterrompu. Nous nous réservons le droit de :</p>
+                    <ul>
+                        <li>Modifier ou interrompre temporairement le service</li>
+                        <li>Effectuer des maintenances</li>
+                        <li>Mettre à jour l'application</li>
+                    </ul>
+                    <h5>6. Concours et promotions</h5>
+                    <p>La participation aux concours est soumise à des règlements spécifiques. Les participants doivent respecter les conditions particulières de chaque concours.</p>
+                    <h5>7. Données météorologiques et informations</h5>
+                    <p>Les informations météorologiques et autres données fournies le sont à titre indicatif. Nous ne garantissons pas leur exactitude absolue.</p>
+                    <h5>8. Limitation de responsabilité</h5>
+                    <p>Dans les limites autorisées par la loi, nous ne sommes pas responsables de :</p>
+                    <ul>
+                        <li>Dommages indirects ou consécutifs</li>
+                        <li>Perte de données</li>
+                        <li>Interruption de service</li>
+                        <li>Utilisation inappropriée de l'application</li>
+                    </ul>
+                    <h5>9. Liens externes</h5>
+                    <p>L'application peut contenir des liens vers des sites externes. Nous ne sommes pas responsables du contenu ou des pratiques de ces sites tiers.</p>
+                    <h5>10. Modification des conditions</h5>
+                    <p>Nous nous réservons le droit de modifier ces conditions à tout moment. Les modifications prendront effet dès leur publication dans l'application.</p>
+                    <h5>11. Résiliation</h5>
+                    <p>Nous pouvons suspendre ou résilier votre accès à l'application en cas de violation de ces conditions.</p>
+                    <h5>12. Droit applicable</h5>
+                    <p>Ces conditions sont régies par les lois du Québec et du Canada. Tout litige sera soumis à la juridiction des tribunaux compétents du Québec.</p>
+                    <h5>13. Contact</h5>
+                    <p>Pour toute question concernant ces conditions d'utilisation :</p>
+                    <ul>
+                        <li>Site web : <a href="https://gpcqm.ca" target="_blank" rel="noopener">https://gpcqm.ca</a></li>
+                        <li>Courriel : [insérer adresse email de contact]</li>
+                    </ul>
+                </div>
+                <div class="legal-content lang-en" style="display:none;">
+                    <h4>Terms of Use - GPCQM 2025</h4>
+                    <p><em>Last updated: September 2025</em></p>
+                    <h5>1. Acceptance of terms</h5>
+                    <p>By using this mobile application of the Montreal Cycling Grand Prix, you agree to these terms of use. If you do not agree, please do not use the app.</p>
+                    <h5>2. Service description</h5>
+                    <p>This app provides information about the Montreal Cycling Grand Prix 2025, including:</p>
+                    <ul>
+                        <li>Event and course information</li>
+                        <li>Participants list</li>
+                        <li>Live broadcasts</li>
+                        <li>Contests and promotions</li>
+                        <li>Geolocation services</li>
+                    </ul>
+                    <h5>3. Permitted use</h5>
+                    <p>The app is intended for personal, non-commercial use. It is prohibited to:</p>
+                    <ul>
+                        <li>Reproduce, distribute or modify content without authorization</li>
+                        <li>Use the app for illegal or unauthorized purposes</li>
+                        <li>Attempt to disrupt the app's operation</li>
+                        <li>Automatically extract data (scraping)</li>
+                    </ul>
+                    <h5>4. Content and intellectual property</h5>
+                    <p>All app content (texts, images, logos, videos) is protected by copyright and other intellectual property rights. GPCQM trademarks and logos are registered trademarks.</p>
+                    <h5>5. Service availability</h5>
+                    <p>We strive to keep the app available 24/7 but cannot guarantee uninterrupted operation. We reserve the right to:</p>
+                    <ul>
+                        <li>Modify or temporarily interrupt the service</li>
+                        <li>Perform maintenance</li>
+                        <li>Update the app</li>
+                    </ul>
+                    <h5>6. Contests and promotions</h5>
+                    <p>Participation in contests is subject to specific rules. Participants must comply with the specific conditions of each contest.</p>
+                    <h5>7. Weather data and information</h5>
+                    <p>Weather information and other data are provided for informational purposes only. We do not guarantee absolute accuracy.</p>
+                    <h5>8. Limitation of liability</h5>
+                    <p>To the extent permitted by law, we are not liable for:</p>
+                    <ul>
+                        <li>Indirect or consequential damages</li>
+                        <li>Data loss</li>
+                        <li>Service interruption</li>
+                        <li>Improper use of the app</li>
+                    </ul>
+                    <h5>9. External links</h5>
+                    <p>The app may contain links to external sites. We are not responsible for the content or practices of those third-party sites.</p>
+                    <h5>10. Changes to the terms</h5>
+                    <p>We reserve the right to modify these terms at any time. Changes will take effect upon publication in the app.</p>
+                    <h5>11. Termination</h5>
+                    <p>We may suspend or terminate your access to the app in case of violation of these terms.</p>
+                    <h5>12. Governing law</h5>
+                    <p>These terms are governed by the laws of Quebec and Canada. Any dispute will be submitted to the jurisdiction of the competent courts of Quebec.</p>
+                    <h5>13. Contact</h5>
+                    <p>For any questions regarding these terms of use:</p>
+                    <ul>
+                        <li>Website: <a href="https://gpcqm.ca" target="_blank" rel="noopener">https://gpcqm.ca</a></li>
+                        <li>Email: [insert contact email]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Broadcast Section -->
+    <section id="broadcast" class="broadcast-section">
+        <div class="container">
+            <h2 data-lang="broadcastTitle">Diffusions</h2>
+            <div class="broadcast-cards">
+                <div class="broadcast-card broadcast-web">
+                    <h3 data-lang="webStreamTitle">Webdiffusion</h3>
+                    <a href="https://www.facebook.com/events/1472016767447138/" target="_blank" rel="noopener" class="broadcast-cta">
+                        <span data-lang="watchStream">Visionner</span>
+                    </a>
+                </div>
+                <div class="broadcast-card broadcast-tva">
+                    <h3 data-lang="tvaApp">Application TVA Sports</h3>
+                    <a href="https://www.tvasports.ca/application" target="_blank" rel="noopener" class="broadcast-cta">
+                        <span data-lang="tvaAppDesc">Télécharger</span>
+                    </a>
+                </div>
+                <div class="broadcast-card broadcast-giant">
+                    <h3 data-lang="giantScreens">Écrans Géants</h3>
+                    <p class="broadcast-location" data-lang="giantScreensDesc">Plaines d'Abraham, Avenue George-VI, Zone animée (côte de la Montagne / Port Dauphin)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contest Section -->
+    <section id="contest" class="contest-section">
+        <div class="container">
+            <h2 data-lang="contestTitle">Concours</h2>
+            <div class="contest-cards">
+                <div class="contest-card-edika-container">
+                    <a href="https://gpcqm.ca/reglements-concours/" target="_blank" rel="noopener" class="edika-bigbox-link">
+                        <div class="edika-bigbox">
+                            <img id="edikaBigboxImage" src="images/concoursedika__300x250-fr.png" alt="Concours Edika" class="edika-bigbox-image" loading="lazy" decoding="async" />
+                        </div>
+                    </a>
+                    <a href="https://gpcqm.ca/reglements-concours/" class="edika-bigbox-btn" target="_blank" rel="noopener" data-lang="participate">Participer</a>
+                </div>
+                <div class="contest-card-edika-container">
+                    <a href="https://gpcqm.ca/reglements-concours/" target="_blank" rel="noopener" class="edika-bigbox-link">
+                        <div class="edika-bigbox">
+                            <img id="ekoiBigboxImage" src="images/concours_ekoi_fr.jpg" alt="Concours EKOI" class="edika-bigbox-image" loading="lazy" decoding="async" />
+                        </div>
+                    </a>
+                    <a href="https://gpcqm.ca/reglements-concours/" class="edika-bigbox-btn" target="_blank" rel="noopener" data-lang="participate">Participer</a>
+                </div>
+                <!-- Encan silencieux déplacé dans sa propre section -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Silent Auction Section -->
+    <section id="auction" class="contest-section">
+        <div class="container">
+            <div class="contest-card-edika-container">
+                <a href="https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3" target="_blank" rel="noopener" class="edika-bigbox-link">
+                    <div class="edika-bigbox">
+                        <img id="auctionBigboxImage" src="images/encan_FR.png" alt="Encan silencieux" class="edika-bigbox-image" loading="lazy" decoding="async" />
+                    </div>
+                </a>
+                <a href="https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3" class="edika-bigbox-btn" target="_blank" rel="noopener" data-lang="bidNow">Miser</a>
+            </div>
+        </div>
+    </section>
+    
+    
+    
+
+    
+
+    <!-- Transport Modal -->
+    <div id="transportModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="transportModalTitle">
+        <div class="modal-overlay" onclick="closeTransportModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTransportModal()" aria-label="Fermer">×</button>
+            <h3 id="transportModalTitle" class="modal-title" data-lang="transportTitle">Comment s'y rendre</h3>
+            <div class="modal-body">
+                <!-- Embedded Map -->
+                <div class="transport-section">
+                    <h4 data-lang="mapEmbedTitle">Carte interactive</h4>
+                    <iframe id="transportMapFrame" src="" style="width:100%;height:380px;border:0;" loading="eager" allowfullscreen title="Carte interactive"></iframe>
+                </div>
+                <div class="transport-content lang-fr">
+                    <div class="transport-section">
+                        <h4>📍 Lieu de Départ/Arrivée</h4>
+                        <p><strong>Avenue George VI</strong> – 46.804965, -71.215102</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚴 À vélo</h4>
+                        <p><strong>Accès recommandé :</strong> Avenue Wilfrid-Laurier vers le Village VIP et le Village des Fans</p>
+                        <h5>Pistes cyclables principales :</h5>
+                        <ul>
+                            <li>Rue Saint-Jean</li>
+                            <li>Boulevard René-Lévesque</li>
+                            <li>Rue de la Chevrotière</li>
+                        </ul>
+                        <p><strong>Important :</strong> L'accès cyclable direct à l'avenue George-VI ne sera pas possible pendant l'événement.</p>
+                        <p>🔒 Parc à vélos gratuit et surveillé disponible !</p>
+                        <h5>Stations àVélo à proximité :</h5>
+                        <ul>
+                            <li>Parc de la Francophonie</li>
+                            <li>Musée des plaines d'Abraham</li>
+                            <li>Grand Théâtre de Québec</li>
+                            <li>Wilfrid-Laurier / Galipeault</li>
+                        </ul>
+                        <p><a href="https://www.google.com/maps/d/viewer?mid=1l3I9ifzLOA-lPHAY6dwMaDKs3oF4Iwo&femb=1" target="_blank" rel="noopener">Carte interactive du réseau cyclable</a></p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚌 Transports en commun</h4>
+                        <p><strong>Autobus RTC :</strong> Consultez le <a href="https://www.rtcquebec.ca/" target="_blank" rel="noopener">Réseau de transport de la Capitale</a> pour planifier votre itinéraire.</p>
+                        <h5>Lignes et arrêts les plus proches :</h5>
+                        <ul>
+                            <li>Ligne 11 direction Colline parlementaire</li>
+                            <li>Arrêts : Colline parlementaire ou Honoré-Mercier / Saint-Jean</li>
+                        </ul>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚂 Train</h4>
+                        <p><strong>Gare du Palais :</strong> À environ 20 minutes à pied du site</p>
+                        <h5>Connexions RTC :</h5>
+                        <ul>
+                            <li>Ligne 800 ou 801 → arrêt Honoré-Mercier / Saint-Jean</li>
+                            <li>Ligne 11 → arrêt Colline parlementaire</li>
+                        </ul>
+                        <p>Prévoir plus de temps le jour de l'événement en raison de l'affluence.</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚌 Autocars</h4>
+                        <p><strong>Gare du Terminus d'autocars de Sainte-Foy</strong><br>📍 3001, chemin des Quatre-Bourgeois, Québec (Terminal principal Orléans Express)</p>
+                        <h5>Options pour rejoindre le site :</h5>
+                        <p><strong>Bus RTC :</strong></p>
+                        <ul>
+                            <li>Ligne 11 direction Colline parlementaire</li>
+                            <li>Descendre à : Colline parlementaire ou Honoré-Mercier / Saint-Jean</li>
+                            <li>Temps estimé : 35–45 minutes</li>
+                        </ul>
+                        <p><strong>Taxi / Uber :</strong><br>Trajet : ~15–20 minutes selon la circulation<br>Prévoir des délais importants près du Vieux-Québec</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚗 Voiture</h4>
+                        <ul>
+                            <li><strong>Recommandation :</strong> Covoiturage avec AmigoExpress ou Poparide</li>
+                            <li><strong>Stationnement :</strong> Utilisez les zones incitatives en dehors du centre-ville (voir carte des stationnements)</li>
+                            <li><strong>Réservation à l'avance :</strong> <a href="https://clicknpark.com/" target="_blank" rel="noopener">Clicknpark</a> pour réserver une place de stationnement privé</li>
+                            <li><strong>Véhicules électriques :</strong> <a href="https://lecircuitelectrique.com/fr/trouver-une-borne/" target="_blank" rel="noopener">Carte des bornes de recharge</a></li>
+                            <li><strong>Compensation carbone :</strong> Achetez des crédits via <a href="https://app.planetair.ca/?lang=french" target="_blank" rel="noopener">Planetair</a></li>
+                        </ul>
+                    </div>
+                    <div class="transport-section">
+                        <h4>⚠️ Fermetures de rues</h4>
+                        <p><strong>Important :</strong> Consultez le <a href="https://www.ville.quebec.qc.ca/" target="_blank" rel="noopener">site de la Ville de Québec</a> avant votre départ pour connaître les modifications à la circulation et au stationnement.</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>💡 Conseils</h4>
+                        <ul>
+                            <li>Privilégiez les transports actifs (vélo, marche) et les transports en commun</li>
+                            <li>Prévoyez plus de temps le jour de l'événement</li>
+                            <li>Consultez l'état du réseau de transport avant de partir</li>
+                            <li>Utilisez le parc à vélos gratuit et surveillé</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="transport-content lang-en" style="display:none;">
+                    <div class="transport-section">
+                        <h4>📍 Start/Finish Location</h4>
+                        <p><strong>George VI Avenue</strong> – 46.804965, -71.215102</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚴 By bike</h4>
+                        <p><strong>Recommended access:</strong> Wilfrid-Laurier Avenue to the VIP Village and Fans Village</p>
+                        <h5>Main bike paths:</h5>
+                        <ul>
+                            <li>Saint-Jean Street</li>
+                            <li>René-Lévesque Boulevard</li>
+                            <li>Chevrotière Street</li>
+                        </ul>
+                        <p><strong>Important:</strong> Direct bike access to George-VI Avenue will not be possible during the event.</p>
+                        <p>🔒 Free and supervised bike parking available!</p>
+                        <h5>Nearby àVélo stations:</h5>
+                        <ul>
+                            <li>Parc de la Francophonie</li>
+                            <li>Musée des plaines d'Abraham</li>
+                            <li>Grand Théâtre de Québec</li>
+                            <li>Wilfrid-Laurier / Galipeault</li>
+                        </ul>
+                        <p><a href="https://www.google.com/maps/d/viewer?mid=1l3I9ifzLOA-lPHAY6dwMaDKs3oF4Iwo&femb=1" target="_blank" rel="noopener">Interactive bike network map</a></p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚌 Public transit</h4>
+                        <p><strong>RTC Bus:</strong> Check the <a href="https://www.rtcquebec.ca/en/" target="_blank" rel="noopener">Réseau de transport de la Capitale</a> to plan your route.</p>
+                        <h5>Closest lines and stops:</h5>
+                        <ul>
+                            <li>Line 11 direction Colline parlementaire</li>
+                            <li>Stops: Colline parlementaire or Honoré-Mercier / Saint-Jean</li>
+                        </ul>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚂 Train</h4>
+                        <p><strong>Gare du Palais:</strong> About 20 minutes walk from the site</p>
+                        <h5>RTC Connections:</h5>
+                        <ul>
+                            <li>Line 800 or 801 → Honoré-Mercier / Saint-Jean stop</li>
+                            <li>Line 11 → Colline parlementaire stop</li>
+                        </ul>
+                        <p>Allow extra time on event day due to high attendance.</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚌 Coaches</h4>
+                        <p><strong>Sainte-Foy Bus Terminal</strong><br>📍 3001, chemin des Quatre-Bourgeois, Québec City (Main terminal Orléans Express)</p>
+                        <h5>Options to reach the site:</h5>
+                        <p><strong>RTC Bus:</strong></p>
+                        <ul>
+                            <li>Line 11 direction Colline parlementaire</li>
+                            <li>Get off at: Colline parlementaire or Honoré-Mercier / Saint-Jean</li>
+                            <li>Estimated time: 35–45 minutes</li>
+                        </ul>
+                        <p><strong>Taxi / Uber:</strong><br>Journey: ~15–20 minutes depending on traffic<br>Expect significant delays near Old Québec</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>🚗 Car</h4>
+                        <ul>
+                            <li><strong>Recommendation:</strong> Carpooling with AmigoExpress or Poparide</li>
+                            <li><strong>Parking:</strong> Use incentive zones outside downtown (see parking map)</li>
+                            <li><strong>Advance booking:</strong> <a href="https://clicknpark.com/" target="_blank" rel="noopener">Clicknpark</a> to reserve a private parking space</li>
+                            <li><strong>Electric vehicles:</strong> <a href="https://lecircuitelectrique.com/en/find-a-station/" target="_blank" rel="noopener">Charging station map</a></li>
+                            <li><strong>Carbon offsetting:</strong> Purchase credits via <a href="https://app.planetair.ca/?lang=english" target="_blank" rel="noopener">Planetair</a></li>
+                        </ul>
+                    </div>
+                    <div class="transport-section">
+                        <h4>⚠️ Road closures</h4>
+                        <p><strong>Important:</strong> Check the <a href="https://www.ville.quebec.qc.ca/en/" target="_blank" rel="noopener">Québec City website</a> before departure for traffic and parking modifications.</p>
+                    </div>
+                    <div class="transport-section">
+                        <h4>💡 Tips</h4>
+                        <ul>
+                            <li>Favor active transportation (bike, walking) and public transit</li>
+                            <li>Allow extra time on event day</li>
+                            <li>Check transportation network status before departure</li>
+                            <li>Use the free and supervised bike parking</li>
+                        </ul>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Zones animées -->
+    <section id="fanvillage" class="fv-section">
+        <div class="container">
+            <h2 data-lang="animatedZonesTitle">Zones animées</h2>
+            <div class="zones-grid">
+                <div class="fv-grid">
+                    <h3 data-lang="zonesVillageTitle">Village des Fans</h3>
+                    <div class="fv-card">
+                        <h3 data-lang="location">Emplacement</h3>
+                        <p data-lang="zonesVillageLocationValue">Plaines d'Abraham</p>
+                    </div>
+                    <div class="fv-card">
+                        <h3 data-lang="activities">Activités</h3>
+                        <ul>
+                            <li data-lang="zonesVillageAct1">Kiosques d'exposants</li>
+                            <li data-lang="zonesVillageAct2">Restauration et service de bar</li>
+                            <li data-lang="zonesVillageAct4">Boutique officielle GPCQM par Santini</li>
+                            <li data-lang="zonesVillageAct5">Toilettes</li>
+                        </ul>
+                    </div>
+                    <div class="fv-card">
+                        <h3 data-lang="schedule">Horaire</h3>
+                        <p data-lang="zonesVillageScheduleValue">9 h 30 à 17 h</p>
+                    </div>
+                    <div class="fv-card">
+                        <h3 data-lang="access">Accès</h3>
+                        <p data-lang="freeEntry">Entrée gratuite</p>
+                        <p data-lang="bikeParking">Parc à vélos disponible</p>
+                    </div>
+
+                    <h3 data-lang="zonesBelvedereTitle">Zone animée (côte de la Montagne / Port Dauphin)</h3>
+                    <div class="fv-card">
+                        <h3 data-lang="zonesBelvedereAnimTitle">Animation</h3>
+                        <ul>
+                            <li data-lang="zonesBelvedereAnim1">Écran Géant</li>
+                            <li data-lang="zonesBelvedereAnim2">Service de bar</li>
+                            <li data-lang="zonesBelvedereAnim3">Toilettes</li>
+                        </ul>
+                    </div>
+                    <div class="fv-card">
+                        <h3 data-lang="schedule">Horaire</h3>
+                        <p data-lang="zonesBelvedereScheduleValue">9 h 30 à 17 h</p>
+                    </div>
+                    <div class="fv-card">
+                        <h3 data-lang="access">Accès</h3>
+                        <p data-lang="freeEntry">Entrée gratuite</p>
+                    </div>
+
+                    <div class="fv-cta">
+                        <button class="getting-there-btn" type="button" onclick="openTransportModal()" aria-describedby="transport-desc">
+                            <span class="cta-text" data-lang="gettingThere">Comment s'y rendre</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Grands Prix Cycliste de Québec (reset) -->
+    <section id="quebec" class="quebec-section">
+        <div class="container">
+            <h2 data-lang="montrealTitle">Grand Prix Cycliste de Montréal</h2>
+            <div class="quebec-actions" style="text-align: center; margin-top: var(--spacing-lg);">
+                <a class="blue-cta" href="https://gpcqm.ca/grand-prix-quebec/#resultats" target="_blank" rel="noopener" data-lang="montrealCta">Voir la page</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Instagram Feed (SnapWidget) -->
+    <section id="social" class="instagram-section">
+        <div class="container">
+            <h2 data-lang="socialTitle">Suivez-nous sur Instagram</h2>
+            <div class="instagram-embed">
+                <script src="https://snapwidget.com/js/snapwidget.js"></script>
+                <iframe src="https://snapwidget.com/embed/1106271" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Grands prix cyclistes de Québec et Montréal" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="instagram-fallback" id="instagramFallback" style="display:none;">
+                    <p data-lang="instagramBlocked">Le flux Instagram ne peut pas se charger ici.</p>
+                    <p>
+                        <a class="btn-secondary" href="https://instagram.com/grandsprixcyclistes" target="_blank" rel="noopener" aria-label="Ouvrir Instagram">Ouvrir notre Instagram</a>
+                    </p>
+                </div>
+                <script>
+                (function(){
+                  try {
+                    var iframe = document.querySelector('#social .snapwidget-widget');
+                    var fb = document.getElementById('instagramFallback');
+                    if (!iframe || !fb) return;
+                    var loaded = false;
+                    var showFallback = function(){ if (!loaded) { fb.style.display = 'block'; } };
+                    iframe.addEventListener('load', function(){ loaded = true; fb.style.display = 'none'; });
+                    // Si rien ne charge après 5s (ad-block/shields), afficher fallback
+                    setTimeout(showFallback, 5000);
+                  } catch(e) { /* no-op */ }
+                })();
+                </script>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logos/new logo.png" alt="GPCQM Logo" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                </div>
+                <div class="footer-links">
+                    <a href="https://gpcqm.ca" target="_blank" data-lang="officialSite">Site officiel</a>
+                    <a href="#" data-lang="privacy">Confidentialité</a>
+                    <a href="#" data-lang="terms">Conditions</a>
+                    <a href="#" data-lang="contact">Contact</a>
+                </div>
+                <div class="footer-social">
+                    <a href="https://instagram.com/grandsprixcyclistes" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2.163c3.2 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.92 4.92 0 0 1 1.77 1.153 4.92 4.92 0 0 1 1.153 1.77c.163.46.35 1.26.403 2.43.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.403 2.43a4.92 4.92 0 0 1-1.153 1.77 4.92 4.92 0 0 1-1.77 1.153c-.46.163-1.26.35-2.43.403-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.403a4.92 4.92 0 0 1-1.77-1.153 4.92 4.92 0 0 1-1.153-1.77c-.163-.46-.35-1.26-.403-2.43C2.175 15.584 2.163 15.2 2.163 12s.012-3.584.07-4.85c.054-1.17.24-1.97.403-2.43a4.92 4.92 0 0 1 1.153-1.77 4.92 4.92 0 0 1 1.77-1.153c.46-.163 1.26-.35 2.43-.403C8.416 2.175 8.8 2.163 12 2.163zm0-2.163C8.74 0 8.332.014 7.052.072 5.775.13 4.897.304 4.158.555a7.138 7.138 0 0 0-2.588 1.69A7.138 7.138 0 0 0 .555 4.158c-.251.739-.425 1.617-.483 2.894C.014 8.332 0 8.74 0 12c0 3.26.014 3.668.072 4.948.058 1.277.232 2.155.483 2.894a7.138 7.138 0 0 0 1.69 2.588 7.138 7.138 0 0 0 2.588 1.69c.739.251 1.617.425 2.894.483C8.332 23.986 8.74 24 12 24c3.26 0 3.668-.014 4.948-.072 1.277-.058 2.155-.232 2.894-.483a7.138 7.138 0 0 0 2.588-1.69 7.138 7.138 0 0 0 1.69-2.588c.251-.739.425-1.617.483-2.894.058-1.28.072-1.688.072-4.948 0-3.26-.014-3.668-.072-4.948-.058-1.277-.232-2.155-.483-2.894a7.138 7.138 0 0 0-1.69-2.588A7.138 7.138 0 0 0 19.842.555c-.739-.251-1.617-.425-2.894-.483C15.668.014 15.26 0 12 0zM12 5.838a6.162 6.162 0 1 0 0 12.324A6.162 6.162 0 0 0 12 5.838zm0 2.162a4 4 0 1 1 0 7.999 4 4 0 0 1 0-7.999zm6.406-1.845a1.44 1.44 0 1 0 0-2.88 1.44 1.44 0 0 0 0 2.88z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/GPCQM/?locale=fr_FR" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.093 10.125 24v-8.437H7.078V12.07h3.047V9.412c0-3.018 1.792-4.687 4.533-4.687 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.49 0-1.953.926-1.953 1.874v2.283h3.328l-.532 3.494h-2.796V24C19.612 23.093 24 18.1 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://x.com/gpcqm" target="_blank" rel="noopener" aria-label="X (Twitter)">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18.244 2H21L13.5 10.59 22 22h-6.244l-4.86-6.54L5.2 22H2l8.05-9.41L2 2h6.244l4.42 5.94L18.244 2zm-2.19 18h1.2L7.94 4H6.74l9.314 16z"/>
+                        </svg>
+                    </a>
+                    <a href="https://youtube.com/@grandsprixcyclistes?si=7PwkUDih8gdb0LC_" target="_blank" rel="noopener" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M23.498 6.186a2.998 2.998 0 0 0-2.11-2.12C19.78 3.5 12 3.5 12 3.5s-7.78 0-9.388.566a2.998 2.998 0 0 0-2.11 2.12C0 7.8 0 12 0 12s0 4.2.502 5.814a2.998 2.998 0 0 0 2.11 2.12C4.22 20.5 12 20.5 12 20.5s7.78 0 9.388-.566a2.998 2.998 0 0 0 2.11-2.12C24 16.2 24 12 24 12s0-4.2-.502-5.814zM9.75 15.568V8.432L15.818 12 9.75 15.568z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.tiktok.com/@gpcqm" target="_blank" rel="noopener" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21 8.5c-2.7 0-5-2.2-5-5h-3.2v12.3c0 1.9-1.6 3.4-3.6 3.4s-3.6-1.5-3.6-3.4 1.6-3.4 3.6-3.4c.3 0 .6 0 .9.1V9.2c-.3 0-.6-.1-.9-.1-3.8 0-6.9 2.9-6.9 6.6S5.4 22.3 9.2 22.3s6.9-2.9 6.9-6.6v-5c1 1.2 2.6 2 4.3 2.1v-4.3z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 Grand Prix Cycliste de Québec. <span data-lang="allRights">Tous droits réservés.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator hidden">
+        <span data-lang="offlineMode">Mode hors ligne</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js?v=4.9"></script>
+    <script src="listeengages-package/listeengages/js/riders.js?v=3.0"></script>
+    <script src="js/countdown.js?v=3.0"></script>
+    
+    <script src="js/weather.js?v=3.4"></script>
+    <script src="js/instagram.js?v=3.0"></script>
+    <script src="js/pwa.js?v=3.0"></script>
+
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt hidden">
+        <div class="install-content">
+            <button class="install-close" id="installCloseBtn">×</button>
+            <h3 data-lang="installTitle">Installer l'application</h3>
+            <p data-lang="installText">Ajoutez GPCQ à votre écran d'accueil pour un accès rapide</p>
+            <button class="install-btn" id="installBtn" data-lang="installButton">Installer</button>
+        </div>
+    </div>
+
+    <!-- iOS Install Prompt -->
+    <div id="iosInstallPrompt" class="ios-install-prompt hidden">
+        <div class="ios-install-content">
+            <button class="ios-install-close" id="iosInstallCloseBtn">×</button>
+            <div class="ios-install-icon">📱</div>
+            <h3 data-lang="iosInstallTitle">Installer GPCQ 2025</h3>
+            <p data-lang="iosInstallText">Pour installer cette app sur votre iPhone :</p>
+            <div class="ios-install-steps">
+                <div class="ios-step">
+                    <img src="/images/icons/icone%20ios%20partage.png" alt="Partager" class="ios-step-icon-img">
+                    <span data-lang="iosStep1">Appuyez sur le bouton Partager</span>
+                </div>
+                <div class="ios-step">
+                    <img src="/images/icons/icone%20ios%20ajouter.png" alt="Ajouter" class="ios-step-icon-img">
+                    <span data-lang="iosStep2">Sélectionnez "Sur l'écran d'accueil"</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

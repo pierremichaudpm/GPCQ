@@ -1,0 +1,1018 @@
+{
+  "teams": [
+    {
+      "id": 1,
+      "name": "TEAM JAYCO ALULA",
+      "code": "JAY",
+      "country": "AUS",
+      "riders": [
+        {
+          "number": 1,
+          "name": "MATTHEWS, Michael",
+          "country": "AUS"
+        },
+        {
+          "number": 2,
+          "name": "DURBRIDGE, Luke",
+          "country": "AUS"
+        },
+        {
+          "number": 3,
+          "name": "HELLEMOSE, ASBJØRN",
+          "country": "DEN"
+        },
+        {
+          "number": 4,
+          "name": "HEPBURN, Michael",
+          "country": "AUS"
+        },
+        {
+          "number": 5,
+          "name": "SCHMID, Mauro",
+          "country": "SUI"
+        },
+        {
+          "number": 6,
+          "name": "SÜTTERLIN, Jasha",
+          "country": "GER"
+        },
+        {
+          "number": 7,
+          "name": "ZANA, Filippo",
+          "country": "ITA"
+        },
+        {
+          "number": "",
+          "name": "FOLDAGER, Anders",
+          "country": "DEN"
+        },
+        {
+          "number": "",
+          "name": "DUNBAR, Edward",
+          "country": "IRL"
+        },
+        {
+          "number": "",
+          "name": "ENGELHARDT, Felix",
+          "country": "GER"
+        },
+        {
+          "number": "",
+          "name": "GAMPER, Patrick",
+          "country": "AUT"
+        },
+        {
+          "number": "",
+          "name": "LIDL-TREK",
+          "country": ""
+        },
+        {
+          "number": 31,
+          "name": "SIMMONS, Quinn",
+          "country": "USA"
+        },
+        {
+          "number": 32,
+          "name": "LOPEZ PEREZ, Juan Pedro",
+          "country": "ESP"
+        },
+        {
+          "number": 33,
+          "name": "MOSCA, Jacopo",
+          "country": "ITA"
+        },
+        {
+          "number": 34,
+          "name": "NYS, Thibau",
+          "country": "BEL"
+        },
+        {
+          "number": 35,
+          "name": "OOMEN, Sam",
+          "country": "NED"
+        },
+        {
+          "number": 36,
+          "name": "JENSEN, Mattias",
+          "country": "DEN"
+        },
+        {
+          "number": 37,
+          "name": "VERGAERDE, Otto",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "KIRSCH, Alex",
+          "country": "LUX"
+        },
+        {
+          "number": "",
+          "name": "KONRAD, Patrick",
+          "country": "AUT"
+        },
+        {
+          "number": "",
+          "name": "STUYVEN, Jasper",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "RED BULL - BORA - HANSGROHE",
+          "country": ""
+        },
+        {
+          "number": 61,
+          "name": "ADRIA OLIVERAS",
+          "country": ""
+        },
+        {
+          "number": 62,
+          "name": "KOCH",
+          "country": ""
+        },
+        {
+          "number": 63,
+          "name": "LIPOWITZ",
+          "country": ""
+        },
+        {
+          "number": 64,
+          "name": "MARTINEZ POVEDA",
+          "country": ""
+        },
+        {
+          "number": 65,
+          "name": "PITHIE",
+          "country": ""
+        },
+        {
+          "number": 66,
+          "name": "TRATNIK",
+          "country": ""
+        },
+        {
+          "number": 67,
+          "name": "VAN GILS",
+          "country": ""
+        },
+        {
+          "number": "",
+          "name": "BAHRAIN VICTORIOUS",
+          "country": ""
+        },
+        {
+          "number": 91,
+          "name": "BILBAO LOPEZ DE ARMENTIA, Pello",
+          "country": "ESP"
+        },
+        {
+          "number": 92,
+          "name": "MARTINEZ, Lenny",
+          "country": "FRA"
+        },
+        {
+          "number": 93,
+          "name": "MIHOLJEVIC, Fran",
+          "country": "CRO"
+        },
+        {
+          "number": 94,
+          "name": "MOHORIC, Matej",
+          "country": "SLO"
+        },
+        {
+          "number": 95,
+          "name": "STANNARD, Robert",
+          "country": "AUS"
+        },
+        {
+          "number": 96,
+          "name": "WRIGHT, Alfred Brockwell",
+          "country": "GBR"
+        },
+        {
+          "number": 97,
+          "name": "ZAMBANINI, Edoardo",
+          "country": "ITA"
+        },
+        {
+          "number": "",
+          "name": "VAN MECHELEN, Vlad Henri",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "EULALIO, Afonso",
+          "country": "PT"
+        },
+        {
+          "number": "",
+          "name": "MOVISTAR TEAM",
+          "country": ""
+        },
+        {
+          "number": 121,
+          "name": "RUBIO, EINER AUGUSTO",
+          "country": "COL"
+        },
+        {
+          "number": 122,
+          "name": "BARRENETXEA, JON",
+          "country": "ESP"
+        },
+        {
+          "number": 123,
+          "name": "BARTA, WILLIAM",
+          "country": "USA"
+        },
+        {
+          "number": 124,
+          "name": "FORMOLO, DAVIDE",
+          "country": "ITA"
+        },
+        {
+          "number": 125,
+          "name": "GUERREIRO, RUBEN ANTONIO",
+          "country": "POR"
+        },
+        {
+          "number": 126,
+          "name": "MUHLBERGER, GREGOR",
+          "country": "AUT"
+        },
+        {
+          "number": 127,
+          "name": "TESFAZIÓN OCBIT, NATNAEL",
+          "country": "ERI"
+        },
+        {
+          "number": "",
+          "name": "JORGENSEN, MATHIAS NORSGAARD",
+          "country": "DEN"
+        },
+        {
+          "number": "",
+          "name": "PEDRERO, ANTONIO",
+          "country": "ESP"
+        },
+        {
+          "number": "",
+          "name": "INTERMARCHÉ - WANTY",
+          "country": ""
+        },
+        {
+          "number": 151,
+          "name": "BARRÉ",
+          "country": ""
+        },
+        {
+          "number": 152,
+          "name": "BRAET",
+          "country": ""
+        },
+        {
+          "number": 153,
+          "name": "GIRMAY",
+          "country": ""
+        },
+        {
+          "number": 154,
+          "name": "KAMP",
+          "country": ""
+        },
+        {
+          "number": 155,
+          "name": "PAQUOT",
+          "country": ""
+        },
+        {
+          "number": 156,
+          "name": "RUTSCH",
+          "country": ""
+        },
+        {
+          "number": 157,
+          "name": "VAN SINTMAARTENSDIJK",
+          "country": ""
+        },
+        {
+          "number": "",
+          "name": "LOTTO",
+          "country": ""
+        },
+        {
+          "number": 181,
+          "name": "DE LIE, Arnaud",
+          "country": "BEL"
+        },
+        {
+          "number": 182,
+          "name": "BERCKMOES, Jenno",
+          "country": "BEL"
+        },
+        {
+          "number": 183,
+          "name": "DRIZNERS, Jarrad",
+          "country": "AUS"
+        },
+        {
+          "number": 184,
+          "name": "GRIGNARD, Sébastien",
+          "country": "BEL"
+        },
+        {
+          "number": 185,
+          "name": "THOMPSON, Reuben",
+          "country": "NZL"
+        },
+        {
+          "number": 186,
+          "name": "VAN MOER, Brent",
+          "country": "BEL"
+        },
+        {
+          "number": 187,
+          "name": "VAN EETVELT, Lennert",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "VANDENABEELE, Henri",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "VEISTROFFER, Baptiste",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "TUDOR PRO CYCLING TEAM",
+          "country": ""
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "UAE TEAM EMIRATES XRG",
+      "code": "UAD",
+      "country": "UAE",
+      "riders": [
+        {
+          "number": 11,
+          "name": "POGACAR, TADEJ",
+          "country": "SLO"
+        },
+        {
+          "number": 12,
+          "name": "MCNULTY, BRANDON",
+          "country": "USA"
+        },
+        {
+          "number": 13,
+          "name": "NARVAEZ, JHONATAN",
+          "country": "ECU"
+        },
+        {
+          "number": 14,
+          "name": "POLITT, NILS",
+          "country": "GER"
+        },
+        {
+          "number": 15,
+          "name": "SIVAKOV, PAVEL",
+          "country": "FRA"
+        },
+        {
+          "number": 16,
+          "name": "WELLENS, TIM",
+          "country": "BEL"
+        },
+        {
+          "number": 17,
+          "name": "YATES, ADAMS",
+          "country": "GBR"
+        },
+        {
+          "number": "",
+          "name": "MAJKA, RAFAL",
+          "country": "POL"
+        },
+        {
+          "number": "",
+          "name": "RAMIREZ, MATEO PABLO",
+          "country": "ECU"
+        },
+        {
+          "number": "",
+          "name": "SOUDAL QUICK-STEP",
+          "country": ""
+        },
+        {
+          "number": "",
+          "name": "ALPECIN-DECEUNINCK",
+          "country": ""
+        },
+        {
+          "number": 71,
+          "name": "HERMANS, Quinten",
+          "country": "BEL"
+        },
+        {
+          "number": 72,
+          "name": "BOVEN, Lars",
+          "country": "NED"
+        },
+        {
+          "number": 73,
+          "name": "GHYS, Robbe",
+          "country": "BEL"
+        },
+        {
+          "number": 74,
+          "name": "VERMEERSCH, Gianni",
+          "country": "BEL"
+        },
+        {
+          "number": 75,
+          "name": "MEURISSE, Xandro",
+          "country": "BEL"
+        },
+        {
+          "number": 76,
+          "name": "VAN TRICHT, Stan",
+          "country": "BEL"
+        },
+        {
+          "number": 77,
+          "name": "VAN DEN BOSSCHE, Fabio",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "DECATHLON AG2R LA MONDIALE TEAM",
+          "country": ""
+        },
+        {
+          "number": 101,
+          "name": "GODON, Dorian",
+          "country": "FRA"
+        },
+        {
+          "number": 102,
+          "name": "NAESEN, Oliver",
+          "country": "BEL"
+        },
+        {
+          "number": 103,
+          "name": "DEWULF, Stan",
+          "country": "BEL"
+        },
+        {
+          "number": 104,
+          "name": "LAFAY, Victor",
+          "country": "FRA"
+        },
+        {
+          "number": 105,
+          "name": "LAPEIRA, Paul",
+          "country": "FRA"
+        },
+        {
+          "number": 106,
+          "name": "TRONCHON, Bastien",
+          "country": "FRA"
+        },
+        {
+          "number": 107,
+          "name": "GAUTHERAT, Pierre",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "ISIDORE, Noa",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "XDS ASTANA TEAM",
+          "country": ""
+        },
+        {
+          "number": 131,
+          "name": "BETTIOL, Alberto",
+          "country": "ITA"
+        },
+        {
+          "number": 132,
+          "name": "CHARMIG, Anthon",
+          "country": "DEN"
+        },
+        {
+          "number": 133,
+          "name": "GATE, Aaron Murray",
+          "country": "NZL"
+        },
+        {
+          "number": 134,
+          "name": "GAZZOLI, Michele",
+          "country": "ITA"
+        },
+        {
+          "number": 135,
+          "name": "KANTER, Max",
+          "country": "GER"
+        },
+        {
+          "number": 136,
+          "name": "VELASCO, Simone",
+          "country": "ITA"
+        },
+        {
+          "number": 137,
+          "name": "VINOKUROV, Nikolya",
+          "country": "KAZ"
+        },
+        {
+          "number": "",
+          "name": "TEUNISSEN, Mike",
+          "country": "NLD"
+        },
+        {
+          "number": "",
+          "name": "BOL, Cees Bastiaan",
+          "country": "NLD"
+        },
+        {
+          "number": "",
+          "name": "BALLERINI, Davide",
+          "country": "ITA"
+        },
+        {
+          "number": "",
+          "name": "COFIDIS",
+          "country": ""
+        },
+        {
+          "number": 161,
+          "name": "ARANBURU, Alex",
+          "country": "ESP"
+        },
+        {
+          "number": 162,
+          "name": "DEBEAUMARCHE, Nicolas",
+          "country": "FRA"
+        },
+        {
+          "number": 163,
+          "name": "IZAGUIRRE, Ion",
+          "country": "ESP"
+        },
+        {
+          "number": 164,
+          "name": "MAISONOBE, Sam",
+          "country": "FRA"
+        },
+        {
+          "number": 165,
+          "name": "PEREZ, Anthony",
+          "country": "FRA"
+        },
+        {
+          "number": 166,
+          "name": "ROBEET, Ludovic",
+          "country": "BEL"
+        },
+        {
+          "number": 167,
+          "name": "TOUZE, Damien",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "TEUNS, Dylan",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "ISRAEL - PREMIER TECH",
+          "country": ""
+        },
+        {
+          "number": 191,
+          "name": "STRONG, Corbin",
+          "country": "NZL"
+        },
+        {
+          "number": 192,
+          "name": "BLACKMORE, Joseph Peter",
+          "country": "GBR"
+        },
+        {
+          "number": 193,
+          "name": "BOIVIN, Guillaume",
+          "country": "CAN"
+        },
+        {
+          "number": 194,
+          "name": "CLARKE, Simon",
+          "country": "AUS"
+        },
+        {
+          "number": 195,
+          "name": "HOULE, Hugo",
+          "country": "CAN"
+        },
+        {
+          "number": 196,
+          "name": "NEILANDS, Krists",
+          "country": "LAT"
+        },
+        {
+          "number": 197,
+          "name": "SHEEHAN, Riley",
+          "country": "USA"
+        },
+        {
+          "number": "",
+          "name": "WOODS, Michael",
+          "country": "CAN"
+        },
+        {
+          "number": "",
+          "name": "LOUVEL, Matîs",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "VAN ASBROECK, Tom",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "SCHULTZ, Nick",
+          "country": "AUS"
+        },
+        {
+          "number": "",
+          "name": "ÉQUIPE NATIONALE CANADA",
+          "country": ""
+        },
+        {
+          "number": 221,
+          "name": "jacob",
+          "country": ""
+        },
+        {
+          "number": 222,
+          "name": "gauthier",
+          "country": ""
+        },
+        {
+          "number": 223,
+          "name": "mattern",
+          "country": ""
+        },
+        {
+          "number": 224,
+          "name": "couture",
+          "country": ""
+        },
+        {
+          "number": 225,
+          "name": "cowan",
+          "country": ""
+        },
+        {
+          "number": 226,
+          "name": "bouchard",
+          "country": ""
+        },
+        {
+          "number": 227,
+          "name": "hamel",
+          "country": ""
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "TEAM VISMA | LEASE A BIKE",
+      "code": "TVL",
+      "country": "NED",
+      "riders": [
+        {
+          "number": 21,
+          "name": "VAN AERT, Wout",
+          "country": "BEL"
+        },
+        {
+          "number": 22,
+          "name": "BENOOT, Tiesj",
+          "country": "BEL"
+        },
+        {
+          "number": 23,
+          "name": "LAPORTE, Christophe",
+          "country": "FRA"
+        },
+        {
+          "number": 24,
+          "name": "NORDHAGEN, Jorgen",
+          "country": "NOR"
+        },
+        {
+          "number": 25,
+          "name": "VALTER, Attila",
+          "country": "HUN"
+        },
+        {
+          "number": 26,
+          "name": "YATES, Simon",
+          "country": "GBR"
+        },
+        {
+          "number": 27,
+          "name": "KRUIJSWIJK, Steven",
+          "country": "NED"
+        },
+        {
+          "number": "",
+          "name": "VAN BELLE, Loe",
+          "country": "NED"
+        },
+        {
+          "number": "",
+          "name": "VERMOTE, Julien",
+          "country": "BEL"
+        },
+        {
+          "number": "",
+          "name": "INEOS GRENADIERS",
+          "country": ""
+        },
+        {
+          "number": 51,
+          "name": "LAURANCE, AXEL",
+          "country": "FRA"
+        },
+        {
+          "number": 52,
+          "name": "AUGUST, ANDREW JACOB",
+          "country": "USA"
+        },
+        {
+          "number": 53,
+          "name": "HAMILTON, LUCAS",
+          "country": "AUS"
+        },
+        {
+          "number": 54,
+          "name": "LEONARD, MICHAEL",
+          "country": "CAN"
+        },
+        {
+          "number": 55,
+          "name": "HANSEN, PETER ØXENBERG",
+          "country": "DNK"
+        },
+        {
+          "number": 56,
+          "name": "PUCCIO, SALVATORE",
+          "country": "ITA"
+        },
+        {
+          "number": 57,
+          "name": "SHMIDT, ARTEM",
+          "country": "USA"
+        },
+        {
+          "number": "",
+          "name": "RODRIGUEZ GARAICOECHEA, OSCAR",
+          "country": "ESP"
+        },
+        {
+          "number": "",
+          "name": "CASTROVIEJO NICOLAS, JONATHAN",
+          "country": "ESP"
+        },
+        {
+          "number": "",
+          "name": "FRAILE MATARRANZ, OMAR",
+          "country": "ESP"
+        },
+        {
+          "number": "",
+          "name": "GROUPAMA-FDJ",
+          "country": ""
+        },
+        {
+          "number": 81,
+          "name": "MADOUAS, Valentin",
+          "country": "FRA"
+        },
+        {
+          "number": 82,
+          "name": "ASKEY, Lewis",
+          "country": "GBR"
+        },
+        {
+          "number": 83,
+          "name": "BYSTRÖM, Sven-Erik",
+          "country": "NOR"
+        },
+        {
+          "number": 84,
+          "name": "GENIETS, Kevin",
+          "country": "LUX"
+        },
+        {
+          "number": 85,
+          "name": "JACOBS, Johan",
+          "country": "SUI"
+        },
+        {
+          "number": 86,
+          "name": "PACHER, Quentin",
+          "country": "FRA"
+        },
+        {
+          "number": 87,
+          "name": "ROCHAS, Remy",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "BOWER, Lewis",
+          "country": "NZL"
+        },
+        {
+          "number": "",
+          "name": "RUSSO, Clément",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "EF EDUCATION - EASYPOST",
+          "country": ""
+        },
+        {
+          "number": "",
+          "name": "TEAM PICNIC POSTNL",
+          "country": ""
+        },
+        {
+          "number": 141,
+          "name": "ONLEY, Oscar",
+          "country": "GBR"
+        },
+        {
+          "number": 142,
+          "name": "ANDRESEN, Tobias Lund",
+          "country": "DEN"
+        },
+        {
+          "number": 143,
+          "name": "BARGUIL, Warren",
+          "country": "FRA"
+        },
+        {
+          "number": 144,
+          "name": "VAN DEN BROEK, Frank",
+          "country": "NED"
+        },
+        {
+          "number": 145,
+          "name": "COMBAUD, Romain",
+          "country": "FRA"
+        },
+        {
+          "number": 146,
+          "name": "DHONDT, Robbe",
+          "country": "BEL"
+        },
+        {
+          "number": 147,
+          "name": "TBC",
+          "country": ""
+        },
+        {
+          "number": "",
+          "name": "DINHAM, Matt",
+          "country": "AUS"
+        },
+        {
+          "number": "",
+          "name": "EDMONDSON, Alex",
+          "country": "AUS"
+        },
+        {
+          "number": "",
+          "name": "ROOSEN, Timo",
+          "country": "NED"
+        },
+        {
+          "number": "",
+          "name": "ARKEA-B&B HOTELS",
+          "country": ""
+        },
+        {
+          "number": 171,
+          "name": "LE BERRE, MATHIS",
+          "country": "FRA"
+        },
+        {
+          "number": 172,
+          "name": "COSTIOU, EWEN",
+          "country": "FRA"
+        },
+        {
+          "number": 173,
+          "name": "DELAPLACE, ANTHONY",
+          "country": "FRA"
+        },
+        {
+          "number": 174,
+          "name": "HUYS, LAURENS",
+          "country": "BEL"
+        },
+        {
+          "number": 175,
+          "name": "SVESTAD-BARDSENG, EMBRET",
+          "country": "NOR"
+        },
+        {
+          "number": 176,
+          "name": "TJOTTA, MARTIN",
+          "country": "NOR"
+        },
+        {
+          "number": 177,
+          "name": "RIES, MICHEL",
+          "country": "LUX"
+        },
+        {
+          "number": "",
+          "name": "VENTURINI, CLEMENT",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "GUGLIELMI, SIMON",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "GRONDIN, DONAVAN",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "GESBERT, ELIE",
+          "country": "FRA"
+        },
+        {
+          "number": "",
+          "name": "UNO-X MOBILITY",
+          "country": ""
+        },
+        {
+          "number": 201,
+          "name": "JOHANNESSEN, Tobias Halland",
+          "country": "NOR"
+        },
+        {
+          "number": 202,
+          "name": "JOHANNESSEN, Anders Halland",
+          "country": "NOR"
+        },
+        {
+          "number": 203,
+          "name": "NIELSEN, Magnus Cort",
+          "country": "DEN"
+        },
+        {
+          "number": 204,
+          "name": "BUGGE, Martin Urianstad",
+          "country": "NOR"
+        },
+        {
+          "number": 205,
+          "name": "LEVY, William Blume",
+          "country": "DEN"
+        },
+        {
+          "number": 206,
+          "name": "LØLAND, Sakarias",
+          "country": "NOR"
+        },
+        {
+          "number": 207,
+          "name": "SKAARSETH, Anders",
+          "country": "NOR"
+        }
+      ]
+    }
+  ]
+}

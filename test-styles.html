@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Styles - GPCQM</title>
+    <link rel="stylesheet" href="css/style.css?v=2.0">
+    <link rel="stylesheet" href="css/responsive.css?v=2.0">
+    <style>
+        body { margin: 0; padding: 0; }
+        .test-section {
+            padding: 20px;
+            margin: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+        .test-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .status { 
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px;
+        }
+        .ok { background: #4CAF50; color: white; }
+        .error { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <!-- Test Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="images/logos/GPCQM-logo_colored.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+                <div class="event-name">
+                    <span class="event-name-line1">Grand Prix Cycliste</span>
+                    <span class="event-name-line2">de Montréal</span>
+                </div>
+            </div>
+            <button class="menu-toggle" onclick="alert('Menu fonctionne!')">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="test-section">
+        <div class="test-title">🔍 Tests des Styles CSS</div>
+        
+        <div id="test-results"></div>
+    </div>
+
+    <script>
+        // Test si les styles sont chargés
+        const tests = [];
+        
+        // Test 1: Header background
+        const header = document.querySelector('.header');
+        const headerBg = window.getComputedStyle(header).backgroundColor;
+        tests.push({
+            name: 'Header Background Blanc',
+            passed: headerBg === 'rgb(255, 255, 255)' || headerBg === 'white',
+            value: headerBg
+        });
+        
+        // Test 2: Menu burger visible
+        const menuToggle = document.querySelector('.menu-toggle');
+        tests.push({
+            name: 'Menu Burger Existe',
+            passed: menuToggle !== null,
+            value: menuToggle ? 'Trouvé' : 'Non trouvé'
+        });
+        
+        // Test 3: Hamburger lines
+        const hamburgers = document.querySelectorAll('.hamburger');
+        tests.push({
+            name: 'Lignes Hamburger (3)',
+            passed: hamburgers.length === 3,
+            value: hamburgers.length + ' lignes'
+        });
+        
+        // Test 4: Event name color
+        const eventName = document.querySelector('.event-name-line1');
+        if (eventName) {
+            const color = window.getComputedStyle(eventName).color;
+            tests.push({
+                name: 'Titre en Bleu Foncé',
+                passed: color === 'rgb(29, 80, 119)' || color.includes('29'),
+                value: color
+            });
+        }
+        
+        // Display results
+        const resultsDiv = document.getElementById('test-results');
+        tests.forEach(test => {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <span class="status ${test.passed ? 'ok' : 'error'}">
+                    ${test.passed ? '✓' : '✗'}
+                </span>
+                <strong>${test.name}:</strong> ${test.value}
+            `;
+            resultsDiv.appendChild(div);
+        });
+        
+        // CSS Variables check
+        const rootStyles = getComputedStyle(document.documentElement);
+        const whiteVar = rootStyles.getPropertyValue('--white').trim();
+        const deepBlue = rootStyles.getPropertyValue('--deep-blue').trim();
+        
+        const varsDiv = document.createElement('div');
+        varsDiv.style.marginTop = '20px';
+        varsDiv.innerHTML = `
+            <div class="test-title">Variables CSS:</div>
+            <div>--white: ${whiteVar || 'NON DÉFINI'}</div>
+            <div>--deep-blue: ${deepBlue || 'NON DÉFINI'}</div>
+        `;
+        resultsDiv.appendChild(varsDiv);
+    </script>
+</body>
+</html>

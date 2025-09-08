@@ -1,0 +1,425 @@
+/* === RIDERS MODAL STYLES === */
+.riders-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+}
+
+.riders-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.riders-modal-content {
+    position: relative;
+    width: 92vw;
+    max-width: 1000px;
+    margin: 5vh auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: none;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Modal Header */
+.riders-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(31, 110, 114, 0.9), rgba(31, 110, 114, 0.8));
+    border-radius: 20px 20px 0 0;
+}
+
+.riders-modal-header h2 {
+    color: white;
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.riders-modal-close { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.2); color: var(--white); border: none; font-size: 2rem; cursor: pointer; padding: 6px; line-height: 1; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); z-index: 10002; transition: all var(--transition-base); }
+.riders-modal-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
+
+/* Search Container */
+.riders-search-container {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+}
+
+.riders-search-input {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+.riders-search-input:focus {
+    outline: none;
+    border-color: #6BA053;
+    box-shadow: 0 0 0 3px rgba(107, 160, 83, 0.1);
+}
+
+.riders-search-icon {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+
+/* Stats Bar - Simplified */
+.riders-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f6e72;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Modal Body */
+.riders-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: white;
+}
+
+/* Teams Accordion */
+.teams-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.team-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.team-card.expanded {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.team-header {
+    padding: 15px;
+    background: #f8f9fa;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.team-header:hover {
+    background: #e9ecef;
+}
+
+.team-card.expanded .team-header {
+    background: linear-gradient(135deg, rgba(31, 110, 114, 0.9), rgba(31, 110, 114, 0.8));
+    color: white;
+}
+
+.team-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.team-name {
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.team-country {
+    font-size: 1.2rem;
+}
+
+.team-chevron {
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+}
+
+.team-card.expanded .team-chevron {
+    transform: rotate(180deg);
+}
+
+.team-riders {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    position: relative;
+}
+
+.team-card.expanded .team-riders {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Jersey Display Container */
+.team-jersey-display {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 140px;
+    opacity: 0;
+    z-index: 2;
+    transition: all 0.3s ease;
+    transform: translateX(20px);
+}
+
+.team-card.expanded .team-jersey-display {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Jersey Background */
+.team-jersey-bg {
+    width: 140px;
+    height: 140px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    padding: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border: 2px solid #f0f0f0;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.team-jersey-bg:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.riders-grid {
+    padding: 15px;
+    padding-right: 160px; /* Make space for jersey */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .riders-grid {
+        padding-right: 15px;
+        padding-top: 130px; /* Space for jersey on top on mobile */
+    }
+    
+    .team-jersey-display {
+        position: absolute;
+        top: 10px !important;
+        right: 50% !important;
+        transform: translateX(50%) !important;
+        width: 100px !important;
+    }
+    
+    .team-card.expanded .team-jersey-display {
+        transform: translateX(50%) !important;
+    }
+    
+    .team-jersey-bg {
+        width: 100px !important;
+        height: 100px !important;
+        padding: 10px !important;
+    }
+}
+
+.rider-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.rider-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.rider-number {
+    font-weight: 700;
+    color: #1f6e72;
+    margin-right: 10px;
+    min-width: 30px;
+}
+
+.rider-name {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.rider-flag {
+    font-size: 1.1rem;
+    margin-left: 5px;
+}
+
+/* Modal Footer */
+.riders-modal-footer {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    border-radius: 0 0 20px 20px;
+}
+
+.riders-info {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .riders-modal-content {
+        width: 92vw;
+        height: auto;
+        max-height: 90vh;
+        margin: 5vh auto;
+        border-radius: 20px;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        transform: none;
+    }
+    
+    .riders-modal-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .riders-nav-tabs {
+        padding: 10px;
+        gap: 5px;
+    }
+    
+    .riders-tab {
+        font-size: 0.8rem;
+        padding: 8px 5px;
+    }
+    
+    .riders-tab span:not(.tab-icon):not(.tab-badge) {
+        display: none;
+    }
+    
+    .riders-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Scrollbar Styling */
+.riders-modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.riders-modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.riders-modal-body::-webkit-scrollbar-thumb {
+    background: #1f6e72;
+    border-radius: 10px;
+}
+
+.riders-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #155155;
+}
+
+/* Additional styles from inline CSS */
+.rider-team {
+    font-size: 0.85rem;
+    color: #666;
+    margin-left: 10px;
+    text-transform: uppercase;
+}
+
+.search-results .rider-item {
+    margin-bottom: 5px;
+}
+
+.search-results .rider-item.team {
+    background: #e8f5e8;
+}
+
+.search-results-header {
+    padding: 15px 0;
+    border-bottom: 2px solid #6BA053;
+    margin-bottom: 15px;
+}
+
+.search-results-header h3 {
+    margin: 0;
+    color: #6BA053;
+    font-size: 1.1rem;
+}
+
+mark {
+    background: #ffeb3b;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}

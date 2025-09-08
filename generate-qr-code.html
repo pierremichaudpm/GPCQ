@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur QR Code - GPCQM 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #6BA053, #C8D83F);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #1D5077;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #6BA053;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #6BA053;
+        }
+        
+        .btn {
+            width: 100%;
+            background: #6BA053;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+        }
+        
+        .btn:hover {
+            background: #1D5077;
+            transform: translateY(-2px);
+        }
+        
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #F8F9FA;
+            border-radius: 12px;
+        }
+        
+        #qrcode canvas,
+        #qrcode img {
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .instructions {
+            background: #F0F8FF;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .instructions h3 {
+            color: #1D5077;
+            margin-bottom: 12px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .size-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .size-btn {
+            padding: 10px;
+            background: #F5F5F5;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .size-btn.active {
+            background: #6BA053;
+            color: white;
+            border-color: #6BA053;
+        }
+        
+        .download-section {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: #C8D83F;
+            color: #333;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: #6BA053;
+            color: white;
+        }
+        
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #FAFAFA;
+            border-radius: 8px;
+        }
+        
+        .spec-item {
+            font-size: 14px;
+        }
+        
+        .spec-label {
+            color: #666;
+        }
+        
+        .spec-value {
+            color: #333;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚴 Générateur QR Code</h1>
+        <p class="subtitle">Grand Prix Cycliste de Montréal 2025</p>
+        
+        <div class="input-group">
+            <label for="url">URL de l'application PWA:</label>
+            <input type="url" id="url" value="https://app.gpcqm.ca" placeholder="https://votre-domaine.netlify.app">
+        </div>
+        
+        <div class="input-group">
+            <label>Taille du QR Code:</label>
+            <div class="size-options">
+                <button class="size-btn" data-size="200">Petit<br>200px</button>
+                <button class="size-btn active" data-size="300">Moyen<br>300px</button>
+                <button class="size-btn" data-size="400">Grand<br>400px</button>
+            </div>
+        </div>
+        
+        <button class="btn" onclick="generateQR()">Générer le QR Code</button>
+        
+        <div id="qrcode"></div>
+        
+        <div class="download-section" id="downloadSection">
+            <a href="#" id="downloadLink" class="download-btn" download="GPCQM-QR-Code.png">
+                📥 Télécharger le QR Code
+            </a>
+            
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Format:</span>
+                    <span class="spec-value">PNG</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Couleur:</span>
+                    <span class="spec-value">#6BA053</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Correction:</span>
+                    <span class="spec-value">Niveau H (30%)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Usage:</span>
+                    <span class="spec-value">Print & Digital</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 Instructions d'utilisation</h3>
+            <ol>
+                <li>Entrez l'URL de votre application déployée</li>
+                <li>Choisissez la taille désirée (300px recommandé pour impression)</li>
+                <li>Cliquez sur "Générer le QR Code"</li>
+                <li>Téléchargez l'image pour l'imprimer ou l'afficher</li>
+            </ol>
+            
+            <h3 style="margin-top: 20px;">🎯 Placement recommandé</h3>
+            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li>Panneaux à l'entrée du Village des Fans</li>
+                <li>Flyers distribués aux spectateurs</li>
+                <li>Écrans digitaux sur le parcours</li>
+                <li>Programme officiel de l'événement</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        let currentQR = null;
+        let selectedSize = 300;
+        
+        // Size button handlers
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedSize = parseInt(this.dataset.size);
+            });
+        });
+        
+        function generateQR() {
+            const url = document.getElementById('url').value;
+            
+            if (!url) {
+                alert('Veuillez entrer une URL');
+                return;
+            }
+            
+            // Clear previous QR code
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
+            // Generate new QR code
+            currentQR = new QRCode(qrContainer, {
+                text: url,
+                width: selectedSize,
+                height: selectedSize,
+                colorDark: "#6BA053",
+                colorLight: "#FFFFFF",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            // Show download section
+            document.getElementById('downloadSection').style.display = 'block';
+            
+            // Setup download link
+            setTimeout(() => {
+                const canvas = qrContainer.querySelector('canvas');
+                if (canvas) {
+                    canvas.toBlob(blob => {
+                        const url = URL.createObjectURL(blob);
+                        document.getElementById('downloadLink').href = url;
+                    });
+                }
+            }, 100);
+        }
+        
+        // Generate on page load with default URL
+        window.addEventListener('load', () => {
+            generateQR();
+        });
+    </script>
+</body>
+</html>

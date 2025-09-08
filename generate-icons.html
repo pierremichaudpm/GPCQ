@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur d'icônes PWA - GPCQM 2025</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+            display: inline-block;
+        }
+        button {
+            background: #6BA053;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5a8f44;
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .icon-item {
+            text-align: center;
+        }
+        .instructions {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Générateur d'Icônes PWA - GPCQM 2025</h1>
+        
+        <div class="instructions">
+            <h3>Instructions :</h3>
+            <ol>
+                <li>Cliquez sur "Générer les icônes" pour créer toutes les tailles</li>
+                <li>Faites un clic droit sur chaque icône pour la sauvegarder</li>
+                <li>Placez les icônes dans le dossier <code>/images/icons/</code></li>
+                <li>Les icônes utilisent les couleurs officielles du GPCQM</li>
+            </ol>
+        </div>
+        
+        <button onclick="generateAllIcons()">Générer les icônes</button>
+        
+        <div id="iconGrid" class="icon-grid"></div>
+    </div>
+
+    <script>
+        // Tailles d'icônes requises pour PWA
+        const iconSizes = [
+            { size: 72, name: 'icon-72x72.png' },
+            { size: 96, name: 'icon-96x96.png' },
+            { size: 128, name: 'icon-128x128.png' },
+            { size: 144, name: 'icon-144x144.png' },
+            { size: 152, name: 'icon-152x152.png' },
+            { size: 192, name: 'icon-192x192.png' },
+            { size: 384, name: 'icon-384x384.png' },
+            { size: 512, name: 'icon-512x512.png' },
+            { size: 32, name: 'favicon-32x32.png' },
+            { size: 16, name: 'favicon-16x16.png' },
+            { size: 180, name: 'apple-touch-icon.png' }
+        ];
+
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#6BA053');
+            gradient.addColorStop(1, '#C8D83F');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw wheel/circle design
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = Math.max(2, size / 50);
+            
+            // Outer circle
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - size/10, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Inner circle (hub)
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/6, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Spokes
+            const numSpokes = 8;
+            for (let i = 0; i < numSpokes; i++) {
+                const angle = (i * Math.PI * 2) / numSpokes;
+                ctx.beginPath();
+                ctx.moveTo(
+                    size/2 + Math.cos(angle) * size/6,
+                    size/2 + Math.sin(angle) * size/6
+                );
+                ctx.lineTo(
+                    size/2 + Math.cos(angle) * (size/2 - size/10),
+                    size/2 + Math.sin(angle) * (size/2 - size/10)
+                );
+                ctx.stroke();
+            }
+            
+            // Add text for larger icons
+            if (size >= 128) {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = `bold ${size/8}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('GPCQM', size/2, size/2);
+                
+                if (size >= 192) {
+                    ctx.font = `${size/16}px Arial`;
+                    ctx.fillText('2025', size/2, size/2 + size/6);
+                }
+            }
+            
+            return canvas;
+        }
+
+        function generateAllIcons() {
+            const grid = document.getElementById('iconGrid');
+            grid.innerHTML = '';
+            
+            iconSizes.forEach(({ size, name }) => {
+                const canvas = generateIcon(size);
+                
+                const item = document.createElement('div');
+                item.className = 'icon-item';
+                
+                const label = document.createElement('div');
+                label.textContent = `${name} (${size}x${size})`;
+                label.style.fontSize = '12px';
+                label.style.marginBottom = '5px';
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.download = name;
+                
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                });
+                
+                downloadLink.appendChild(canvas);
+                item.appendChild(label);
+                item.appendChild(downloadLink);
+                grid.appendChild(item);
+            });
+            
+            // Générer aussi les logos placeholder
+            generateLogos();
+        }
+
+        function generateLogos() {
+            // Logo blanc
+            const whiteLogoCanvas = document.createElement('canvas');
+            whiteLogoCanvas.width = 200;
+            whiteLogoCanvas.height = 60;
+            const ctx1 = whiteLogoCanvas.getContext('2d');
+            
+            ctx1.fillStyle = '#FFFFFF';
+            ctx1.fillRect(0, 0, 200, 60);
+            ctx1.fillStyle = '#6BA053';
+            ctx1.font = 'bold 24px Arial';
+            ctx1.textAlign = 'center';
+            ctx1.textBaseline = 'middle';
+            ctx1.fillText('GPCQM 2025', 100, 30);
+            
+            // Logo coloré
+            const colorLogoCanvas = document.createElement('canvas');
+            colorLogoCanvas.width = 200;
+            colorLogoCanvas.height = 60;
+            const ctx2 = colorLogoCanvas.getContext('2d');
+            
+            const gradient = ctx2.createLinearGradient(0, 0, 200, 60);
+            gradient.addColorStop(0, '#6BA053');
+            gradient.addColorStop(1, '#C8D83F');
+            ctx2.fillStyle = gradient;
+            ctx2.fillRect(0, 0, 200, 60);
+            ctx2.fillStyle = '#FFFFFF';
+            ctx2.font = 'bold 24px Arial';
+            ctx2.textAlign = 'center';
+            ctx2.textBaseline = 'middle';
+            ctx2.fillText('GPCQM 2025', 100, 30);
+            
+            // Ajouter à la grille
+            const grid = document.getElementById('iconGrid');
+            
+            ['GPCQM_logo_white.png', 'GPCQM_logo_colored.png'].forEach((name, index) => {
+                const item = document.createElement('div');
+                item.className = 'icon-item';
+                
+                const label = document.createElement('div');
+                label.textContent = name;
+                label.style.fontSize = '12px';
+                label.style.marginBottom = '5px';
+                
+                const canvas = index === 0 ? whiteLogoCanvas : colorLogoCanvas;
+                const downloadLink = document.createElement('a');
+                downloadLink.download = name;
+                
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                });
+                
+                downloadLink.appendChild(canvas);
+                item.appendChild(label);
+                item.appendChild(downloadLink);
+                grid.appendChild(item);
+            });
+        }
+
+        // Générer automatiquement au chargement
+        window.onload = () => {
+            generateAllIcons();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,667 @@
+/* === GPCQM - Countdown Minimal Overrides === */
+
+/* Scope to hero only to avoid side effects */
+.hero .countdown-container {
+    margin-bottom: var(--spacing-xl);
+}
+
+/* === Force CTA sizes (BigBox Boutique + Edika + Quebec Results) === */
+.shop-bigbox-btn,
+.edika-bigbox-btn,
+.blue-cta {
+    font-size: 1.32rem !important; /* +20% */
+    padding: calc(var(--spacing-md) * 1.2) calc(var(--spacing-2xl) * 1.2) !important;
+}
+
+@media (max-width: 768px) {
+    .shop-bigbox-btn,
+    .edika-bigbox-btn,
+    .blue-cta {
+        font-size: 1.2rem !important; /* +20% */
+        padding: calc(var(--spacing-sm) * 1.2) calc(var(--spacing-xl) * 1.2) !important;
+    }
+}
+
+/* Hover: texte blanc, garder les styles de fond/bordure d'origine */
+.shop-bigbox-btn:hover,
+.edika-bigbox-btn:hover {
+    color: var(--white) !important;
+}
+
+/* === Riders section CTA outside tile === */
+.riders-actions {
+    margin-top: calc(var(--spacing-lg) * 0.7);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.riders-list-btn {
+    background: #1f6e72;
+    color: var(--white);
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-color: transparent !important;
+}
+
+.riders-list-btn:focus,
+.riders-list-btn:focus-visible,
+.riders-list-btn:hover,
+.riders-list-btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+/* Hide legacy inline CTA inside tile if still present via cache */
+#riders .riders-tile .riders-cta {
+    display: none !important;
+}
+
+/* === Section background alternance (blanc/gris) === */
+/* 1) Météo: blanc (déjà blanc) */
+/* 2) Boutique: gris */
+.shop-section { background: var(--gray-100) !important; }
+
+/* 3) Accès rapide: blanc (déjà blanc) */
+
+/* 4) Liste des partants: gris (déjà surchargé plus haut via .race-status) */
+.race-status { background: var(--gray-100) !important; }
+
+/* 5) Programme: blanc */
+.schedule-section { background: var(--white) !important; }
+
+/* 6) Parcours (map): gris */
+.map-section { background: var(--gray-100) !important; }
+
+/* 7) Parcours animé: blanc (déjà blanc) */
+
+/* 8) Instagram: gris (déjà gris) */
+
+/* 9) Diffusions: blanc */
+.broadcast-section { background: var(--gray-100) !important; }
+
+/* 10) Concours: gris */
+.contest-section { background: var(--white) !important; }
+
+/* Section Encan silencieux: fond gris spécifique */
+#auction { background: var(--gray-100) !important; }
+
+/* Normalize both contest big boxes to the same format (match Edika) */
+.contest-section .edika-bigbox {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    aspect-ratio: 300 / 250;
+}
+.contest-section .edika-bigbox-link { width: 100%; display: block; }
+.contest-section .edika-bigbox-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 11) Fan Village: blanc (déjà blanc) */
+
+/* 12) Résultats Québec: gris */
+.quebec-results-section { background: var(--gray-100) !important; }
+
+/* Instagram placé entre Concours (gris) et Village des Fans → mettre blanc */
+.instagram-section { background: var(--gray-100) !important; }
+
+/* Adjust jersey image and title spacing */
+#riders .jersey-icon {
+    padding: var(--spacing-sm);
+    padding-top: calc(var(--spacing-sm) + var(--spacing-lg));
+    width: calc(126px * 1.2) !important;
+    height: calc(126px * 1.2) !important;
+    background: none !important;
+}
+
+@media (max-width: 768px) {
+    #riders .jersey-icon {
+        width: calc(105px * 1.2) !important;
+        height: calc(105px * 1.2) !important;
+        background: none !important;
+    }
+}
+
+/* Reduce top spacing of the external CTA by 30% */
+.riders-list-btn {
+    margin-top: calc(var(--spacing-lg) * 0.7) !important;
+}
+
+#riders .riders-tile-text h3 {
+    margin-bottom: var(--spacing-sm);
+    color: white !important;
+}
+
+/* Center text in the riders tile and preserve height */
+#riders .riders-tile {
+    min-height: 180px;
+}
+
+#riders .riders-tile-content {
+    justify-content: center;
+}
+
+#riders .riders-tile-text {
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    #riders .riders-tile {
+        min-height: 150px;
+    }
+}
+
+/* Hide jersey icon from layout so text can be centered */
+#riders .jersey-icon { display: none !important; }
+
+/* === Hero CTAs: always side-by-side on mobile === */
+@media (max-width: 768px) {
+    .hero .quick-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .hero .quick-actions .action-btn {
+        min-width: 0 !important;
+        width: calc((100% - var(--spacing-sm)) / 2) !important;
+        padding: var(--spacing-sm) var(--spacing-md) !important;
+    }
+
+    /* Map section: empêcher le débordement latéral sur Brave */
+    .map-section .container {
+        overflow: hidden;
+    }
+    .map-wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    .course-map {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Diffusion: permettre le retour à la ligne et éviter les débordements */
+    .broadcast-section .broadcast-location {
+        font-size: 1rem !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    /* Réduire la taille si le libellé du CTA map est long */
+    #map .map-actions .map-action-btn span[data-lang="whereToWatch"] {
+        font-size: inherit !important;
+        line-height: 1.1;
+        white-space: normal !important;
+    }
+}
+
+/* === Prevent horizontal page drift on mobile === */
+html, body { 
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+body {
+    overscroll-behavior-x: contain; /* reduce sideways bounce */
+}
+
+header, section, footer, .container, .hero {
+    overflow-x: hidden;
+}
+
+/* === Make header fixed (more robust than sticky on some browsers) === */
+.header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    overflow: hidden; /* éviter toute scrollbar dans le header */
+}
+
+/* Désactiver le gradient du header (provoquait un scrollbar) */
+.header::after { content: none !important; }
+
+/* Gradient en haut du hero pour fondre avec le header */
+.hero { position: relative; }
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(233,241,226,0) 0%, rgba(233,241,226,0.85) 100%);
+}
+
+/* === Instagram (SnapWidget) responsive styling === */
+.instagram-section .instagram-embed {
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: none; /* éviter l'effet de cassure au bord de section */
+    background: var(--white);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Réduire fortement l'espace sous la section Instagram */
+.instagram-section { padding-bottom: var(--spacing-sm) !important; }
+
+.instagram-section .instagram-embed .snapwidget-widget {
+    display: block;
+    width: 100% !important;
+    height: 720px !important; /* plus haut pour supprimer le scroll interne */
+    border: none !important;
+}
+
+.instagram-section .instagram-fallback {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+    .instagram-section .instagram-embed .snapwidget-widget {
+        height: 600px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .instagram-section .instagram-embed .snapwidget-widget {
+        height: 520px !important;
+    }
+}
+
+/* Lissage visuel entre Instagram (gris) et section suivante (blanc) */
+.instagram-section { position: relative; }
+.instagram-section::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(248,249,250,0) 0%, rgba(255,255,255,1) 100%);
+}
+
+/* Un léger supplément d'espace en haut du Village pour éviter l'écrasement visuel */
+.fanvillage-section { display: none !important; }
+
+/* New Fan Village styles */
+.fv-section {
+    background: var(--white);
+    padding: var(--spacing-3xl) 0 calc(var(--spacing-2xl) + 24px) 0;
+    position: relative;
+    z-index: 0; /* créer un contexte pour gérer les couches */
+    overflow: visible; /* éviter toute coupe d'ombre ou de rayon en bas */
+}
+
+.fv-section::after { content: none !important; height: 0 !important; background: none !important; }
+
+/* s'assurer que le contenu passe au-dessus du dégradé */
+.fv-section > .container { position: relative; z-index: 1; }
+
+.fv-section h2 {
+    text-align: center;
+    color: var(--deep-blue);
+    margin-bottom: var(--spacing-xl);
+}
+
+.zones-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.zones-grid .fv-grid > h3 {
+    color: var(--deep-blue);
+    margin-top: calc(var(--spacing-sm) * -0.5);
+    margin-bottom: var(--spacing-md);
+    grid-column: 1 / -1;
+}
+
+/* Force single column inside each block */
+.zones-grid .fv-grid {
+    grid-template-columns: 1fr !important;
+}
+
+@media (max-width: 900px) {
+    .zones-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.fv-grid {
+    background: var(--white);
+    padding: var(--spacing-2xl) var(--spacing-2xl) var(--spacing-xl) var(--spacing-2xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-xl);
+    overflow: visible; /* garantir que l'ombre basse reste visible */
+    margin-bottom: var(--spacing-xl);
+}
+
+/* CTA inside bubble spans full width of the grid */
+.fv-cta {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--spacing-md);
+}
+
+.fv-cta .getting-there-btn {
+    width: 100%;
+    max-width: 420px;
+}
+
+.fv-card h3 {
+    color: var(--primary-green);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Supprimer les marges finales qui créent une cassure interne */
+.fv-card > p:last-child,
+.fv-card > ul:last-child {
+    margin-bottom: 0 !important;
+}
+
+.fv-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.fv-card li { padding: var(--spacing-xs) 0; }
+/* Éviter un espace sous le dernier bouton de la grille */
+.fanvillage-section .info-card--cta { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+/* Supprimer toute marge sous le bloc principal */
+.fanvillage-info { margin-bottom: 0 !important; }
+/* Réduire l'espace interne et l'ombre du conteneur interne */
+.fanvillage-info {
+    padding-bottom: var(--spacing-sm) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Supprimer toute marge sur le bouton CTA interne */
+.fanvillage-info .getting-there-btn { margin-bottom: 0 !important; }
+
+/* Lissage visuel entre Village des Fans (blanc) et section suivante (gris) */
+/* Supprimer le fondu si présent */
+.fanvillage-section::after { content: none !important; }
+
+/* Sécurité: fondu au sommet de la section Résultats Québec (gris → blanc) */
+.quebec-results-section { position: relative; padding-top: 48px !important; margin-top: 0 !important; }
+
+/* === New Quebec CTA styles === */
+.blue-cta {
+    display: inline-block;
+    background: #1f6e72;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    text-decoration: none;
+    border: none !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.blue-cta:hover,
+.blue-cta:focus,
+.blue-cta:active,
+.blue-cta:visited {
+    background: #155155;
+    color: var(--white) !important;
+    text-decoration: none !important;
+}
+
+.blue-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.quebec-section {
+    background: var(--gray-100);
+    padding: var(--spacing-3xl) 0 var(--spacing-2xl) 0;
+}
+
+.quebec-section h2 {
+    text-align: center;
+    color: var(--deep-blue);
+}
+
+/* Offset body to avoid content under the fixed header */
+:root {
+    --header-offset-desktop: 84px;
+    --header-offset-mobile: 64px;
+}
+
+body { padding-top: var(--header-offset-desktop); }
+
+@media (max-width: 768px) {
+    body { padding-top: var(--header-offset-mobile); }
+}
+
+/* === Riders modal: libellés en gris === */
+.riders-modal .stat-label {
+    color: var(--gray-600) !important;
+}
+
+.hero .countdown-title {
+    display: block;
+}
+
+.hero .countdown {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: nowrap;
+}
+
+.hero .countdown-item {
+    background: rgba(255,255,255,0.75);
+    color: var(--gray-900);
+    padding: var(--spacing-sm) var(--spacing-sm);
+    border-radius: var(--radius-md);
+    min-width: 60px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero .countdown-item::after {
+    content: none;
+}
+
+/* No separators in tile layout */
+
+.hero .countdown-value {
+    color: #1f6e72;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    display: inline-block;
+}
+
+.hero .countdown-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    margin-top: var(--spacing-xs);
+}
+
+@media (max-width: 420px) {
+    .hero .countdown-value { font-size: 1.4rem; }
+    .hero .countdown-item { min-width: 52px; padding: var(--spacing-xs) var(--spacing-sm); }
+}
+
+/* Reduce number-to-label spacing on mobile */
+@media (max-width: 768px) {
+    .hero .countdown-value {
+        transform: translateY(1px);
+    }
+    .hero .countdown-label {
+        margin-top: 1px;
+        transform: translateY(-1px);
+    }
+}
+
+/* === Hero primary action translucency === */
+.hero .action-btn.primary {
+    background: rgba(255,255,255,0.75);
+    border-color: rgba(255,255,255,0.75);
+    color: #1f6e72;
+}
+
+.hero .action-btn.primary:hover {
+    background: rgba(255,255,255,0.65);
+    border-color: rgba(255,255,255,0.65);
+    color: #1f6e72;
+}
+
+
+/* === Center race-status buttons === */
+.race-status .status-cards {
+    max-width: 720px;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+}
+
+.race-status .riders-card {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 768px) {
+    .race-status .status-cards {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}
+
+/* White background for the Quebec results button */
+.race-status .status-card.riders-card[href*="grand-prix-quebec"] {
+    background: #fff !important;
+    border-color: #1f6e72;
+}
+
+.race-status .status-card.riders-card[href*="grand-prix-quebec"] h2,
+.race-status .status-card.riders-card[href*="grand-prix-quebec"] .next-event span {
+    color: #1f6e72;
+}
+
+/* Smaller heading text for the Quebec results button */
+.race-status .status-card.riders-card[href*="grand-prix-quebec"] h2 {
+    font-size: 1.4rem;
+    line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+    .race-status .status-card.riders-card[href*="grand-prix-quebec"] h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Highlight only the specific phrase inside the Quebec results title */
+.race-status .status-card.riders-card[href*="grand-prix-quebec"] h2 .quebec-highlight {
+    color: #1D5077;
+}
+
+/* Highlight only the specific phrase inside the Riders List title */
+.race-status h2[data-lang="ridersList"] .riders-highlight {
+    color: #1D5077;
+}
+
+/* White background for the section behind the button */
+.race-status--white {
+    background: #ffffff !important;
+}
+
+.race-status .status-card.riders-card[href*="grand-prix-quebec"]:hover {
+    background: #fff !important;
+}
+
+/* === Hero text opacity adjustments === */
+.hero .hero-subtitle { opacity: 1; }
+
+/* === Fond gris clair entre héros et listes (hors météo et boutique) === */
+.race-status {
+    background: #F8F9FA;
+}
+
+/* Centrer le titre de la section Riders et ajouter un léger espacement */
+.race-status h2[data-lang="ridersList"] {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* === Mobile/touch: éviter l'état "pressé" qui reste collé === */
+/* Retirer le highlight iOS lors du tap */
+a, button { -webkit-tap-highlight-color: transparent; }
+
+/* Neutraliser les styles :hover sur appareils tactiles (où le :hover peut persister) */
+@media (hover: none) and (pointer: coarse) {
+    /* Quick Links removed */
+
+    /* Bouton liste des partants / carte */
+    .riders-card:hover {
+        transform: none;
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Boutons d'action dans le héros et ailleurs */
+    .action-btn.primary:hover { background: var(--white); color: #1f6e72; }
+    .hero .action-btn.primary:hover { background: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.75); color: #1f6e72; }
+    .action-btn.secondary:hover { background: rgba(0,0,0,0.2); color: var(--white); }
+
+    /* Liens de menu et de pied de page */
+    .menu-links a:hover { background: transparent; color: var(--deep-blue); }
+    .footer-links a:hover { color: var(--black); }
+    .footer-social a:hover, .footer-social a:focus, .footer-social a:active { color: var(--deep-blue); transform: none; }
+
+    /* Cartes et contrôles divers */
+    .instagram-post:hover { transform: none; box-shadow: var(--shadow-md); }
+    .map-control:hover { background: var(--white); color: inherit; border-color: var(--gray-300); }
+    .hotspot-marker:hover { transform: none; background: #1f6e72; }
+
+    /* Boutons de fermeture modales */
+    .modal-close:hover, .popup-close:hover { background: none; transform: none; color: var(--gray-600); }
+
+    /* Spécifique bouton résultats Québec (garder blanc) */
+    .race-status .status-card.riders-card[href*="grand-prix-quebec"]:hover {
+        background: #fff !important;
+        border-color: #1f6e72;
+    }
+}
