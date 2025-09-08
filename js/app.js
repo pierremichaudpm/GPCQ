@@ -1033,9 +1033,10 @@ function initMobileMenuTouch() {
         addSafeTapListener(menuButton, toggleMenu);
     }
     
-    if (menuClose) {
+    const menuCloseBtn = document.getElementById('menuCloseBtn');
+    if (menuCloseBtn) {
         // Add touch event listener for close button
-        addSafeTapListener(menuClose, toggleMenu);
+        addSafeTapListener(menuCloseBtn, toggleMenu);
     }
     
     // Fix language buttons with proper touch events
