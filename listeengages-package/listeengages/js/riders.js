@@ -545,7 +545,7 @@ function loadTeamsView() {
             <div class="team-card ${isExpanded ? 'expanded' : ''}" data-team-id="${team.id}">
                 <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}">
                     <div class="team-info">
-                        <img src="/images/jerseys/${getJerseyFile(team)}" alt="${team.name}" style="height: 30px; width: auto; margin-right: 10px; vertical-align: middle;" onerror="this.src='/images/jerseys/maillot-generique.png'">
+                        <img src="/listeengages-package/listeengages/images/jerseys/${getJerseyFile(team)}" alt="${team.name}" style="height: 30px; width: auto; margin-right: 10px; vertical-align: middle;" onerror="this.src='/listeengages-package/listeengages/images/jerseys/maillot-generique.png'">
                         <span class="team-name">${team.displayName || team.name}</span>
                     </div>
                     <span class="team-chevron">▼</span>
