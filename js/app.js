@@ -1038,14 +1038,16 @@ function initMobileMenuTouch() {
     if (mobileMenu) {
         // Close menu when clicking outside content area
         mobileMenu.addEventListener('click', function(e) {
-            if (e.target === mobileMenu) {
+            // Only close if clicking on the overlay (not on menu-content)
+            if (!e.target.closest('.menu-content')) {
                 toggleMenu();
             }
         });
         
         // Also add touch event for overlay
         mobileMenu.addEventListener('touchend', function(e) {
-            if (e.target === mobileMenu) {
+            // Only close if touching outside menu-content
+            if (!e.target.closest('.menu-content')) {
                 e.preventDefault();
                 toggleMenu();
             }
