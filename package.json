@@ -1,5 +1,5 @@
 {
-  "name": "gpcqm-pwa",
+  "name": "gpcq-pwa",
   "version": "1.0.0",
   "description": "Grand Prix Cycliste de Québec 2025 - Progressive Web Application",
   "main": "server.js",
@@ -12,7 +12,7 @@
     "test": "echo 'No tests configured'"
   },
   "keywords": [
-    "gpcqm",
+    "gpcq",
     "cycling",
     "quebec",
     "pwa",
@@ -36,6 +36,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gpcqm/pwa-2025"
+    "url": "https://github.com/pierremichaudpm/GPCQ"
   }
 }
