@@ -1022,9 +1022,34 @@ function toggleMenu() {
 
 function initMobileMenuTouch() {
     const menuButton = document.querySelector('.menu-toggle');
+    const menuClose = document.querySelector('.menu-close');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
     if (menuButton) {
-        // Add touch event listener for mobile
+        // Add touch event listener for menu button
         addSafeTapListener(menuButton, toggleMenu);
+    }
+    
+    if (menuClose) {
+        // Add touch event listener for close button
+        addSafeTapListener(menuClose, toggleMenu);
+    }
+    
+    if (mobileMenu) {
+        // Close menu when clicking outside content area
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target === mobileMenu) {
+                toggleMenu();
+            }
+        });
+        
+        // Also add touch event for overlay
+        mobileMenu.addEventListener('touchend', function(e) {
+            if (e.target === mobileMenu) {
+                e.preventDefault();
+                toggleMenu();
+            }
+        }, { passive: false });
     }
 }
 
