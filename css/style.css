@@ -422,6 +422,7 @@ a:hover {
     transform: translateX(0);
 }
 
+/* Menu Overlay - Outside menu for proper click detection */
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -433,9 +434,11 @@ a:hover {
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-base);
+    display: none;
 }
 
-.mobile-menu.active .menu-overlay {
+.menu-overlay.active {
+    display: block;
     opacity: 1;
     pointer-events: auto;
 }

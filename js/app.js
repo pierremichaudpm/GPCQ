@@ -26,8 +26,9 @@ const translations = {
         whereToWatch: 'Meilleures zones spectateurs',
         viewSchedule: 'Programme',
         gettingThere: "Comment s'y rendre",
-        getThereShort: "Comment s'y rendre",
+        getThereShort: "Comment s'y rendre", 
         transportTitle: "Comment s'y rendre",
+        siteAccess: "Accès au site",
         bikeTitle: 'À vélo',
         metroTitle: 'Métro',
         trainTitle: 'Train/EXO',
@@ -218,6 +219,7 @@ const translations = {
         gettingThere: 'Getting there',
         getThereShort: 'How to get there',
         transportTitle: 'Getting there',
+        siteAccess: 'Site Access',
         bikeTitle: 'By bike',
         metroTitle: 'Subway',
         trainTitle: 'Train/EXO',
@@ -1112,6 +1114,16 @@ function updateLanguage() {
             '225318-gpcq_parcours_fr_(13-06-25).png';
         mapModalImage.src = `images/${mapImageName}`;
         mapModalImage.alt = currentLanguage === 'en' ? 'GPCQ 2025 Course' : 'Parcours GPCQ 2025';
+    }
+    
+    // Update course access map image based on language
+    const courseMapImage = document.getElementById('courseMapImage');
+    if (courseMapImage) {
+        const courseImageName = currentLanguage === 'en' ? 
+            'GPC-11938-CarteGPC-2025_QC-EN_VF_FINAL_Parcours ajusté.png' : 
+            'GPC-11938-CarteGPC-2025_QC-FR_VF_FINAL_Parcours ajusté.png';
+        courseMapImage.src = `images/${courseImageName}`;
+        courseMapImage.alt = currentLanguage === 'en' ? 'Site Access Map' : 'Plan d\'accès au site';
     }
     
     // Toggle bilingual legal content visibility in modals
