@@ -58,9 +58,9 @@ const translations = {
         ridersListTitle: 'Découvrez les coureurs',
         viewRiders: 'Liste complète',
         quebecResults: 'Résultats du Grand Prix Cycliste de Québec',
-        quebecMenu: 'Grand Prix Cycliste de Québec',
-        montrealTitle: 'Grand Prix Cycliste de Québec',
-        montrealCta: 'Voir la page',
+        quebecMenu: 'Grand Prix Cycliste de Montréal',
+        montrealTitle: 'Grand Prix Cycliste de Montréal',
+        montrealCta: 'Installer',
         liveStream: 'Le Direct',
         watchStream: 'Visionner',
         interactiveCourse: 'Parcours',
@@ -248,9 +248,9 @@ const translations = {
         ridersListTitle: 'Discover the Teams',
         viewRiders: 'Complete list',
         quebecResults: 'Québec City Race Results',
-        quebecMenu: 'Québec City Cycling Grand Prix',
-        montrealTitle: 'Québec City Cycling Grand Prix',
-        montrealCta: 'View page',
+        quebecMenu: 'Montréal Cycling Grand Prix',
+        montrealTitle: 'Montréal Cycling Grand Prix',
+        montrealCta: 'Install',
         liveStream: 'Live Stream',
         watchStream: 'Watch',
         interactiveCourse: 'Interactive Course',
@@ -487,6 +487,9 @@ function initializeApp() {
     
     // PWA Install prompts
     initPWAInstallPrompts();
+    
+    // Fix mobile menu touch
+    initMobileMenuTouch();
     
     // Analytics (non-blocking) with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 100)))(() => {
@@ -1014,6 +1017,14 @@ function toggleMenu() {
         if (menuButton) {
             menuButton.setAttribute('aria-expanded', (!isActive).toString());
         }
+    }
+}
+
+function initMobileMenuTouch() {
+    const menuButton = document.querySelector('.menu-toggle');
+    if (menuButton) {
+        // Add touch event listener for mobile
+        addSafeTapListener(menuButton, toggleMenu);
     }
 }
 
