@@ -1035,23 +1035,10 @@ function initMobileMenuTouch() {
         addSafeTapListener(menuClose, toggleMenu);
     }
     
-    if (mobileMenu) {
-        // Close menu when clicking outside content area
-        mobileMenu.addEventListener('click', function(e) {
-            // Only close if clicking on the overlay (not on menu-content)
-            if (!e.target.closest('.menu-content')) {
-                toggleMenu();
-            }
-        });
-        
-        // Also add touch event for overlay
-        mobileMenu.addEventListener('touchend', function(e) {
-            // Only close if touching outside menu-content
-            if (!e.target.closest('.menu-content')) {
-                e.preventDefault();
-                toggleMenu();
-            }
-        }, { passive: false });
+    const menuOverlay = document.getElementById('menuOverlay');
+    if (menuOverlay) {
+        // Close menu when clicking/touching the overlay
+        addSafeTapListener(menuOverlay, toggleMenu);
     }
 }
 
