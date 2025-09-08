@@ -2047,22 +2047,6 @@ a:hover {
     margin-bottom: var(--spacing-lg);
 }
 
-.install-btn {
-    width: 100%;
-    background: var(--primary-green);
-    color: var(--white);
-    padding: var(--spacing-md);
-    border: none;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all var(--transition-base);
-}
-
-.install-btn:hover {
-    background: var(--deep-blue);
-}
 
 /* === Offline Indicator === */
 .offline-indicator {
@@ -2175,20 +2159,21 @@ a:hover {
 }
 
 .install-btn {
-    background: var(--primary-color);
-    color: var(--white);
+    background: #6BA053;
+    color: white;
     border: none;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--radius-base);
+    padding: 12px 24px;
+    border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
     width: 100%;
-    margin-top: var(--spacing-md);
-    transition: all var(--transition-base);
+    margin-top: 16px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
 }
 
 .install-btn:hover {
-    background: var(--primary-dark);
+    background: #5a8a47;
 }
 
 /* iOS Install Prompt */
