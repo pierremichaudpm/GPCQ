@@ -1122,7 +1122,7 @@ function updateLanguage() {
         const courseImageName = currentLanguage === 'en' ? 
             'GPC-11938-CarteGPC-2025_QC-EN_VF_FINAL_Parcours ajusté.png' : 
             'GPC-11938-CarteGPC-2025_QC-FR_VF_FINAL_Parcours ajusté.png';
-        courseMapImage.src = `images/${courseImageName}`;
+        courseMapImage.src = `images/${encodeURIComponent(courseImageName)}`;
         courseMapImage.alt = currentLanguage === 'en' ? 'Site Access Map' : 'Plan d\'accès au site';
     }
     
