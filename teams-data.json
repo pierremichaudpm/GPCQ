@@ -1,54 +1,8 @@
 [
   {
-    "id": 2,
-    "name": "Lotto Dstny",
-    "displayName": "LOTTO",
-    "code": "LTD",
-    "country": "🇧🇪",
-    "director": "GALLOPIN, Tony",
-    "jerseyPath": "/listeengages/images/jerseys/lotto.png",
-    "riders": [
-      {
-        "number": 181,
-        "name": "DE LIE, Arnaud",
-        "country": "🇧🇪"
-      },
-      {
-        "number": 182,
-        "name": "BERCKMOES, Jenno",
-        "country": "🇧🇪"
-      },
-      {
-        "number": 183,
-        "name": "DRIZNERS, Jarrad",
-        "country": "🇦🇺"
-      },
-      {
-        "number": 184,
-        "name": "GRIGNARD, Sébastien",
-        "country": "🇧🇪"
-      },
-      {
-        "number": 185,
-        "name": "THOMPSON, Reuben",
-        "country": "🇳🇿"
-      },
-      {
-        "number": 186,
-        "name": "CURRIE, Logan",
-        "country": "🇳🇿"
-      },
-      {
-        "number": 187,
-        "name": "VANDENABEELE, Henri",
-        "country": "🇧🇪"
-      }
-    ]
-  },
-  {
     "id": 1,
     "name": "UAE Team Emirates",
-    "displayName": "UAE TEAM EMIRATES XRG test2",
+    "displayName": "UAE TEAM EMIRATES XRG",
     "code": "UAE",
     "country": "🇦🇪",
     "director": "PEDRAZZINI, SIMONE (SUI)",
@@ -56,7 +10,7 @@
     "riders": [
       {
         "number": 11,
-        "name": "Tadej POGACAR test",
+        "name": "Tadej POGACAR",
         "country": "🇸🇮"
       },
       {
@@ -271,6 +225,52 @@
       {
         "number": 37,
         "name": "VERGAERDE, Otto",
+        "country": "🇧🇪"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Lotto Dstny",
+    "displayName": "LOTTO",
+    "code": "LTD",
+    "country": "🇧🇪",
+    "director": "GALLOPIN, Tony",
+    "jerseyPath": "/listeengages/images/jerseys/lotto.png",
+    "riders": [
+      {
+        "number": 181,
+        "name": "DE LIE, Arnaud",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 182,
+        "name": "BERCKMOES, Jenno",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 183,
+        "name": "DRIZNERS, Jarrad",
+        "country": "🇦🇺"
+      },
+      {
+        "number": 184,
+        "name": "GRIGNARD, Sébastien",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 185,
+        "name": "THOMPSON, Reuben",
+        "country": "🇳🇿"
+      },
+      {
+        "number": 186,
+        "name": "CURRIE, Logan",
+        "country": "🇳🇿"
+      },
+      {
+        "number": 187,
+        "name": "VANDENABEELE, Henri",
         "country": "🇧🇪"
       }
     ]
