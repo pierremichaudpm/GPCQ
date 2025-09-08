@@ -238,6 +238,15 @@
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-jersey-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 .team-jersey-bg:hover {
