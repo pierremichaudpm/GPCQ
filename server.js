@@ -163,27 +163,32 @@ app.post('/api/teams', basicAuth, async (req, res) => {
 // Weather proxy endpoint (to hide API key)
 app.get('/api/weather/current', async (req, res) => {
     try {
-        const apiKey = process.env.OPENWEATHER_API_KEY;
-        if (!apiKey) {
-            return res.status(503).json({ error: 'Weather service not configured' });
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
+        
+        const lang = req.query.lang || 'fr';
+        
+        // Coordonnées de Québec (Vieux-Québec)
+        const lat = 46.8139;
+        const lon = -71.2080;
+        
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&appid=${apiKey}`;
+        
+        console.log(`[Safari iOS] Fetching weather for Quebec: ${url}`);
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`OpenWeather API failed: ${response.status}`);
         }
         
-        // Implementation would fetch from OpenWeatherMap API
-        // For now, return mock data
-        res.json({
-            main: {
-                temp: 18,
-                feels_like: 17,
-                humidity: 65
-            },
-            weather: [{
-                description: 'Partly cloudy',
-                icon: '02d'
-            }],
-            wind: {
-                speed: 3.5
-            }
-        });
+        const data = await response.json();
+        console.log(`[Safari iOS] Weather data received for Quebec`);
+        
+        // Ajouter les headers CORS pour Safari
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        
+        res.json(data);
     } catch (error) {
         console.error('Weather API error:', error);
         res.status(500).json({ error: 'Failed to fetch weather data' });

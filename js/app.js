@@ -1069,6 +1069,16 @@ function updateLanguage() {
         auctionImage.alt = currentLanguage === 'en' ? 'Silent Auction' : 'Encan silencieux';
     }
     
+    // Update course map image based on language
+    const mapModalImage = document.getElementById('mapModalImage');
+    if (mapModalImage) {
+        const mapImageName = currentLanguage === 'en' ? 
+            '225318-gpcq_parcours-en (13-06-25).png' : 
+            '225318-gpcq_parcours_fr_(13-06-25).png';
+        mapModalImage.src = `images/${mapImageName}`;
+        mapModalImage.alt = currentLanguage === 'en' ? 'GPCQ 2025 Course' : 'Parcours GPCQ 2025';
+    }
+    
     // Toggle bilingual legal content visibility in modals
     try {
         const showFr = currentLanguage === 'fr';
