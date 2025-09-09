@@ -55,7 +55,7 @@ const translations = {
         fanVillageOpening: 'Ouverture du Village des Fans',
         
         // Quick Links
-        ridersList: 'Liste des Partants',
+        ridersList: 'Liste des partants',
         ridersListTitle: 'Découvrez les coureurs',
         viewRiders: 'Liste complète',
         quebecResults: 'Résultats du Grand Prix Cycliste de Québec',
@@ -67,13 +67,13 @@ const translations = {
         interactiveCourse: 'Parcours',
         edikaContest: 'Edika',
         silentAuction: 'Encan silencieux',
-        socialMedia: 'Instagram',
+        
         fanVillageInfo: 'Zones animées',
         officialWebsite: 'Site officiel',
         quebecResults: 'Résultats Québec',
 
         // Riders Modal
-        ridersTitle: 'Liste des Partants - 2025',
+        ridersTitle: 'Liste des partants - 2025',
         ridersInfo: 'Données officielles UCI WorldTour 2025',
         searchRider: 'Rechercher un coureur, une équipe... ',
         ridersLabel: 'Coureurs',
@@ -122,7 +122,7 @@ const translations = {
         parkingContent: 'Stationnement sécurisé pour vélos au Parc Jeanne-Mance. Service gratuit.',
         
         // Social
-        socialTitle: 'Instagram',
+        
         loadingPosts: 'Chargement des publications...',
         videoFallbackPrefix: "Si la vidéo ne s'affiche pas, ",
         videoFallbackLinkText: 'ouvrez-la sur Vimeo',
@@ -259,7 +259,7 @@ const translations = {
         interactiveCourse: 'Interactive Course',
         edikaContest: 'Edika',
         silentAuction: 'Silent Auction',
-        socialMedia: 'Instagram',
+        
         fanVillageInfo: 'Animated aera',
         officialWebsite: 'Official Website',
         quebecResults: 'Quebec Results',
@@ -314,7 +314,7 @@ const translations = {
         parkingContent: 'Secure bike parking at Jeanne-Mance Park. Free service.',
         
         // Social
-        socialTitle: 'Instagram',
+        
         loadingPosts: 'Loading posts...',
         videoFallbackPrefix: 'If the video does not load, ',
         videoFallbackLinkText: 'open it on Vimeo',
@@ -1368,7 +1368,7 @@ function updateOnlineStatus() {
             offlineIndicator.classList.add('hidden');
             // Reload dynamic content if coming back online
             loadWeather();
-            loadInstagramFeed();
+            
         } else {
             offlineIndicator.classList.remove('hidden');
         }

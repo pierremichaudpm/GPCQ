@@ -119,12 +119,11 @@
                     <button id="langBtnEn" class="lang-btn">English</button>
                 </div>
                 <div class="menu-links">
-                    <a href="#riders" onclick="toggleMenu()" data-lang="ridersList">Liste des Partants</a>
+                    <a href="#riders" onclick="toggleMenu()" data-lang="ridersList">Liste des partants</a>
                     <a href="#broadcast" onclick="toggleMenu()" data-lang="webStreamTitle">Webdiffusion</a>
                     <a href="#map" onclick="toggleMenu()" data-lang="viewCourse">Parcours</a>
                     <a href="#contest" onclick="toggleMenu()" data-lang="contestTitle">Concours</a>
                     <a href="#auction" onclick="toggleMenu()" data-lang="silentAuction">Encan silencieux</a>
-                    <a href="#social" onclick="toggleMenu()" data-lang="socialMedia">Instagram</a>
                     <a href="#fanvillage" onclick="toggleMenu()" data-lang="fanVillageInfo">Village des Fans</a>
                     <a href="https://gpcqm.ca" onclick="toggleMenu()" target="_blank" rel="noopener" data-lang="officialWebsite">Site officiel</a>
                     <a href="https://gpcqm-mtl.ca" onclick="toggleMenu()" target="_blank" rel="noopener" data-lang="quebecMenu">Grand Prix Cycliste de Montréal</a>
@@ -210,7 +209,7 @@
     <!-- Riders List (replaces Race Status) -->
     <section id="riders" class="race-status riders-section">
         <div class="container">
-            <h2 data-lang="ridersList">Liste des Partants</h2>
+            <h2 data-lang="ridersList">Liste des partants</h2>
             <div class="riders-tile-container">
                 <button class="riders-tile riders-card" aria-haspopup="dialog" aria-controls="ridersModal" type="button">
                     <div class="riders-tile-content">
@@ -229,7 +228,7 @@
         <div class="riders-modal-overlay" onclick="window.RidersModal && RidersModal.close()"></div>
         <div class="riders-modal-content">
             <div class="riders-modal-header">
-                <h2 data-lang="ridersTitle">Liste des Partants - 2025</h2>
+                <h2 data-lang="ridersTitle">Liste des partants - 2025</h2>
                 <button class="modal-close riders-modal-close" type="button" onclick="window.RidersModal && RidersModal.close()" aria-label="Fermer">×</button>
             </div>
             <div class="riders-stats">
@@ -947,36 +946,7 @@
         </div>
     </section>
     
-    <!-- Instagram Feed (SnapWidget) -->
-    <section id="social" class="instagram-section">
-        <div class="container">
-            <h2 data-lang="socialTitle">Suivez-nous sur Instagram</h2>
-            <div class="instagram-embed">
-                <script src="https://snapwidget.com/js/snapwidget.js"></script>
-                <iframe src="https://snapwidget.com/embed/1106271" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Grands prix cyclistes de Québec et Montréal" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                <div class="instagram-fallback" id="instagramFallback" style="display:none;">
-                    <p data-lang="instagramBlocked">Le flux Instagram ne peut pas se charger ici.</p>
-                    <p>
-                        <a class="btn-secondary" href="https://instagram.com/grandsprixcyclistes" target="_blank" rel="noopener" aria-label="Ouvrir Instagram">Ouvrir notre Instagram</a>
-                    </p>
-                </div>
-                <script>
-                (function(){
-                  try {
-                    var iframe = document.querySelector('#social .snapwidget-widget');
-                    var fb = document.getElementById('instagramFallback');
-                    if (!iframe || !fb) return;
-                    var loaded = false;
-                    var showFallback = function(){ if (!loaded) { fb.style.display = 'block'; } };
-                    iframe.addEventListener('load', function(){ loaded = true; fb.style.display = 'none'; });
-                    // Si rien ne charge après 5s (ad-block/shields), afficher fallback
-                    setTimeout(showFallback, 5000);
-                  } catch(e) { /* no-op */ }
-                })();
-                </script>
-            </div>
-        </div>
-    </section>
+    
     
 
     <!-- Footer -->
@@ -1037,7 +1007,7 @@
     <script src="js/countdown.js?v=3.0"></script>
     
     <script src="js/weather.js?v=3.4"></script>
-    <script src="js/instagram.js?v=3.0"></script>
+    
     <script src="js/pwa.js?v=3.0"></script>
 
     <!-- Install Prompt -->
