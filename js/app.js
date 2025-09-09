@@ -534,25 +534,45 @@ function loadYouTubeIframeAPI() {
 function initVimeoAnimatedCourse() {
     try {
         const frame = document.getElementById('animatedCourseFrame');
-        const link = document.getElementById('animatedCourseLink');
         const fb = document.getElementById('animatedCourseFallback');
         if (!frame) return;
-        const vimeoEmbed = 'https://player.vimeo.com/video/1093211409';
-        const vimeoWatch = 'https://vimeo.com/1093211409';
+        const lang = localStorage.getItem('language') || 'fr';
+        const vimeoEmbed = lang === 'en' ? 'https://player.vimeo.com/video/1093211409' : 'https://player.vimeo.com/video/1089677103';
+        const vimeoWatch = lang === 'en' ? 'https://vimeo.com/1093211409' : 'https://vimeo.com/1089677103';
+
+        const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent);
+        if (isIOS) {
+            const parent = frame.parentElement || document.querySelector('.video-embed');
+            if (parent) {
+                frame.style.display = 'none';
+                let poster = document.getElementById('animatedCoursePoster');
+                const posterSrc = 'images/gpcmq-30-1030x687.jpg';
+                if (!poster) {
+                    poster = document.createElement('img');
+                    poster.id = 'animatedCoursePoster';
+                    poster.className = 'video-poster';
+                    parent.appendChild(poster);
+                }
+                const ts = Date.now();
+                poster.src = `${posterSrc}?t=${ts}`;
+                poster.alt = lang === 'en' ? 'Animated circuit (poster)' : 'Parcours animé (aperçu)';
+                poster.onclick = () => { window.open(vimeoWatch, '_blank', 'noopener'); };
+                if (fb) fb.style.display = 'none';
+            }
+            return;
+        }
+
+        // Non-iOS
+        frame.style.display = '';
+        const existingPoster = document.getElementById('animatedCoursePoster');
+        if (existingPoster && existingPoster.parentElement) {
+            existingPoster.parentElement.removeChild(existingPoster);
+        }
         if (frame.getAttribute('src') !== vimeoEmbed) {
             frame.setAttribute('src', vimeoEmbed);
         }
-        if (link && link.getAttribute('href') !== vimeoWatch) {
-            link.setAttribute('href', vimeoWatch);
-        }
-        frame.onload = function() {
-            if (fb) fb.style.display = 'none';
-            if (frame) frame.style.display = '';
-        };
-        frame.onerror = function() {
-            if (fb) fb.style.display = '';
-            if (frame) frame.style.display = 'none';
-        };
+        frame.onload = function() { if (fb) fb.style.display = 'none'; };
+        frame.onerror = function() { if (fb) fb.style.display = ''; frame.style.display = 'none'; };
     } catch(_) {}
 }
 
@@ -1102,6 +1122,8 @@ function setLanguage(lang) {
             language: lang
         });
     }
+    // Réappliquer la logique iOS poster/iframe lors d'un changement de langue
+    initVimeoAnimatedCourse();
 }
 
 // Update Language
