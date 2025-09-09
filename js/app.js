@@ -139,6 +139,7 @@ const translations = {
         giantScreensDesc: 'Plaines d’Abraham, Avenue George-VI, Zone animée (côte de la Montagne / Port Dauphin)',
         tvaApp: 'Application TVA Sports',
         tvaAppDesc: 'Télécharger',
+        onSiteOnly: 'Sur site seulement',
         
         // Contest
         contestTitle: 'Concours',
@@ -323,13 +324,14 @@ const translations = {
         diffusionCta: 'Broadcast',
         tvBroadcast: 'Live broadcast from 10:00 AM to 4:00 PM',
         streamBroadcast: 'International streaming',
-        webStreamTitle: 'Broadcast',
+        webStreamTitle: 'Webcast',
         giantScreen: 'Giant Screen',
         giantScreenDesc: 'At Camillien-Houde Lookout',
         giantScreens: 'Giant Screens',
         giantScreensDesc: 'Plains of Abraham, George-VI Avenue, Animated area (Côte de la Montagne / Port Dauphin)',
         tvaApp: 'CBC Gem',
         tvaAppDesc: 'Download',
+        onSiteOnly: 'On site only',
         
         // Fan Zones (new section)
         animatedZonesTitle: 'Fan Zones',
