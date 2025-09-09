@@ -625,6 +625,7 @@ body { padding-top: var(--header-offset-desktop); }
 .race-status h2[data-lang="ridersList"] {
     text-align: center;
     margin-bottom: var(--spacing-xl);
+    color: #1D5077 !important;
 }
 
 /* === Mobile/touch: éviter l'état "pressé" qui reste collé === */

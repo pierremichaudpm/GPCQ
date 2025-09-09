@@ -1653,6 +1653,17 @@ a:hover {
     color: var(--white);
 }
 
+/* Ensure bullet list in Giant Screens card is left-aligned */
+.broadcast-location-list {
+    text-align: left;
+    margin: var(--spacing-sm) 0 0 0;
+    padding-left: 1.25rem;
+}
+.broadcast-location-list li {
+    opacity: 0.95;
+    color: var(--white);
+}
+
 .broadcast-cta {
     display: inline-block;
     margin-top: var(--spacing-lg);

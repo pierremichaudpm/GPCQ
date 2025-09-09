@@ -1,8 +1,8 @@
-# Instructions d'intégration - Liste des Partants GPCQM 2025
+# Instructions d'intégration - Liste des partants GPCQM 2025
 
 ## 📦 Contenu du package
 
-Ce package contient tous les éléments nécessaires pour intégrer la fonctionnalité "Liste des Partants" du Grand Prix Cycliste de Montréal 2025 dans votre projet.
+Ce package contient tous les éléments nécessaires pour intégrer la fonctionnalité "Liste des partants" du Grand Prix Cycliste de Montréal 2025 dans votre projet.
 
 ### Structure des fichiers :
 ```
@@ -39,7 +39,7 @@ Ajoutez ce code HTML où vous voulez dans votre page :
 
 ```html
 <!-- Bouton pour ouvrir la liste (personnalisable) -->
-<button onclick="openRidersModal()">🚴 Liste des Partants</button>
+<button onclick="openRidersModal()">🚴 Liste des partants</button>
 
 <!-- Modal des riders (à ajouter avant la fermeture de </body>) -->
 <div id="ridersModal" class="riders-modal" style="display: none;">
@@ -47,7 +47,7 @@ Ajoutez ce code HTML où vous voulez dans votre page :
     <div class="riders-modal-content">
         <!-- Modal Header -->
         <div class="riders-modal-header">
-            <h2>Liste des Partants - GPCQM 2025</h2>
+            <h2>Liste des partants - GPCQM 2025</h2>
             <button class="riders-modal-close" onclick="closeRidersModal()">×</button>
         </div>
 

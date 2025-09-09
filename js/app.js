@@ -164,7 +164,7 @@ const translations = {
         // Zones animées (nouvelle section)
         animatedZonesTitle: 'Zones animées',
         zonesVillageTitle: 'Village des Fans',
-        zonesVillageLocationValue: 'Rendez-vous au coin de l’Avenue Georges VI & Ontario (Plaines d’Abraham)',
+        zonesVillageLocationValue: 'Meeting point at corner of Georges V avenue & Ontario (Plains of Abraham)',
         zonesVillageAct1: 'Kiosques d’exposants',
         zonesVillageAct2: 'Restauration et service de bar',
         zonesVillageAct3: 'Boutique officielle GPCQM par Santini',
@@ -1124,8 +1124,8 @@ function updateLanguage() {
     // Update auction image based on language
     const auctionImage = document.getElementById('auctionBigboxImage');
     if (auctionImage) {
-        const imageName = currentLanguage === 'en' ? 'encan_EN.png' : 'encan_FR.png';
-        const version = '3.9';
+        const imageName = currentLanguage === 'en' ? 'encan_EN_2025.png' : 'encan_FR_2025.png';
+        const version = '4.0';
         auctionImage.src = `images/${imageName}?v=${version}`;
         auctionImage.alt = currentLanguage === 'en' ? 'Silent Auction' : 'Encan silencieux';
     }

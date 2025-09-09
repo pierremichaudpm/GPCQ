@@ -1,4 +1,4 @@
-# 🚴 Liste des Partants - GPCQM 2025
+# 🚴 Liste des partants - GPCQM 2025
 
 Package autonome pour intégrer la fonctionnalité "Liste des Partants" du Grand Prix Cycliste de Montréal 2025.
 

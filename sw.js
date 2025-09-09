@@ -1,9 +1,9 @@
 // === GPCQ 2025 - Service Worker - Mobile Optimized ===
 
-const CACHE_NAME = 'gpcq-v3.2';
-const RUNTIME_CACHE = 'gpcq-runtime-v3.2';
-const IMAGE_CACHE = 'gpcq-images-v3.2';
-const API_CACHE = 'gpcq-api-v3.2';
+const CACHE_NAME = 'gpcq-v3.4';
+const RUNTIME_CACHE = 'gpcq-runtime-v3.4';
+const IMAGE_CACHE = 'gpcq-images-v3.4';
+const API_CACHE = 'gpcq-api-v3.4';
 
 // Mobile-specific configurations
 const MOBILE_CACHE_CONFIG = {
@@ -24,7 +24,7 @@ const STATIC_CACHE_URLS = [
     '/js/countdown.js',
     '/js/map.js',
     '/js/weather.js',
-    '/js/instagram.js',
+    // '/js/instagram.js', // supprimé
     '/js/pwa.js',
     // Add Google Fonts
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
