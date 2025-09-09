@@ -553,6 +553,15 @@ function initVimeoAnimatedCourse() {
                 poster.className = 'video-poster';
                 parent.appendChild(poster);
             }
+            // Bouton lecture superposé
+            let playBadge = document.getElementById('animatedCoursePlay');
+            if (!playBadge) {
+                playBadge = document.createElement('div');
+                playBadge.id = 'animatedCoursePlay';
+                playBadge.className = 'video-play-badge';
+                playBadge.textContent = '▶';
+                parent.appendChild(playBadge);
+            }
             const ts = Date.now();
             const posterName = 'Capture d’écran du 2025-09-09 18-32-39.png';
             const preferredPoster = `/images/${encodeURIComponent(posterName)}`;
@@ -569,6 +578,8 @@ function initVimeoAnimatedCourse() {
                     return;
                 }
                 if (poster && poster.parentElement) poster.parentElement.removeChild(poster);
+                const badge = document.getElementById('animatedCoursePlay');
+                if (badge && badge.parentElement) badge.parentElement.removeChild(badge);
                 const autoplayUrl = `${vimeoEmbed}?autoplay=1`;
                 if (frame.getAttribute('src') !== autoplayUrl) {
                     frame.setAttribute('src', autoplayUrl);
