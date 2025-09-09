@@ -1121,19 +1121,40 @@ function updateLanguage() {
         }
     });
     
-    // Update auction image based on language
+    // Update auction image and links based on language - FIXED VERSION
     const auctionImage = document.getElementById('auctionBigboxImage');
+    const auctionImageLink = document.getElementById('auctionImageLink');
+    const auctionButtonLink = document.getElementById('auctionButtonLink');
+    
     if (auctionImage) {
         const imageNamePrimary = currentLanguage === 'en' ? 'encan_EN_2025.png' : 'encan_FR_2025.png';
         const imageNameFallback = currentLanguage === 'en' ? 'encan_EN.png' : 'encan_FR.png';
-        const version = '4.0';
+        const version = '5.0';  // Incremented version to force refresh
         const ts = Date.now();
-        auctionImage.onerror = function() {
-            this.onerror = null;
-            this.src = `/images/${imageNameFallback}?v=${version}&t=${ts}`;
-        };
-        auctionImage.src = `/images/${imageNamePrimary}?v=${version}&t=${ts}`;
+        
+        // Set the correct image source
+        const newSrc = `images/${imageNamePrimary}?v=${version}&t=${ts}`;
+        auctionImage.src = newSrc;
         auctionImage.alt = currentLanguage === 'en' ? 'Silent Auction' : 'Encan silencieux';
+        
+        // Setup fallback on error
+        auctionImage.onerror = function() {
+            console.log('Auction image failed to load:', newSrc);
+            this.onerror = null;  // Prevent infinite loop
+            this.src = `images/${imageNameFallback}?v=${version}&t=${ts}`;
+        };
+    }
+    
+    // Update auction links based on language
+    const auctionUrl = currentLanguage === 'en' ? 
+        'https://www.zeffy.com/en-CA/ticketing/encan-silencieux-3' : 
+        'https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3';
+    
+    if (auctionImageLink) {
+        auctionImageLink.href = auctionUrl;
+    }
+    if (auctionButtonLink) {
+        auctionButtonLink.href = auctionUrl;
     }
     
     // Update course map image based on language
@@ -1302,18 +1323,7 @@ function updateLanguage() {
         };
     }
 
-    // Update Silent Auction bigbox image (FR used for both languages for now)
-    const auctionImg = document.getElementById('auctionBigboxImage');
-    if (auctionImg) {
-        const frAuctionSrc = 'images/encanfr.jpg';
-        if (auctionImg.getAttribute('src') !== frAuctionSrc) {
-            auctionImg.setAttribute('src', frAuctionSrc);
-        }
-        auctionImg.onerror = function() {
-            const container = auctionImg.closest('.edika-bigbox');
-            if (container) container.style.display = 'none';
-        };
-    }
+    // REMOVED - Duplicate auction image handling code that was overriding the correct language-based logic above
 }
 
 // Smooth Scroll
