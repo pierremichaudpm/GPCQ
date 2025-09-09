@@ -554,7 +554,13 @@ function initVimeoAnimatedCourse() {
                     parent.appendChild(poster);
                 }
                 const ts = Date.now();
-                poster.src = `${posterSrc}?t=${ts}`;
+                const posterName = 'Capture d’écran du 2025-09-09 18-32-39.png';
+                const preferredPoster = `/images/${encodeURIComponent(posterName)}`;
+                poster.onerror = function() {
+                    this.onerror = null;
+                    this.src = `${posterSrc}?t=${ts}`;
+                };
+                poster.src = `${preferredPoster}?t=${ts}`;
                 poster.alt = lang === 'en' ? 'Animated circuit (poster)' : 'Parcours animé (aperçu)';
                 poster.onclick = () => { window.open(vimeoWatch, '_blank', 'noopener'); };
                 if (fb) fb.style.display = 'none';

@@ -1493,6 +1493,16 @@ a:hover {
     border: 0; 
 }
 
+/* Poster image for iOS in Animated Course */
+.video-embed .video-poster {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    display: block;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+}
+
 /* === Instagram Section === */
 .instagram-section {
     padding: var(--spacing-2xl) 0;
