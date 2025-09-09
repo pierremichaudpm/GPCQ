@@ -1494,32 +1494,7 @@ a:hover {
 }
 
 /* Poster image for iOS in Animated Course */
-.video-embed .video-poster {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-lg);
-    display: block;
-    cursor: pointer;
-    box-shadow: var(--shadow-md);
-}
-
-/* Play badge overlay */
-.video-embed .video-play-badge {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    pointer-events: none; /* clic capté par l'image */
-}
+/* styles du poster/badge retirés (revert au lecteur intégré) */
 
 /* === Instagram Section === */
 .instagram-section {

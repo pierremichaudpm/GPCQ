@@ -534,60 +534,20 @@ function loadYouTubeIframeAPI() {
 function initVimeoAnimatedCourse() {
     try {
         const frame = document.getElementById('animatedCourseFrame');
-        const fb = document.getElementById('animatedCourseFallback');
         if (!frame) return;
         const lang = localStorage.getItem('language') || 'fr';
         const vimeoEmbed = lang === 'en' ? 'https://player.vimeo.com/video/1093211409' : 'https://player.vimeo.com/video/1089677103';
-        const vimeoWatch = lang === 'en' ? 'https://vimeo.com/1093211409' : 'https://vimeo.com/1089677103';
 
-        const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent);
-        const parent = frame.parentElement || document.querySelector('.video-embed');
-        if (parent) {
-            // Toujours afficher un poster d'abord (toutes plateformes)
-            frame.style.display = 'none';
-            let poster = document.getElementById('animatedCoursePoster');
-            const fallbackPoster = 'images/gpcmq-30-1030x687.jpg';
-            if (!poster) {
-                poster = document.createElement('img');
-                poster.id = 'animatedCoursePoster';
-                poster.className = 'video-poster';
-                parent.appendChild(poster);
-            }
-            // Bouton lecture superposé
-            let playBadge = document.getElementById('animatedCoursePlay');
-            if (!playBadge) {
-                playBadge = document.createElement('div');
-                playBadge.id = 'animatedCoursePlay';
-                playBadge.className = 'video-play-badge';
-                playBadge.textContent = '▶';
-                parent.appendChild(playBadge);
-            }
-            const ts = Date.now();
-            const posterName = 'Capture d’écran du 2025-09-09 18-32-39.png';
-            const preferredPoster = `/images/${encodeURIComponent(posterName)}`;
-            poster.onerror = function() {
-                this.onerror = null;
-                this.src = `${fallbackPoster}?t=${ts}`;
-            };
-            poster.src = `${preferredPoster}?t=${ts}`;
-            poster.alt = lang === 'en' ? 'Animated circuit (poster)' : 'Parcours animé (aperçu)';
+        // Nettoyer tout poster/bouton éventuellement présent
+        const poster = document.getElementById('animatedCoursePoster');
+        if (poster && poster.parentElement) poster.parentElement.removeChild(poster);
+        const playBadge = document.getElementById('animatedCoursePlay');
+        if (playBadge && playBadge.parentElement) playBadge.parentElement.removeChild(playBadge);
 
-            poster.onclick = () => {
-                if (isIOS) {
-                    window.open(vimeoWatch, '_blank', 'noopener');
-                    return;
-                }
-                if (poster && poster.parentElement) poster.parentElement.removeChild(poster);
-                const badge = document.getElementById('animatedCoursePlay');
-                if (badge && badge.parentElement) badge.parentElement.removeChild(badge);
-                const autoplayUrl = `${vimeoEmbed}?autoplay=1`;
-                if (frame.getAttribute('src') !== autoplayUrl) {
-                    frame.setAttribute('src', autoplayUrl);
-                }
-                frame.style.display = '';
-            };
-            if (fb) fb.style.display = 'none';
-            return;
+        // Afficher l'iframe avec la bonne vidéo
+        frame.style.display = '';
+        if (frame.getAttribute('src') !== vimeoEmbed) {
+            frame.setAttribute('src', vimeoEmbed);
         }
     } catch(_) {}
 }
