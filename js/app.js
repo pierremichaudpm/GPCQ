@@ -541,44 +541,43 @@ function initVimeoAnimatedCourse() {
         const vimeoWatch = lang === 'en' ? 'https://vimeo.com/1093211409' : 'https://vimeo.com/1089677103';
 
         const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent);
-        if (isIOS) {
-            const parent = frame.parentElement || document.querySelector('.video-embed');
-            if (parent) {
-                frame.style.display = 'none';
-                let poster = document.getElementById('animatedCoursePoster');
-                const posterSrc = 'images/gpcmq-30-1030x687.jpg';
-                if (!poster) {
-                    poster = document.createElement('img');
-                    poster.id = 'animatedCoursePoster';
-                    poster.className = 'video-poster';
-                    parent.appendChild(poster);
-                }
-                const ts = Date.now();
-                const posterName = 'Capture d’écran du 2025-09-09 18-32-39.png';
-                const preferredPoster = `/images/${encodeURIComponent(posterName)}`;
-                poster.onerror = function() {
-                    this.onerror = null;
-                    this.src = `${posterSrc}?t=${ts}`;
-                };
-                poster.src = `${preferredPoster}?t=${ts}`;
-                poster.alt = lang === 'en' ? 'Animated circuit (poster)' : 'Parcours animé (aperçu)';
-                poster.onclick = () => { window.open(vimeoWatch, '_blank', 'noopener'); };
-                if (fb) fb.style.display = 'none';
+        const parent = frame.parentElement || document.querySelector('.video-embed');
+        if (parent) {
+            // Toujours afficher un poster d'abord (toutes plateformes)
+            frame.style.display = 'none';
+            let poster = document.getElementById('animatedCoursePoster');
+            const fallbackPoster = 'images/gpcmq-30-1030x687.jpg';
+            if (!poster) {
+                poster = document.createElement('img');
+                poster.id = 'animatedCoursePoster';
+                poster.className = 'video-poster';
+                parent.appendChild(poster);
             }
+            const ts = Date.now();
+            const posterName = 'Capture d’écran du 2025-09-09 18-32-39.png';
+            const preferredPoster = `/images/${encodeURIComponent(posterName)}`;
+            poster.onerror = function() {
+                this.onerror = null;
+                this.src = `${fallbackPoster}?t=${ts}`;
+            };
+            poster.src = `${preferredPoster}?t=${ts}`;
+            poster.alt = lang === 'en' ? 'Animated circuit (poster)' : 'Parcours animé (aperçu)';
+
+            poster.onclick = () => {
+                if (isIOS) {
+                    window.open(vimeoWatch, '_blank', 'noopener');
+                    return;
+                }
+                if (poster && poster.parentElement) poster.parentElement.removeChild(poster);
+                const autoplayUrl = `${vimeoEmbed}?autoplay=1`;
+                if (frame.getAttribute('src') !== autoplayUrl) {
+                    frame.setAttribute('src', autoplayUrl);
+                }
+                frame.style.display = '';
+            };
+            if (fb) fb.style.display = 'none';
             return;
         }
-
-        // Non-iOS
-        frame.style.display = '';
-        const existingPoster = document.getElementById('animatedCoursePoster');
-        if (existingPoster && existingPoster.parentElement) {
-            existingPoster.parentElement.removeChild(existingPoster);
-        }
-        if (frame.getAttribute('src') !== vimeoEmbed) {
-            frame.setAttribute('src', vimeoEmbed);
-        }
-        frame.onload = function() { if (fb) fb.style.display = 'none'; };
-        frame.onerror = function() { if (fb) fb.style.display = ''; frame.style.display = 'none'; };
     } catch(_) {}
 }
 
