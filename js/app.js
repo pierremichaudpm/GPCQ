@@ -537,8 +537,8 @@ function initVimeoAnimatedCourse() {
         const link = document.getElementById('animatedCourseLink');
         const fb = document.getElementById('animatedCourseFallback');
         if (!frame) return;
-        const vimeoEmbed = 'https://player.vimeo.com/video/1089677103';
-        const vimeoWatch = 'https://vimeo.com/1089677103';
+        const vimeoEmbed = 'https://player.vimeo.com/video/1093211409';
+        const vimeoWatch = 'https://vimeo.com/1093211409';
         if (frame.getAttribute('src') !== vimeoEmbed) {
             frame.setAttribute('src', vimeoEmbed);
         }
@@ -1263,8 +1263,8 @@ function updateLanguage() {
         const link = document.getElementById('animatedCourseLink');
         const fb = document.getElementById('animatedCourseFallback');
         if (frame) {
-            const vimeoEmbed = 'https://player.vimeo.com/video/1089677103';
-            const vimeoWatch = 'https://vimeo.com/1089677103';
+            const vimeoEmbed = 'https://player.vimeo.com/video/1093211409';
+            const vimeoWatch = 'https://vimeo.com/1093211409';
             if (frame.getAttribute('src') !== vimeoEmbed) {
                 frame.setAttribute('src', vimeoEmbed);
             }
