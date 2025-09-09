@@ -259,7 +259,7 @@ const translations = {
         edikaContest: 'Edika',
         silentAuction: 'Silent Auction',
         
-        fanVillageInfo: 'Animation aera',
+        fanVillageInfo: 'Animation area',
         officialWebsite: 'Official Website',
         quebecResults: 'Quebec Results',
 
