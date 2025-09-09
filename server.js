@@ -195,6 +195,37 @@ app.get('/api/weather/current', async (req, res) => {
     }
 });
 
+// Weather forecast proxy endpoint (hourly, 6 items) for Safari iOS
+app.get('/api/weather/forecast', async (req, res) => {
+    try {
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
+        const lang = req.query.lang || 'fr';
+        const lat = 46.8139;
+        const lon = -71.2080;
+        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&exclude=minutely,daily,alerts,current&appid=${apiKey}`;
+        console.log(`[Safari iOS] Fetching hourly forecast: ${url}`);
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`OpenWeather API failed: ${response.status}`);
+        }
+        const data = await response.json();
+        const hourly = Array.isArray(data.hourly) ? data.hourly : [];
+        const six = hourly.slice(1, 7).map(item => ({
+            dt: item.dt,
+            main: { temp: item.temp, feels_like: item.feels_like },
+            weather: item.weather
+        }));
+        // CORS headers for Safari
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        res.json(six);
+    } catch (error) {
+        console.error('Weather forecast API error:', error);
+        res.status(500).json({ error: 'Failed to fetch forecast data' });
+    }
+});
+
 // Instagram feed proxy (to hide access token)
 app.get('/api/instagram/feed', async (req, res) => {
     try {

@@ -184,19 +184,20 @@ class WeatherWidget {
                 const proxyUrl = `/api/weather/forecast?lang=${this.lang}`;
                 return await this.fetchWithXHR(proxyUrl);
             } else {
-                // Pour les autres navigateurs, appel direct à OpenWeather
-                const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&cnt=8&appid=${this.apiKey}`;
-                const response = await fetch(url);
+                // Pour les autres navigateurs, utiliser One Call (horaire)
+                const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&exclude=minutely,daily,alerts,current&appid=${this.apiKey}`;
+                const response = await fetch(url, { cache: 'no-store' });
                 
                 if (!response.ok) {
                     throw new Error(`OpenWeather API failed: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                // Transformer en format simplifié
-                return data.list.slice(0, 6).map(item => ({
+                const hourly = Array.isArray(data.hourly) ? data.hourly : [];
+                // Prendre les 6 prochaines heures (ignorer l'heure courante index 0)
+                return hourly.slice(1, 7).map(item => ({
                     dt: item.dt,
-                    main: item.main,
+                    main: { temp: item.temp, feels_like: item.feels_like },
                     weather: item.weather
                 }));
             }
