@@ -7,15 +7,21 @@
   "deploy": {
     "startCommand": "npm start",
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10,
+    "restartPolicyMaxRetries": 3,
     "healthcheckPath": "/health",
-    "healthcheckTimeout": 30,
+    "healthcheckTimeout": 300,
     "region": "us-east"
   },
   "environments": {
     "production": {
       "PORT": 3000,
-      "NODE_ENV": "production"
+      "NODE_ENV": "production",
+      "NODE_OPTIONS": "--max-old-space-size=768 --enable-source-maps --trace-warnings",
+      "KEEP_ALIVE_TIMEOUT_MS": 65000,
+      "HEADERS_TIMEOUT_MS": 66000,
+      "REQUEST_TIMEOUT_MS": 300000,
+      "RATE_LIMIT_WINDOW_MS": 900000,
+      "RATE_LIMIT_MAX": 2000
     }
   }
 }

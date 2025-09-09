@@ -11,6 +11,55 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Optional database pool (PostgreSQL or MySQL) - configured via env
+// DB_TYPE=postgres|mysql  DB_URL=connection_string  DB_POOL_MAX=10  DB_POOL_IDLE_MS=30000
+let dbPool = null;
+let dbType = (process.env.DB_TYPE || '').toLowerCase();
+let dbStatus = 'not_configured';
+
+async function initDbPool() {
+    try {
+        if (!process.env.DB_URL || !dbType) {
+            dbStatus = 'not_configured';
+            return;
+        }
+        if (dbType === 'postgres') {
+            const { Pool } = require('pg');
+            dbPool = new Pool({
+                connectionString: process.env.DB_URL,
+                ssl: process.env.PGSSLMODE === 'disable' ? false : { rejectUnauthorized: false },
+                max: parseInt(process.env.DB_POOL_MAX || '10', 10),
+                idleTimeoutMillis: parseInt(process.env.DB_POOL_IDLE_MS || '30000', 10)
+            });
+        } else if (dbType === 'mysql') {
+            const mysql = require('mysql2/promise');
+            dbPool = await mysql.createPool(process.env.DB_URL);
+            if (process.env.DB_POOL_MAX) dbPool.config.connectionLimit = parseInt(process.env.DB_POOL_MAX, 10);
+        } else {
+            dbStatus = 'unsupported_db_type';
+            return;
+        }
+        dbStatus = 'initialized';
+    } catch (e) {
+        console.error('DB init error:', e);
+        dbStatus = 'init_error';
+    }
+}
+
+async function checkDb() {
+    if (!dbPool) return { status: dbStatus };
+    try {
+        if (dbType === 'postgres') {
+            await dbPool.query('SELECT 1');
+        } else if (dbType === 'mysql') {
+            await dbPool.query('SELECT 1');
+        }
+        return { status: 'connected' };
+    } catch (e) {
+        return { status: 'error', error: e.message };
+    }
+}
+
 // Security middleware
 app.use(helmet({
     contentSecurityPolicy: {
@@ -38,8 +87,10 @@ app.use(compression());
 
 // Rate limiting to prevent abuse
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 1000, // Limit each IP to 1000 requests per windowMs
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || (15 * 60 * 1000), 10),
+    max: parseInt(process.env.RATE_LIMIT_MAX || '1000', 10),
+    standardHeaders: true,
+    legacyHeaders: false,
     message: 'Too many requests from this IP, please try again later.'
 });
 app.use('/api/', limiter);
@@ -273,12 +324,21 @@ app.get('/api/race-status', (req, res) => {
     });
 });
 
-// Health check endpoint for Railway
-app.get('/health', (req, res) => {
+// Health check endpoint for Railway (includes memory and optional DB status)
+app.get('/health', async (req, res) => {
+    const mem = process.memoryUsage();
+    const db = await checkDb();
     res.status(200).json({ 
         status: 'healthy',
         timestamp: new Date().toISOString(),
-        uptime: process.uptime()
+        uptime: process.uptime(),
+        memory: {
+            rss: mem.rss,
+            heapTotal: mem.heapTotal,
+            heapUsed: mem.heapUsed,
+            external: mem.external
+        },
+        db: { type: dbType || 'none', ...db }
     });
 });
 
@@ -307,7 +367,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-const server = app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', async () => {
+    await initDbPool();
     console.log(`
     ========================================
     🚴 GPCQ 2025 PWA Server
@@ -318,6 +379,11 @@ const server = app.listen(PORT, '0.0.0.0', () => {
     ========================================
     `);
 });
+
+// Tune HTTP timeouts for high concurrency
+server.keepAliveTimeout = parseInt(process.env.KEEP_ALIVE_TIMEOUT_MS || '65000', 10);
+server.headersTimeout = parseInt(process.env.HEADERS_TIMEOUT_MS || '66000', 10);
+server.requestTimeout = parseInt(process.env.REQUEST_TIMEOUT_MS || '300000', 10);
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
@@ -334,6 +400,14 @@ process.on('SIGINT', () => {
         console.log('HTTP server closed');
         process.exit(0);
     });
+});
+
+process.on('unhandledRejection', (reason) => {
+    console.error('UnhandledRejection:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('UncaughtException:', err);
 });
 
 module.exports = app;
