@@ -164,12 +164,11 @@ const translations = {
         // Zones animées (nouvelle section)
         animatedZonesTitle: 'Zones animées',
         zonesVillageTitle: 'Village des Fans',
-        zonesVillageLocationValue: 'Plaines d’Abraham',
+        zonesVillageLocationValue: 'Rendez-vous au coin de l’Avenue Georges VI & Ontario (Plaines d’Abraham)',
         zonesVillageAct1: 'Kiosques d’exposants',
         zonesVillageAct2: 'Restauration et service de bar',
         zonesVillageAct3: 'Boutique officielle GPCQM par Santini',
         zonesVillageAct4: 'Toilettes',
-        zonesVillageAct5: '',
         zonesVillageScheduleValue: '9 h 30 à 17 h',
         zonesVillageCTA: 'Découvrez nos exposants',
         zonesBelvedereTitle: 'Zone animée (côte de la Montagne / Port Dauphin)',
@@ -336,12 +335,11 @@ const translations = {
         // Fan Zones (new section)
         animatedZonesTitle: 'Fan Zones',
         zonesVillageTitle: 'Fan Village',
-        zonesVillageLocationValue: 'Plains of Abraham',
+        zonesVillageLocationValue: 'Rendez-vous au coin de l’Avenue Georges VI & Ontario (Plaines d’Abraham)',
         zonesVillageAct1: 'Exhibitor booths',
         zonesVillageAct2: 'Food and bar service',
-        zonesVillageAct3: 'GPCQM official shop by Santini',
+        zonesVillageAct3: 'Official boutique GPCQM by Santini',
         zonesVillageAct4: 'Restrooms',
-        zonesVillageAct5: '',
         zonesVillageScheduleValue: '9:30 AM to 5:00 PM',
         zonesVillageCTA: 'Discover our exhibitors',
         zonesBelvedereTitle: 'Animated zone (Côte de la Montagne / Port Dauphin)',
@@ -1127,7 +1125,7 @@ function updateLanguage() {
     const auctionImage = document.getElementById('auctionBigboxImage');
     if (auctionImage) {
         const imageName = currentLanguage === 'en' ? 'encan_EN.png' : 'encan_FR.png';
-        const version = '3.8';
+        const version = '3.9';
         auctionImage.src = `images/${imageName}?v=${version}`;
         auctionImage.alt = currentLanguage === 'en' ? 'Silent Auction' : 'Encan silencieux';
     }
