@@ -1045,7 +1045,13 @@ function initMobileMenuTouch() {
     }
     
     if (langBtnEn) {
-        addSafeTapListener(langBtnEn, () => setLanguage('en'));
+        console.log('Adding EN button listener');
+        addSafeTapListener(langBtnEn, () => {
+            console.log('EN button tapped');
+            setLanguage('en');
+        });
+    } else {
+        console.log('langBtnEn not found!');
     }
     
     const menuOverlay = document.getElementById('menuOverlay');
@@ -1375,11 +1381,13 @@ function initPWAInstallPrompts() {
         });
     }
     
-    // Detect iOS and show install prompt
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    // Detect iOS Safari (exclude Chrome iOS) and show install prompt
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isSafari = /Safari\//.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
     const isInStandaloneMode = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
     
-    if (isIOS && !isInStandaloneMode) {
+    if (isIOS && isSafari && !isInStandaloneMode) {
         const iosPromptDismissed = localStorage.getItem('iosInstallPromptDismissed');
         const dismissedTime = localStorage.getItem('iosInstallPromptDismissedTime');
         const daysSinceDismissed = dismissedTime ? (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24) : 999;

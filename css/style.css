@@ -2248,8 +2248,15 @@ a:hover {
 }
 
 .ios-install-icon {
-    font-size: 3rem;
+    font-size: 0; /* hide emoji size space */
     margin-bottom: var(--spacing-md);
+}
+
+.ios-app-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .ios-install-steps {
