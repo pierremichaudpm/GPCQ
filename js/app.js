@@ -84,16 +84,16 @@ const translations = {
         close: 'Fermer',
         
         // Schedule
-        scheduleTitle: 'Programme',
+        scheduleTitle: 'Programmation',
         teamPresentation: 'Présentation des équipes',
         teamPresentationDesc: 'Plaines d’Abraham – Découvrez les équipes participantes',
         raceStart: 'Départ du Grand Prix Cycliste de Québec',
         raceStartDesc: 'Avenue George-VI / Devant le Manège Militaire Voltigeurs de Québec  – 216 km • 17 tours',
         raceFinish: 'Arrivée de la course',
         raceFinishDesc: 'Avenue George-VI / Devant le Manège Militaire Voltigeurs de Québec',
-        ceremonies: 'Cérémonies Protocolaires',
+        ceremonies: 'Cérémonies protocolaires',
         ceremoniesDesc: 'Plaines d’Abraham - Remise des prix',
-        fanVillageDesc: 'Plaines d’Abraham – Animation, activité et kiosques d’exposants',
+        fanVillageDesc: 'Plaines d’Abraham – Animation, activités et kiosques d’exposants',
         
         // Map
         courseTitle: 'Parcours',
@@ -128,8 +128,8 @@ const translations = {
         videoFallbackLinkText: 'ouvrez-la sur Vimeo',
         
         // Broadcast
-        broadcastTitle: 'Diffusions',
-        diffusionCta: 'Diffusions',
+        broadcastTitle: 'Diffusion',
+        diffusionCta: 'Diffusion',
         tvBroadcast: 'de 10 h à 16 h',
         streamBroadcast: 'Streaming international',
         webStreamTitle: 'Webdiffusion',
@@ -213,7 +213,7 @@ const translations = {
         hours: 'Hours',
         minutes: 'Minutes',
         seconds: 'Seconds',
-        viewCourse: 'Course',
+        viewCourse: 'Circuit',
         viewMap: 'View Map',
         whereToWatch: 'Best spectator zones',
         viewSchedule: 'Schedule',
@@ -247,7 +247,7 @@ const translations = {
         fanVillageOpening: 'Fans Village Opening',
         
         // Quick Links
-        ridersList: 'Riders List',
+        ridersList: 'Start list',
         ridersListTitle: 'Discover the Teams',
         viewRiders: 'Complete list',
         quebecResults: 'Québec City Race Results',
@@ -260,12 +260,12 @@ const translations = {
         edikaContest: 'Edika',
         silentAuction: 'Silent Auction',
         
-        fanVillageInfo: 'Animated aera',
+        fanVillageInfo: 'Animation aera',
         officialWebsite: 'Official Website',
         quebecResults: 'Quebec Results',
 
         // Riders Modal
-        ridersTitle: 'Riders List - 2025',
+        ridersTitle: 'Start list - 2025',
         ridersInfo: 'Official UCI WorldTour 2025 data',
         searchRider: 'Search for a rider or a team... ',
         ridersLabel: 'Riders',
@@ -276,12 +276,12 @@ const translations = {
         close: 'Close',
         
         // Schedule
-        scheduleTitle: 'Schedule',
+        scheduleTitle: 'Program',
         teamPresentation: 'Team Presentation',
         teamPresentationDesc: 'Plains of Abraham – Meet the participating teams',
         raceStart: 'Start of the Québec City Cycling Grand Prix',
         raceStartDesc: 'George VI Avenue / In front of the Voltigeurs de Québec Armoury – 216 km • 17 laps',
-        raceFinish: 'Race Finish',
+        raceFinish: 'End of the race',
         raceFinishDesc: 'George VI Avenue / In front of the Voltigeurs de Québec Armoury',
         ceremonies: 'Award Ceremonies',
         ceremoniesDesc: 'Plains of Abraham – Prize giving',
@@ -289,7 +289,7 @@ const translations = {
         
         // Map
         courseTitle: 'Course',
-        animatedCourseTitle: 'Animated Course',
+        animatedCourseTitle: 'Animated Circuit',
         lapDistance: 'Per lap',
         totalLaps: 'Laps',
         totalDistance: 'Total distance',
