@@ -1127,7 +1127,8 @@ function updateLanguage() {
     const auctionImage = document.getElementById('auctionBigboxImage');
     if (auctionImage) {
         const imageName = currentLanguage === 'en' ? 'encan_EN.png' : 'encan_FR.png';
-        auctionImage.src = `images/${imageName}`;
+        const version = '3.8';
+        auctionImage.src = `images/${imageName}?v=${version}`;
         auctionImage.alt = currentLanguage === 'en' ? 'Silent Auction' : 'Encan silencieux';
     }
     
