@@ -287,7 +287,7 @@ const translations = {
         fanVillageDesc: 'Plains of Abraham – Entertainment, activities and exhibitor booths',
         
         // Map
-        courseTitle: 'Course',
+        courseTitle: 'Circuit',
         animatedCourseTitle: 'Animated Circuit',
         lapDistance: 'Per lap',
         totalLaps: 'Laps',
