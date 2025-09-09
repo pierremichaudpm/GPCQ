@@ -17,6 +17,7 @@
       "PORT": 3000,
       "NODE_ENV": "production",
       "NODE_OPTIONS": "--max-old-space-size=768 --enable-source-maps --trace-warnings",
+      "WEB_CONCURRENCY": 32,
       "KEEP_ALIVE_TIMEOUT_MS": 65000,
       "HEADERS_TIMEOUT_MS": 66000,
       "REQUEST_TIMEOUT_MS": 300000,

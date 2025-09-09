@@ -102,7 +102,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Logging middleware
 app.use((req, res, next) => {
     const url = req.originalUrl || req.url || req.path;
-    console.log(`${new Date().toISOString()} - ${req.method} ${url}`);
+    const wid = process.env.WORKER_ID ? `W${process.env.WORKER_ID}` : 'W?';
+    console.log(`${new Date().toISOString()} [${wid}] ${req.method} ${url}`);
     next();
 });
 
@@ -339,6 +340,15 @@ app.get('/health', async (req, res) => {
             external: mem.external
         },
         db: { type: dbType || 'none', ...db }
+    });
+});
+
+// Cluster debug endpoint: shows worker id and pid handling the request
+app.get('/worker', (req, res) => {
+    res.json({
+        workerId: process.env.WORKER_ID || null,
+        pid: process.pid,
+        timestamp: new Date().toISOString()
     });
 });
 

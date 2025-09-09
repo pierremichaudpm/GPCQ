@@ -4,7 +4,7 @@
   "description": "Grand Prix Cycliste de Québec 2025 - Progressive Web Application",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node cluster.js",
     "start:new": "node server-new.js",
     "dev": "node server.js",
     "dev:new": "NEW_APP_PORT=4000 NODE_ENV=development node server-new.js",
