@@ -113,6 +113,11 @@ self.addEventListener('fetch', (event) => {
     // Handle image requests with mobile optimization
     if (request.destination === 'image' ||
         url.pathname.match(/\.(jpg|jpeg|png|gif|svg|ico|webp)$/i)) {
+        // Bypass cache for encan images to avoid stale content
+        if (/\/images\/encan_/i.test(url.pathname)) {
+            event.respondWith(fetch(request, { cache: 'no-store' }));
+            return;
+        }
         
         event.respondWith(
             mobileOptimizedImageCache(request)

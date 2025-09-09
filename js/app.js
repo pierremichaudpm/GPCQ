@@ -1127,11 +1127,12 @@ function updateLanguage() {
         const imageNamePrimary = currentLanguage === 'en' ? 'encan_EN_2025.png' : 'encan_FR_2025.png';
         const imageNameFallback = currentLanguage === 'en' ? 'encan_EN.png' : 'encan_FR.png';
         const version = '4.0';
+        const ts = Date.now();
         auctionImage.onerror = function() {
             this.onerror = null;
-            this.src = `images/${imageNameFallback}?v=${version}`;
+            this.src = `/images/${imageNameFallback}?v=${version}&t=${ts}`;
         };
-        auctionImage.src = `images/${imageNamePrimary}?v=${version}`;
+        auctionImage.src = `/images/${imageNamePrimary}?v=${version}&t=${ts}`;
         auctionImage.alt = currentLanguage === 'en' ? 'Silent Auction' : 'Encan silencieux';
     }
     
