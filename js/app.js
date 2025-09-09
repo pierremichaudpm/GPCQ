@@ -1029,6 +1029,8 @@ function initMobileMenuTouch() {
     const langBtnEn = document.getElementById('langBtnEn');
     
     if (menuButton) {
+        // Remove inline handler to avoid double toggle
+        try { menuButton.removeAttribute('onclick'); } catch (e) {}
         // Add touch event listener for menu button
         addSafeTapListener(menuButton, toggleMenu);
     }
@@ -1058,6 +1060,20 @@ function initMobileMenuTouch() {
     if (menuOverlay) {
         // Close menu when clicking/touching the overlay
         addSafeTapListener(menuOverlay, toggleMenu);
+    }
+
+    // Close menu when clicking any menu link (avoid inline onclick conflicts)
+    const menuLinks = document.querySelectorAll('.menu-links a');
+    if (menuLinks && menuLinks.length) {
+        menuLinks.forEach((link) => {
+            try { link.removeAttribute('onclick'); } catch (e) {}
+            link.addEventListener('click', () => {
+                const menu = document.getElementById('mobileMenu');
+                if (menu && menu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            }, { passive: true });
+        });
     }
 }
 
