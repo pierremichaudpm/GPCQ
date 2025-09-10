@@ -11,6 +11,31 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// === CMS Persistence (Railway volume or local folder) ===
+const fs = require('fs').promises;
+const fsSync = require('fs');
+
+// Detect Railway to decide on persistent storage path
+const IS_RAILWAY = !!process.env.RAILWAY_PUBLIC_DOMAIN || !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RAILWAY_STATIC_URL;
+
+// Persistent base dir: Railway volume in prod, local folder in dev
+const CMS_BASE_DIR = process.env.CMS_DATA_DIR || (IS_RAILWAY ? '/data/cms' : path.join(__dirname, 'cms-data'));
+try { fsSync.mkdirSync(CMS_BASE_DIR, { recursive: true }); } catch(_) {}
+
+// Default files from repo and persistent targets
+const DEFAULT_TEAMS_FILE  = path.join(__dirname, 'teams-data.json');
+const DEFAULT_RIDERS_FILE = path.join(__dirname, 'riders.json');
+const TEAMS_FILE  = path.join(CMS_BASE_DIR, 'teams-data.json');
+const RIDERS_FILE = path.join(CMS_BASE_DIR, 'riders.json');
+
+// Initial seed (if empty)
+try {
+    if (!fsSync.existsSync(TEAMS_FILE) && fsSync.existsSync(DEFAULT_TEAMS_FILE)) fsSync.copyFileSync(DEFAULT_TEAMS_FILE, TEAMS_FILE);
+    if (!fsSync.existsSync(RIDERS_FILE) && fsSync.existsSync(DEFAULT_RIDERS_FILE)) fsSync.copyFileSync(DEFAULT_RIDERS_FILE, RIDERS_FILE);
+    if (!fsSync.existsSync(TEAMS_FILE))  fsSync.writeFileSync(TEAMS_FILE,  JSON.stringify({ teams: [] }, null, 2));
+    if (!fsSync.existsSync(RIDERS_FILE)) fsSync.writeFileSync(RIDERS_FILE, JSON.stringify({ teams: [] }, null, 2));
+} catch(e) { console.warn('CMS data init:', e.message); }
+
 // Optional database pool (PostgreSQL or MySQL) - configured via env
 // DB_TYPE=postgres|mysql  DB_URL=connection_string  DB_POOL_MAX=10  DB_POOL_IDLE_MS=30000
 let dbPool = null;
@@ -145,8 +170,6 @@ app.use(express.static(path.join(__dirname), {
 }));
 
 // === CMS Integration ===
-const fs = require('fs').promises;
-
 // CMS Authentication
 const CMS_USER = process.env.CMS_USER || 'admin';
 const CMS_PASS = process.env.CMS_PASS || 'Quebec2025';
@@ -170,9 +193,7 @@ app.get('/cms', (req, res) => {
     res.sendFile(path.join(__dirname, 'cms.html'));
 });
 
-// CMS API endpoints  
-const TEAMS_FILE = path.join(__dirname, 'teams-data.json');
-const RIDERS_FILE = path.join(__dirname, 'riders.json');
+// CMS API endpoints  (use persistent files TEAMS_FILE / RIDERS_FILE)
 
 // Get teams
 app.get('/api/teams', async (req, res) => {
@@ -190,14 +211,14 @@ app.post('/api/teams', basicAuth, async (req, res) => {
     try {
         const teams = req.body;
         
-        // Save to CMS data file
+        // Save to CMS data file (persistent)
         await fs.writeFile(TEAMS_FILE, JSON.stringify(teams, null, 2));
-        
-        // Also update riders.json
+
+        // Also update riders.json (persistent)
         const ridersData = { teams };
         await fs.writeFile(RIDERS_FILE, JSON.stringify(ridersData, null, 2));
         
-        // Copy to listeengages directory for the UI
+        // Copy to listeengages directory for the UI (non-persistent mirror)
         const listeEngagesPath = path.join(__dirname, 'listeengages-package', 'listeengages', 'riders.json');
         await fs.writeFile(listeEngagesPath, JSON.stringify(ridersData, null, 2));
         
@@ -211,6 +232,12 @@ app.post('/api/teams', basicAuth, async (req, res) => {
         console.error('Error saving teams:', error);
         res.status(500).json({ error: 'Failed to save teams' });
     }
+});
+
+// Always serve the PERSISTED riders.json (bypass static)
+app.get('/riders.json', (req, res) => {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    return res.sendFile(RIDERS_FILE);
 });
 
 // API Routes (placeholder for future implementation)
