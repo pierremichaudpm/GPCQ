@@ -502,6 +502,9 @@ function initializeApp() {
             });
         }
     });
+
+    // Optimisation images (hors maillots): lazy, decoding, fetchpriority
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(optimizeImagesPerformance);
 }
 
 // Lazy-load YouTube IFrame API and initialize player when ready
@@ -621,6 +624,43 @@ function exportCriticalFunctions() {
     window.closePrivacyModal = closePrivacyModal;
     window.openTermsModal = openTermsModal;
     window.closeTermsModal = closeTermsModal;
+}
+
+// Image performance optimizer (skip jerseys)
+function optimizeImagesPerformance() {
+    try {
+        const isJersey = (src) => /\/images\/jerseys\//.test(src || '');
+        // 1) Global lazy load for images except above-the-fold and jerseys
+        document.querySelectorAll('img').forEach((img) => {
+            const src = img.getAttribute('src') || '';
+            if (isJersey(src)) return; // ne pas toucher aux maillots
+            // Lazy-load si pas déjà défini et pas critique
+            if (!img.hasAttribute('loading')) {
+                img.setAttribute('loading', 'lazy');
+            }
+            // Décodage asynchrone
+            if (!img.hasAttribute('decoding')) {
+                img.setAttribute('decoding', 'async');
+            }
+        });
+
+        // 2) Prioriser certaines images clés
+        const prioritize = [
+            '#mapModalImage',            // Voir la carte
+            '#watchModalImage',          // Meilleures zones spectateur
+            '#auctionBigboxImage',       // Encan silencieux
+            '#edikaBigboxImage',         // Concours Edika
+            '#ekoiBigboxImage'           // Concours EKOI
+        ];
+        prioritize.forEach((sel) => {
+            const el = document.querySelector(sel);
+            if (el) {
+                el.setAttribute('loading', 'eager');
+                el.setAttribute('fetchpriority', 'high');
+                el.setAttribute('decoding', 'async');
+            }
+        });
+    } catch (_) {}
 }
 
 // Mobile-optimized loader hiding
