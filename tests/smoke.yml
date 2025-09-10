@@ -1,0 +1,26 @@
+config:
+  target: "https://gpcqm-qc.ca"
+  phases:
+    - duration: 120
+      arrivalRate: 5
+      name: "warmup"
+    - duration: 180
+      arrivalRate: 10
+      name: "ramp to ~50–100 users"
+  processor: "./processors.js"
+  tls:
+    rejectUnauthorized: false
+  http:
+    timeout: 10
+    pool: 100
+scenarios:
+  - name: "Spectator - light nav"
+    flow:
+      - get: { url: "/" }
+      - think: "{{ thinkShort }}"
+      - function: "pickPath"
+      - get: { url: "{{ path }}" }
+      - think: "{{ thinkLong }}"
+      - get: { url: "/" }
+
+

@@ -1,0 +1,29 @@
+config:
+  target: "https://gpcqm-qc.ca"
+  phases:
+    - duration: 300
+      arrivalRate: 25
+      name: "ramp base"
+    - duration: 600
+      arrivalRate: 50
+      rampTo: 150
+      name: "ramp to 150 rps"
+  processor: "./processors.js"
+  tls:
+    rejectUnauthorized: false
+  http:
+    timeout: 10
+    pool: 400
+scenarios:
+  - name: "Spectator - standard nav"
+    flow:
+      - get: { url: "/" }
+      - think: "{{ thinkShort }}"
+      - function: "pickPath"
+      - get: { url: "{{ path }}" }
+      - think: "{{ thinkShort }}"
+      - get: { url: "/worker" }
+      - think: "{{ thinkLong }}"
+      - get: { url: "/" }
+
+

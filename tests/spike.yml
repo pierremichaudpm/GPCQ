@@ -1,0 +1,32 @@
+config:
+  target: "https://gpcqm-qc.ca"
+  phases:
+    - duration: 120
+      arrivalRate: 20
+      name: "pre-spike"
+    - duration: 60
+      arrivalRate: 500
+      name: "spike 1"
+    - duration: 180
+      arrivalRate: 100
+      name: "cooldown"
+    - duration: 60
+      arrivalRate: 700
+      name: "spike 2"
+  processor: "./processors.js"
+  tls:
+    rejectUnauthorized: false
+  http:
+    timeout: 10
+    pool: 1000
+scenarios:
+  - name: "Social spike"
+    flow:
+      - get: { url: "/" }
+      - think: "{{ thinkShort }}"
+      - get: { url: "/worker" }
+      - think: "{{ thinkShort }}"
+      - function: "pickPath"
+      - get: { url: "{{ path }}" }
+
+

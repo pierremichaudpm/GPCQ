@@ -1,0 +1,29 @@
+config:
+  target: "https://gpcqm-qc.ca"
+  phases:
+    - duration: 900
+      arrivalRate: 50
+      rampTo: 120
+      name: "long ramp"
+    - duration: 3600
+      arrivalRate: 120
+      name: "steady 1h"
+  processor: "./processors.js"
+  tls:
+    rejectUnauthorized: false
+  http:
+    timeout: 10
+    pool: 800
+scenarios:
+  - name: "Long session"
+    flow:
+      - get: { url: "/" }
+      - think: "{{ thinkShort }}"
+      - function: "pickPath"
+      - get: { url: "{{ path }}" }
+      - think: "{{ thinkLong }}"
+      - get: { url: "/" }
+      - think: "{{ thinkShort }}"
+      - get: { url: "/health" }
+
+
