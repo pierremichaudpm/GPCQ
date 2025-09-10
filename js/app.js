@@ -334,7 +334,7 @@ const translations = {
         
         // Fan Zones (new section)
         animatedZonesTitle: 'Fan Zones',
-        zonesVillageTitle: 'Fan Village',
+        zonesVillageTitle: 'Fans Village',
         zonesVillageLocationValue: 'Meeting point at corner of Georges V avenue & Ontario (Plains of Abraham)',
         zonesVillageAct1: 'Exhibitor booths',
         zonesVillageAct2: 'Food and bar service',
