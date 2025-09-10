@@ -165,15 +165,15 @@
 
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <button class="action-btn secondary" onclick="scrollToSection('map')" aria-describedby="course-desc">
+                <a href="#map" class="action-btn secondary" onclick="scrollToSection('map'); return false;" aria-describedby="course-desc">
                     <span data-lang="viewCourse">Voir le parcours</span>
-                </button>
-                <button class="action-btn secondary" onclick="scrollToSection('riders')" aria-describedby="riders-desc">
+                </a>
+                <a href="#riders" class="action-btn secondary" onclick="scrollToSection('riders'); return false;" aria-describedby="riders-desc">
                     <span data-lang="ridersList">Liste des Partants</span>
-                </button>
-                <button class="action-btn secondary" onclick="scrollToSection('broadcast')">
+                </a>
+                <a href="#broadcast" class="action-btn secondary" onclick="scrollToSection('broadcast'); return false;">
                     <span data-lang="diffusionCta">Diffusion</span>
-                </button>
+                </a>
             </div>
         </div>
     </section>
