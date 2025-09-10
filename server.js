@@ -124,6 +124,12 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Always serve the PERSISTED riders.json (bypass static) - must come BEFORE express.static
+app.get('/riders.json', (req, res) => {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    return res.sendFile(RIDERS_FILE);
+});
+
 // Logging middleware
 app.use((req, res, next) => {
     const url = req.originalUrl || req.url || req.path;
@@ -234,11 +240,7 @@ app.post('/api/teams', basicAuth, async (req, res) => {
     }
 });
 
-// Always serve the PERSISTED riders.json (bypass static)
-app.get('/riders.json', (req, res) => {
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    return res.sendFile(RIDERS_FILE);
-});
+// Always serve the PERSISTED riders.json (bypass static) [duplicate removed above]
 
 // API Routes (placeholder for future implementation)
 
