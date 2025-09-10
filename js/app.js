@@ -505,6 +505,9 @@ function initializeApp() {
 
     // Optimisation images (hors maillots): lazy, decoding, fetchpriority
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(optimizeImagesPerformance);
+
+    // Prefer WebP globally on key images with graceful fallback
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 200)))(applyWebpFallbacks);
 }
 
 // Lazy-load YouTube IFrame API and initialize player when ready
@@ -662,6 +665,70 @@ function optimizeImagesPerformance() {
             }
         });
     } catch (_) {}
+}
+
+// Prefer WebP with graceful fallback to PNG/JPG (and optional secondary fallback)
+function toWebpUrl(originalUrl) {
+    try {
+        const qIndex = originalUrl.indexOf('?');
+        const base = qIndex >= 0 ? originalUrl.slice(0, qIndex) : originalUrl;
+        const query = qIndex >= 0 ? originalUrl.slice(qIndex) : '';
+        const webpBase = base.replace(/\.(png|jpg|jpeg)$/i, '.webp');
+        return webpBase + query;
+    } catch (_) {
+        return originalUrl;
+    }
+}
+
+function preferWebpThenFallback(img, primaryFallbackSrc, secondaryFallbackSrc) {
+    if (!img || !primaryFallbackSrc) return;
+    const webpSrc = toWebpUrl(primaryFallbackSrc);
+    let step = 0; // 0: try webp, 1: try primary fallback, 2: try secondary fallback
+    img.onerror = function() {
+        if (step === 0) {
+            step = 1;
+            img.onerror = arguments.callee;
+            img.src = primaryFallbackSrc;
+            return;
+        }
+        if (step === 1 && secondaryFallbackSrc) {
+            step = 2;
+            img.onerror = function(){ img.style.display = 'none'; };
+            img.src = secondaryFallbackSrc;
+            return;
+        }
+        img.onerror = null;
+        img.style.display = 'none';
+    };
+    img.src = webpSrc;
+}
+
+function applyWebpFallbacks() {
+    try {
+        // Header logo
+        const headerLogo = document.querySelector('.logo-container img.logo');
+        if (headerLogo) {
+            const png = headerLogo.getAttribute('src') || 'images/logos/new logo.png';
+            preferWebpThenFallback(headerLogo, png);
+        }
+
+        // Footer logo
+        const footerLogo = document.querySelector('.footer-logo img');
+        if (footerLogo) {
+            const png = footerLogo.getAttribute('src') || 'images/logos/new logo.png';
+            preferWebpThenFallback(footerLogo, png);
+        }
+
+        // Hero background: attempt to use WebP if available
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            const test = new Image();
+            test.onload = function() {
+                hero.style.backgroundImage = "url('images/hero.webp')";
+            };
+            test.src = 'images/hero.webp';
+        }
+    } catch(_) {}
 }
 
 // Mobile-optimized loader hiding

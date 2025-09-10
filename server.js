@@ -132,6 +132,9 @@ app.use(express.static(path.join(__dirname), {
     etag: true,
     lastModified: true,
     setHeaders: (res, path) => {
+        if (path.match(/\.(?:png|jpg|jpeg|gif|webp|svg|ico)$/i)) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        }
         if (path.endsWith('.html')) {
             res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         }

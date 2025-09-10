@@ -520,6 +520,13 @@ a:hover {
     overflow: hidden;
 }
 
+/* Ensure hero paints fast and remains responsive */
+.hero img,
+.hero picture,
+.hero source {
+    content-visibility: auto;
+}
+
 
 
 .hero-overlay {

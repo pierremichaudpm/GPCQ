@@ -1,9 +1,9 @@
 // === GPCQ 2025 - Service Worker - Mobile Optimized ===
 
-const CACHE_NAME = 'gpcq-v3.4';
-const RUNTIME_CACHE = 'gpcq-runtime-v3.4';
-const IMAGE_CACHE = 'gpcq-images-v3.4';
-const API_CACHE = 'gpcq-api-v3.4';
+const CACHE_NAME = 'gpcq-v3.5';
+const RUNTIME_CACHE = 'gpcq-runtime-v3.5';
+const IMAGE_CACHE = 'gpcq-images-v3.5';
+const API_CACHE = 'gpcq-api-v3.5';
 
 // Mobile-specific configurations
 const MOBILE_CACHE_CONFIG = {
@@ -110,7 +110,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     
-    // Handle image requests with mobile optimization
+    // Handle image requests with SWR strategy for instant display then refresh
     if (request.destination === 'image' ||
         url.pathname.match(/\.(jpg|jpeg|png|gif|svg|ico|webp)$/i)) {
         // Bypass cache for encan images to avoid stale content
@@ -118,10 +118,8 @@ self.addEventListener('fetch', (event) => {
             event.respondWith(fetch(request, { cache: 'no-store' }));
             return;
         }
-        
-        event.respondWith(
-            mobileOptimizedImageCache(request)
-        );
+
+        event.respondWith(staleWhileRevalidateImages(request));
         return;
     }
     
@@ -359,44 +357,34 @@ async function updateRaceStatus() {
     }
 }
 
-// Mobile-optimized image caching
-async function mobileOptimizedImageCache(request) {
-    try {
-        const cache = await caches.open(IMAGE_CACHE);
-        const cachedResponse = await cache.match(request);
-        
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        const networkResponse = await fetch(request);
-        
-        if (networkResponse.ok) {
-            // Limit cache size on mobile
-            const keys = await cache.keys();
-            if (keys.length >= MOBILE_CACHE_CONFIG.maxImageCacheSize) {
-                // Remove oldest entries
-                const oldestKey = keys[0];
-                await cache.delete(oldestKey);
+// Images: stale-while-revalidate with cache size limit
+async function staleWhileRevalidateImages(request) {
+    const cache = await caches.open(IMAGE_CACHE);
+    const cachedResponse = await cache.match(request);
+
+    const fetchPromise = fetch(request)
+        .then(async (networkResponse) => {
+            if (networkResponse && networkResponse.ok) {
+                try {
+                    // Enforce simple LRU-ish policy
+                    const keys = await cache.keys();
+                    if (keys.length >= MOBILE_CACHE_CONFIG.maxImageCacheSize) {
+                        const oldestKey = keys[0];
+                        await cache.delete(oldestKey);
+                    }
+                    await cache.put(request, networkResponse.clone());
+                } catch (e) {
+                    console.warn('[Service Worker] Could not update image cache:', e);
+                }
             }
-            
-            cache.put(request, networkResponse.clone());
-        }
-        
-        return networkResponse;
-    } catch (error) {
-        console.error('[Service Worker] Image cache failed:', error);
-        
-        // Try to serve from cache
-        const cache = await caches.open(IMAGE_CACHE);
-        const cachedResponse = await cache.match(request);
-        
-        if (cachedResponse) {
+            return networkResponse;
+        })
+        .catch((err) => {
+            console.warn('[Service Worker] Image fetch failed:', err);
             return cachedResponse;
-        }
-        
-        throw error;
-    }
+        });
+
+    return cachedResponse || fetchPromise;
 }
 
 // Utility: Clean up old cache entries for mobile
