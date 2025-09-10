@@ -650,7 +650,8 @@ function optimizeImagesPerformance() {
             '#watchModalImage',          // Meilleures zones spectateur
             '#auctionBigboxImage',       // Encan silencieux
             '#edikaBigboxImage',         // Concours Edika
-            '#ekoiBigboxImage'           // Concours EKOI
+            '#ekoiBigboxImage',          // Concours EKOI
+            '#shopBigboxImage'           // Boutique
         ];
         prioritize.forEach((sel) => {
             const el = document.querySelector(sel);
