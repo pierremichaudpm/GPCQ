@@ -472,9 +472,14 @@ function initializeApp() {
     // Export critical functions immediately for onclick handlers
     exportCriticalFunctions();
     
+    // Initialize language toggle button
+    const langToggleBtn = document.getElementById('langToggleBtn');
+    if (langToggleBtn) {
+        langToggleBtn.addEventListener('click', toggleLanguage);
+    }
+    
     // Lazy load non-critical functionality with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(() => {
-        initLanguageButtons();
         initHeroButtons();
         initSmoothScroll();
         initModalBindings();
@@ -613,6 +618,7 @@ function initAnimatedCoursePlayer() {
 function exportCriticalFunctions() {
     window.toggleMenu = toggleMenu;
     window.setLanguage = setLanguage;
+    window.toggleLanguage = toggleLanguage;
     window.scrollToSection = scrollToSection;
     window.closeInstallPrompt = closeInstallPrompt;
     window.openRidersModal = openRidersModal;
@@ -745,14 +751,6 @@ function hideLoader() {
     }
 }
 
-function initLanguageButtons() {
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        if ((currentLanguage === 'fr' && btn.textContent === 'Français') || 
-            (currentLanguage === 'en' && btn.textContent === 'English')) {
-            btn.classList.add('active');
-        }
-    });
-}
 
 function initHeroButtons() {
     const buttons = document.querySelectorAll('.quick-actions button');
@@ -1129,8 +1127,6 @@ function toggleMenu() {
 function initMobileMenuTouch() {
     const menuButton = document.querySelector('.menu-toggle');
     const menuClose = document.querySelector('.menu-close');
-    const langBtnFr = document.getElementById('langBtnFr');
-    const langBtnEn = document.getElementById('langBtnEn');
     
     if (menuButton) {
         // Remove inline handler to avoid double toggle
@@ -1143,21 +1139,6 @@ function initMobileMenuTouch() {
     if (menuCloseBtn) {
         // Add touch event listener for close button
         addSafeTapListener(menuCloseBtn, toggleMenu);
-    }
-    
-    // Fix language buttons with proper touch events
-    if (langBtnFr) {
-        addSafeTapListener(langBtnFr, () => setLanguage('fr'));
-    }
-    
-    if (langBtnEn) {
-        console.log('Adding EN button listener');
-        addSafeTapListener(langBtnEn, () => {
-            console.log('EN button tapped');
-            setLanguage('en');
-        });
-    } else {
-        console.log('langBtnEn not found!');
     }
     
     const menuOverlay = document.getElementById('menuOverlay');
@@ -1181,6 +1162,12 @@ function initMobileMenuTouch() {
     }
 }
 
+// Toggle Language
+function toggleLanguage() {
+    const newLang = currentLanguage === 'fr' ? 'en' : 'fr';
+    setLanguage(newLang);
+}
+
 // Set Language
 function setLanguage(lang) {
     currentLanguage = lang;
@@ -1189,16 +1176,11 @@ function setLanguage(lang) {
     if (typeof updateWeatherLanguage === 'function') {
         updateWeatherLanguage();
     }
-    toggleMenu(); // Close menu after language change
-    
-    // Update active language button
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if ((lang === 'fr' && btn.textContent === 'Français') || 
-            (lang === 'en' && btn.textContent === 'English')) {
-            btn.classList.add('active');
-        }
-    });
+    // Only close menu if it's open
+    const menu = document.getElementById('mobileMenu');
+    if (menu && menu.classList.contains('active')) {
+        toggleMenu();
+    }
     
     // Track language change
     if (typeof gtag !== 'undefined') {
@@ -1295,10 +1277,10 @@ function updateLanguage() {
     // Update HTML lang attribute
     document.documentElement.lang = currentLanguage;
     
-    // Update language toggle button
-    const langToggle = document.getElementById('langToggle');
-    if (langToggle) {
-        langToggle.textContent = currentLanguage === 'fr' ? 'EN' : 'FR';
+    // Update language toggle button text
+    const langToggleText = document.getElementById('langToggleText');
+    if (langToggleText) {
+        langToggleText.textContent = currentLanguage === 'fr' ? 'Eng' : 'Fr';
     }
 
     // Highlight specific phrase for Quebec results (FR only)

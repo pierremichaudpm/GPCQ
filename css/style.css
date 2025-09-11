@@ -369,6 +369,32 @@ a:hover {
     display: block;
 }
 
+/* Header Controls */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Language Toggle Button */
+.lang-toggle-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    color: var(--deep-blue);
+    font-size: 16px;
+    font-weight: 600;
+    transition: color 0.3s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.lang-toggle-btn:hover {
+    color: var(--primary-green);
+}
+
 /* Menu Burger */
 .menu-toggle {
     background: transparent;

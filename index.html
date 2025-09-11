@@ -106,20 +106,21 @@
             <div class="logo-container">
                 <img src="images/logos/new logo.png" alt="GPCQM Logo" class="logo" onerror="this.style.display='none'" fetchpriority="high" decoding="async">
             </div>
-            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" type="button">
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-            </button>
+            <div class="header-controls">
+                <button class="lang-toggle-btn" id="langToggleBtn" aria-label="Change Language">
+                    <span id="langToggleText">Eng</span>
+                </button>
+                <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" type="button">
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                </button>
+            </div>
         </div>
         <nav class="mobile-menu" id="mobileMenu">
             <div class="menu-overlay" id="menuOverlay"></div>
             <div class="menu-content">
                 <button class="menu-close" id="menuCloseBtn">×</button>
-                <div class="menu-language">
-                    <button id="langBtnFr" class="lang-btn">Français</button>
-                    <button id="langBtnEn" class="lang-btn">English</button>
-                </div>
                 <div class="menu-links">
                     <a href="#riders" onclick="toggleMenu()" data-lang="ridersList">Liste des partants</a>
                     <a href="#schedule" onclick="toggleMenu()" data-lang="scheduleTitle">Programmation</a>
