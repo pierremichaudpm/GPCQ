@@ -1391,13 +1391,19 @@ function updateLanguage() {
 
     // Update EKOI contest bigbox image per language with safe fallback
     const ekoiImg = document.getElementById('ekoiBigboxImage');
+    const ekoiImageLink = document.getElementById('ekoiImageLink');
+    const ekoiButtonLink = document.getElementById('ekoiButtonLink');
     if (ekoiImg) {
         const frEkoiSrc = 'images/concours_ekoi_fr.jpg';
         const enEkoiSrc = 'images/concours_ekoi_en.jpg';
+        const frEkoiUrl = 'https://www.ekoi.com/fr-ca/content/1267-jeu-concours-ekoi-grand-prix-cyclistes-de-quebec-et-de-montreal?utm_source=ban-grand-prix-quebec&utm_medium=ban&utm_campaign=ads-grand-prix-quebec-jc-0925&utm_id=ads-grand-prix-quebec-jc';
+        const enEkoiUrl = 'https://www.ekoi.com/en-ca/content/1267-contest-game-ekoi-grand-prix-cyclists-of-quebec-and-montreal?utm_source=ban-grand-prix-quebec&utm_medium=ban&utm_campaign=ads-grand-prix-quebec-jc-0925&utm_id=ads-grand-prix-quebec-jc';
         const desiredEkoi = currentLanguage === 'en' ? enEkoiSrc : frEkoiSrc;
         if (ekoiImg.getAttribute('src') !== desiredEkoi) {
             ekoiImg.setAttribute('src', desiredEkoi);
         }
+        if (ekoiImageLink) ekoiImageLink.href = currentLanguage === 'en' ? enEkoiUrl : frEkoiUrl;
+        if (ekoiButtonLink) ekoiButtonLink.href = currentLanguage === 'en' ? enEkoiUrl : frEkoiUrl;
         ekoiImg.onerror = function() {
             const altEkoi = desiredEkoi === frEkoiSrc ? enEkoiSrc : frEkoiSrc;
             if (ekoiImg.getAttribute('src') !== altEkoi) {
