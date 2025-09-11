@@ -177,8 +177,8 @@ app.use(express.static(path.join(__dirname), {
 
 // === CMS Integration ===
 // CMS Authentication
-const CMS_USER = process.env.CMS_USER || 'admin';
-const CMS_PASS = process.env.CMS_PASS || 'Quebec2025';
+const CMS_USER = process.env.CMS_USER || process.env.BASIC_AUTH_USER || 'admin';
+const CMS_PASS = process.env.CMS_PASS || process.env.BASIC_AUTH_PASS || 'change-me';
 
 function basicAuth(req, res, next) {
     const auth = req.headers.authorization;
@@ -194,8 +194,8 @@ function basicAuth(req, res, next) {
     next();
 }
 
-// Serve CMS interface
-app.get('/cms', (req, res) => {
+// Serve CMS interface (protected)
+app.get('/cms', basicAuth, (req, res) => {
     res.sendFile(path.join(__dirname, 'cms.html'));
 });
 
