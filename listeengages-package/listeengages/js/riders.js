@@ -18,7 +18,7 @@ const teamStyles = {
     "Movistar Team": { color: "#003D7C", bg: "#00B4E6", jersey: "movistar-team.png" },
     "Team Jayco AlUla": { color: "#FFD700", bg: "#000080", jersey: "team-jayco-alula.png" },
     "Arkéa-B&B Hotels": { color: "#E30613", bg: "#FFFFFF", jersey: "arkea-bb-hotels.png" },
-    "Team DSM-Firmenich PostNL": { color: "#000000", bg: "#FF6600", jersey: "team-dsm.png" },
+    "Team DSM-Firmenich PostNL": { color: "#000000", bg: "#FF6600", jersey: "picnic.png" },
     "Intermarché - Wanty": { color: "#00A9E0", bg: "#FFFFFF", jersey: "intermarche-wanty.png" },
     "Cofidis": { color: "#ED1C24", bg: "#FFFFFF", jersey: "cofidis.png" },
     "Astana Qazaqstan Team": { color: "#00BFFF", bg: "#FFD700", jersey: "astana-qazaqstan.png" },
