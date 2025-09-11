@@ -476,6 +476,15 @@ function loadTeamsView() {
 
     // Fonction pour obtenir le nom du fichier de maillot
     function getJerseyFile(team) {
+        // Cas spécifique: TEAM PICNIC POSTNL doit utiliser picnic.png (sans affecter les autres)
+        try {
+            const dn = (team.displayName || '').toUpperCase();
+            const nn = (team.name || '').toUpperCase();
+            if (dn.includes('PICNIC POSTNL') || nn.includes('PICNIC POSTNL')) {
+                return 'picnic.png';
+            }
+        } catch(_) {}
+
         // Essayer d'abord avec le code de l'équipe
         const jerseyMap = {
             'UAE': 'emirates.png',
