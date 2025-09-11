@@ -178,7 +178,10 @@ app.use(express.static(path.join(__dirname), {
 // === CMS Integration ===
 // CMS Authentication
 const CMS_USER = process.env.CMS_USER || process.env.BASIC_AUTH_USER || 'admin';
-const CMS_PASS = process.env.CMS_PASS || process.env.BASIC_AUTH_PASS || 'change-me';
+const CMS_PASS = process.env.CMS_PASS || process.env.BASIC_AUTH_PASS || 'Axelle20';
+const crypto = require('crypto');
+const CMS_SINGLE_PASS = process.env.CMS_SINGLE_PASS || CMS_PASS;
+const CMS_PASS_HASH = crypto.createHash('sha256').update(String(CMS_SINGLE_PASS)).digest('hex');
 
 function basicAuth(req, res, next) {
     const auth = req.headers.authorization;
@@ -194,9 +197,64 @@ function basicAuth(req, res, next) {
     next();
 }
 
-// Serve CMS interface (protected)
-app.get('/cms', basicAuth, (req, res) => {
+// Password-only gate using a cookie (no username)
+function parseCookies(cookieHeader) {
+    const out = {};
+    if (!cookieHeader) return out;
+    cookieHeader.split(';').forEach(pair => {
+        const idx = pair.indexOf('=');
+        if (idx > -1) {
+            const k = pair.slice(0, idx).trim();
+            const v = pair.slice(idx + 1).trim();
+            out[k] = decodeURIComponent(v);
+        }
+    });
+    return out;
+}
+
+function cmsGate(req, res, next) {
+    try {
+        const cookies = parseCookies(req.headers.cookie || '');
+        if (cookies['cms_auth'] && cookies['cms_auth'] === CMS_PASS_HASH) {
+            return next();
+        }
+        // If Basic Auth provided and password matches, accept and set cookie
+        const auth = req.headers.authorization || '';
+        if (auth.startsWith('Basic ')) {
+            const decoded = Buffer.from(auth.slice(6), 'base64').toString();
+            const parts = decoded.split(':');
+            const pass = parts[1] || '';
+            if (pass === CMS_SINGLE_PASS) {
+                res.setHeader('Set-Cookie', `cms_auth=${CMS_PASS_HASH}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${12 * 60 * 60}`);
+                return next();
+            }
+        }
+        // Show minimal password form (no username)
+        res.status(401).send(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Accès CMS</title><style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif;background:#f5f7f4;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center} .card{background:#fff;padding:24px 28px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.08);width:min(92vw,360px)} h1{font-size:1.1rem;margin:0 0 12px;color:#1f6e72} label{display:block;margin:12px 0 6px;color:#333} input[type=password]{width:100%;padding:10px 12px;border:1px solid #d0d7cd;border-radius:8px;font-size:1rem} button{width:100%;margin-top:16px;padding:10px 14px;border:none;border-radius:8px;background:#1f6e72;color:#fff;font-weight:700;cursor:pointer} .hint{margin-top:10px;color:#777;font-size:.9rem}</style></head><body><form class="card" method="POST" action="/cms/login"><h1>Accès CMS</h1><label for="password">Mot de passe</label><input id="password" name="password" type="password" autocomplete="current-password" required><button type="submit">Entrer</button><div class="hint">Entrez le mot de passe CMS pour accéder.</div></form></body></html>`);
+    } catch (e) {
+        console.error('cmsGate error:', e);
+        res.status(500).send('CMS auth error');
+    }
+}
+
+// Serve CMS interface (password-only gate, no impact on public content)
+app.get('/cms', cmsGate, (req, res) => {
     res.sendFile(path.join(__dirname, 'cms.html'));
+});
+
+// Handle CMS login (password-only)
+app.post('/cms/login', express.urlencoded({ extended: true }), (req, res) => {
+    try {
+        const pw = (req.body && req.body.password) || '';
+        if (pw === CMS_SINGLE_PASS) {
+            res.setHeader('Set-Cookie', `cms_auth=${CMS_PASS_HASH}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${12 * 60 * 60}`);
+            return res.redirect('/cms');
+        }
+        return res.status(401).send('Invalid password');
+    } catch (e) {
+        console.error('/cms/login error:', e);
+        return res.status(500).send('Login error');
+    }
 });
 
 // CMS API endpoints  (use persistent files TEAMS_FILE / RIDERS_FILE)
