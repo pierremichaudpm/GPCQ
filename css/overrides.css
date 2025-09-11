@@ -594,6 +594,18 @@ body { padding-top: var(--header-offset-desktop); }
     }
 }
 
+/* === Header logo size alignment with GPCM === */
+.logo {
+    height: 60px !important;
+    width: auto;
+}
+
+@media (min-width: 768px) {
+    .logo {
+        height: 90px !important;
+    }
+}
+
 /* Highlight only the specific phrase inside the Quebec results title */
 .race-status .status-card.riders-card[href*="grand-prix-quebec"] h2 .quebec-highlight {
     color: #1D5077;
