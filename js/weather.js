@@ -350,6 +350,37 @@ class WeatherWidget {
                 return WEATHER_EMOJI[main] || '🌡️';
         }
     }
+    
+    // Améliorer les traductions françaises d'OpenWeatherMap
+    improveWeatherDescription(description, iconCode, lang) {
+        if (lang !== 'fr' || !description) return description;
+        
+        // Dictionnaire de traductions améliorées
+        const betterTranslations = {
+            'ciel dégagé': 'Ensoleillé',
+            'peu nuageux': 'Partiellement nuageux',
+            'partiellement nuageux': 'Partiellement nuageux',
+            'nuageux': 'Nuageux',
+            'couvert': 'Très nuageux',
+            'légère pluie': 'Pluie légère',
+            'pluie modérée': 'Pluie modérée',
+            'forte pluie': 'Pluie forte',
+            'bruine légère': 'Bruine',
+            'brouillard': 'Brumeux',
+            'brume': 'Brumeux',
+            'légères chutes de neige': 'Neige légère',
+            'chutes de neige': 'Neige',
+            'fortes chutes de neige': 'Neige abondante'
+        };
+        
+        // Cas spéciaux basés sur l'icône
+        if (iconCode === '01n') return 'Ciel dégagé';
+        if (iconCode === '02n') return 'Quelques nuages';
+        
+        // Retourner la traduction améliorée ou l'originale
+        const lowerDesc = description.toLowerCase();
+        return betterTranslations[lowerDesc] || description;
+    }
 
     async refresh() {
         if (!this.widget) return;
@@ -575,7 +606,7 @@ class WeatherWidget {
                     <span class="ww-emoji">${emoji}</span>
                     <div class="ww-temp-group">
                         <span class="ww-temp">${temp}°C</span>
-                        <span class="ww-desc">${(weather.description || '').toString()}</span>
+                        <span class="ww-desc">${this.improveWeatherDescription(weather.description || '', weather.icon, this.lang)}</span>
                     </div>
                 </div>
                 <div class="ww-stats">
