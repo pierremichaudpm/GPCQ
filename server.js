@@ -368,6 +368,32 @@ app.get('/api/weather/forecast', async (req, res) => {
     }
 });
 
+// OneCall passthrough: current + hourly for strict consistency
+app.get('/api/weather/onecall', async (req, res) => {
+    try {
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
+        const lang = req.query.lang || 'fr';
+        const lat = 46.8139;
+        const lon = -71.2080;
+        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&exclude=minutely,daily,alerts&appid=${apiKey}&_=${Date.now()}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`OpenWeather OneCall failed: ${response.status}`);
+        const data = await response.json();
+        // CORS headers for Safari
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        res.json({
+            current: data.current,
+            timezone_offset: data.timezone_offset,
+            hourly: Array.isArray(data.hourly) ? data.hourly.slice(0, 12) : []
+        });
+    } catch (e) {
+        console.error('/api/weather/onecall error:', e);
+        res.status(500).json({ error: 'Failed to fetch OneCall' });
+    }
+});
+
 // Instagram feed proxy (to hide access token)
 app.get('/api/instagram/feed', async (req, res) => {
     try {

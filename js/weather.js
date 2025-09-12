@@ -65,19 +65,19 @@ class WeatherWidget {
         
         try {
             if (isSafariIOS) {
-                console.log(`Safari iOS detected - using XHR for current weather (lang: ${this.lang})`);
-                // Pour Safari iOS, utiliser XMLHttpRequest qui est plus fiable
-                return await this.fetchWithXHR(`/api/weather/current?lang=${this.lang}`);
+                console.log(`Safari iOS detected - using XHR for OneCall current (lang: ${this.lang})`);
+                const data = await this.fetchWithXHR(`/api/weather/onecall?lang=${this.lang}`);
+                return (data && data.current) || {};
             } else {
-                // Pour les autres navigateurs, appel direct
-                const url = `${this.apiBase}/weather?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&appid=${this.apiKey}`;
-                const res = await fetch(url, { cache: 'no-store' });
+                // Unifier sur OneCall passthrough pour cohérence current/hourly
+                const res = await fetch(`/api/weather/onecall?lang=${this.lang}`, { cache: 'no-store' });
                 if (!res.ok) {
                     const text = await res.text().catch(() => '');
-                    console.error('OpenWeather current failed:', res.status, text);
-                    throw new Error('OpenWeather current failed');
+                    console.error('OneCall current failed:', res.status, text);
+                    throw new Error('OneCall current failed');
                 }
-                return res.json();
+                const data = await res.json();
+                return (data && data.current) || {};
             }
         } catch (error) {
             console.error('Failed to fetch current weather:', error);
@@ -181,23 +181,23 @@ class WeatherWidget {
         
         try {
             if (isSafariIOS) {
-                console.log(`Safari iOS detected - using XHR for forecast (lang: ${this.lang})`);
-                // Pour Safari iOS, utiliser XMLHttpRequest
-                const proxyUrl = `/api/weather/forecast?lang=${this.lang}`;
-                return await this.fetchWithXHR(proxyUrl);
+                console.log(`Safari iOS detected - using XHR for OneCall forecast (lang: ${this.lang})`);
+                const data = await this.fetchWithXHR(`/api/weather/onecall?lang=${this.lang}`);
+                const hourly = Array.isArray(data && data.hourly) ? data.hourly : [];
+                return hourly.slice(0, 6).map(item => ({
+                    dt: item.dt,
+                    main: { temp: item.temp, feels_like: item.feels_like },
+                    weather: item.weather
+                }));
             } else {
-                // Pour les autres navigateurs, utiliser One Call (horaire)
-                const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&exclude=minutely,daily,alerts,current&appid=${this.apiKey}&_=${Date.now()}`;
-                const response = await fetch(url, { cache: 'no-store' });
-                
+                // OneCall passthrough
+                const response = await fetch(`/api/weather/onecall?lang=${this.lang}`, { cache: 'no-store' });
                 if (!response.ok) {
-                    throw new Error(`OpenWeather API failed: ${response.status}`);
+                    throw new Error(`OneCall API failed: ${response.status}`);
                 }
-                
                 const data = await response.json();
-                console.log('[Weather Debug] OWM hourly raw:', data && data.hourly && data.hourly.slice ? data.hourly.slice(0, 8) : data);
+                console.log('[Weather Debug] OneCall hourly raw:', data && data.hourly && data.hourly.slice ? data.hourly.slice(0, 8) : data);
                 const hourly = Array.isArray(data.hourly) ? data.hourly : [];
-                // Prendre les 6 prochaines heures à partir de maintenant (en temps UTC fourni par OWM)
                 return hourly.slice(0, 6).map(item => ({
                     dt: item.dt,
                     main: { temp: item.temp, feels_like: item.feels_like },
