@@ -51,6 +51,9 @@ function updateCountdownDisplay(elementId, targetTime) {
     const container = document.getElementById(elementId);
     if (!container) return;
     
+    // Update race status based on time
+    updateRaceStatusByTime(distance);
+    
     // Calculate time units
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -100,24 +103,32 @@ function updateCountdownDisplay(elementId, targetTime) {
         if (hoursEl) hoursEl.textContent = '00';
         if (minutesEl) minutesEl.textContent = '00';
         if (secondsEl) secondsEl.textContent = '00';
-        
-        // Update race status to LIVE
-        updateRaceStatus('live');
     } else {
         // Race is finished
         if (daysEl) daysEl.textContent = '00';
         if (hoursEl) hoursEl.textContent = '00';
         if (minutesEl) minutesEl.textContent = '00';
         if (secondsEl) secondsEl.textContent = '00';
-        
-        // Update race status to FINISHED
-        updateRaceStatus('finished');
     }
 }
 
 // Pad numbers with zero
 function padZero(num) {
     return num < 10 ? '0' + num : num.toString();
+}
+
+// Update race status based on time distance
+function updateRaceStatusByTime(distance) {
+    if (distance > 0) {
+        // Race hasn't started yet
+        updateRaceStatus('upcoming');
+    } else if (distance > -5.5 * 60 * 60 * 1000) {
+        // Race is ongoing (within 5.5 hours after start)
+        updateRaceStatus('live');
+    } else {
+        // Race is finished
+        updateRaceStatus('finished');
+    }
 }
 
 // Update race status badge
@@ -134,24 +145,40 @@ function updateRaceStatus(status) {
     // Update text based on language
     const statusTexts = {
         upcoming: { fr: 'À venir', en: 'Upcoming' },
-        live: { fr: 'En direct', en: 'Live' },
+        live: { fr: '🔴 En direct', en: '🔴 Live' },
         finished: { fr: 'Terminée', en: 'Finished' }
     };
     
     const currentLang = localStorage.getItem('language') || 'fr';
     statusBadge.textContent = statusTexts[status][currentLang];
     
+    // Update countdown title based on status
+    const countdownTitle = document.querySelector('.countdown-title');
+    if (countdownTitle) {
+        const titleTexts = {
+            upcoming: { fr: 'Départ de la course dans :', en: 'Race starts in:' },
+            live: { fr: 'Course en cours', en: 'Race in progress' },
+            finished: { fr: 'Course terminée', en: 'Race finished' }
+        };
+        countdownTitle.textContent = titleTexts[status][currentLang];
+    }
+    
     // Add animation for live status
     if (status === 'live') {
         statusBadge.style.animation = 'pulse 2s infinite';
         
-        // Track live status
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'race_status_live', {
-                event_category: 'Race',
-                event_label: 'Race went live'
-            });
+        // Track live status (only once)
+        if (!window.liveStatusTracked) {
+            window.liveStatusTracked = true;
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'race_status_live', {
+                    event_category: 'Race',
+                    event_label: 'Race went live'
+                });
+            }
         }
+    } else {
+        statusBadge.style.animation = '';
     }
 }
 

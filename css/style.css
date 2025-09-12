@@ -588,6 +588,55 @@ a:hover {
     white-space: pre-line;
 }
 
+/* === Race Status Badge === */
+.race-status-container {
+    text-align: center;
+    margin: var(--spacing-md) 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.status-badge.upcoming {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    color: white;
+}
+
+.status-badge.live {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.5);
+}
+
+.status-badge.finished {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(220, 53, 69, 0.5);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(220, 53, 69, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(220, 53, 69, 0.5);
+    }
+}
+
 /* === Countdown === */
 .countdown-container {
     margin-bottom: var(--spacing-2xl);
