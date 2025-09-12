@@ -92,23 +92,18 @@ function updateCountdownDisplay(elementId, targetTime) {
     const secondsEl = container.querySelector('#seconds');
     
     if (distance > 0) {
-        // Race hasn't started yet
+        // Race hasn't started yet - show countdown
+        container.style.display = 'flex';
         if (daysEl) daysEl.textContent = padZero(days);
         if (hoursEl) hoursEl.textContent = padZero(hours);
         if (minutesEl) minutesEl.textContent = padZero(minutes);
         if (secondsEl) secondsEl.textContent = padZero(seconds);
     } else if (distance > -5.5 * 60 * 60 * 1000) {
-        // Race is ongoing (assuming ~5.5 hours duration)
-        if (daysEl) daysEl.textContent = '00';
-        if (hoursEl) hoursEl.textContent = '00';
-        if (minutesEl) minutesEl.textContent = '00';
-        if (secondsEl) secondsEl.textContent = '00';
+        // Race is ongoing - hide countdown
+        container.style.display = 'none';
     } else {
-        // Race is finished
-        if (daysEl) daysEl.textContent = '00';
-        if (hoursEl) hoursEl.textContent = '00';
-        if (minutesEl) minutesEl.textContent = '00';
-        if (secondsEl) secondsEl.textContent = '00';
+        // Race is finished - hide countdown
+        container.style.display = 'none';
     }
 }
 
@@ -154,6 +149,8 @@ function updateRaceStatus(status) {
     
     // Update countdown title based on status
     const countdownTitle = document.querySelector('.countdown-title');
+    const countdownContainer = document.querySelector('.countdown-container');
+    
     if (countdownTitle) {
         const titleTexts = {
             upcoming: { fr: 'Départ de la course dans :', en: 'Race starts in:' },
@@ -161,6 +158,38 @@ function updateRaceStatus(status) {
             finished: { fr: 'Course terminée', en: 'Race finished' }
         };
         countdownTitle.textContent = titleTexts[status][currentLang];
+        
+        // Hide entire countdown container when not upcoming
+        if (countdownContainer) {
+            if (status === 'upcoming') {
+                countdownContainer.style.display = 'block';
+            } else {
+                // Hide countdown container but keep the badge visible
+                countdownContainer.style.display = 'none';
+            }
+        }
+    }
+    
+    // Update race info message
+    const raceInfo = document.getElementById('raceInfo');
+    if (raceInfo) {
+        if (status === 'live') {
+            const infoTexts = {
+                fr: 'Suivez la course en direct sur les réseaux sociaux #GPCQM',
+                en: 'Follow the race live on social media #GPCQM'
+            };
+            raceInfo.textContent = infoTexts[currentLang];
+            raceInfo.style.display = 'block';
+        } else if (status === 'finished') {
+            const infoTexts = {
+                fr: 'Merci d\'avoir suivi la course !',
+                en: 'Thank you for following the race!'
+            };
+            raceInfo.textContent = infoTexts[currentLang];
+            raceInfo.style.display = 'block';
+        } else {
+            raceInfo.style.display = 'none';
+        }
     }
     
     // Add animation for live status
