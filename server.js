@@ -52,6 +52,38 @@ async function persistPageviews() {
     }
 }
 
+// Active users (in-memory, cookie-based)
+const activeClients = new Map(); // cid -> lastSeen (ms)
+function touchClient(req, res) {
+    try {
+        const cookieHeader = req.headers.cookie || '';
+        const cookies = Object.fromEntries(cookieHeader.split(';').map(p=>{
+            const i=p.indexOf('=');
+            return i>0?[p.slice(0,i).trim(), decodeURIComponent(p.slice(i+1))]:[p.trim(),''];
+        }));
+        let cid = cookies.cid;
+        if (!cid) {
+            cid = (crypto.randomUUID && crypto.randomUUID()) || (Date.now().toString(36)+Math.random().toString(36).slice(2));
+            const existing = res.getHeader('Set-Cookie');
+            const newCookie = `cid=${cid}; Path=/; SameSite=Lax; Max-Age=${30*24*60*60}`;
+            if (existing) {
+                res.setHeader('Set-Cookie', Array.isArray(existing) ? [...existing, newCookie] : [existing, newCookie]);
+            } else {
+                res.setHeader('Set-Cookie', newCookie);
+            }
+        }
+        activeClients.set(cid, Date.now());
+    } catch(_) {}
+}
+function countActive(windowMs) {
+    const now = Date.now();
+    let n = 0;
+    for (const [, last] of activeClients) {
+        if (now - last <= windowMs) n++;
+    }
+    return n;
+}
+
 // Initial seed (if empty)
 try {
     if (!fsSync.existsSync(TEAMS_FILE) && fsSync.existsSync(DEFAULT_TEAMS_FILE)) fsSync.copyFileSync(DEFAULT_TEAMS_FILE, TEAMS_FILE);
@@ -166,6 +198,10 @@ app.use((req, res, next) => {
             pageviews.total += 1;
             pageviews.byDate[today] = (pageviews.byDate[today] || 0) + 1;
             persistPageviews();
+        }
+        // Track active users (cookie-based)
+        if (req.method === 'GET') {
+            touchClient(req, res);
         }
     } catch (_) {}
     next();
@@ -610,7 +646,11 @@ app.get('/metrics', (req, res) => {
         uptime: process.uptime(),
         cpuUsage: process.cpuUsage(),
         timestamp: new Date().toISOString(),
-        pageviews
+        pageviews,
+        users: {
+            active_5m: countActive(5 * 60 * 1000),
+            active_15m: countActive(15 * 60 * 1000)
+        }
     });
 });
 
