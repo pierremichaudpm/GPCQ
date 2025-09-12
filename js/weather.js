@@ -11,7 +11,7 @@ const WEATHER_CONFIG = {
     updateIntervalMs: 10 * 60 * 1000, // 10 minutes
     forecastUseFeelsLike: false,
     precision: 0,
-    tempBiasC: 1.5
+    tempBiasC: 0
 };
 
 // Emoji par condition (simplifié)
@@ -489,7 +489,7 @@ class WeatherWidget {
             const w = (f.weather && f.weather[0]) || {};
             const e = this.getEmoji(w.main, w.icon);
             const rawT = this.forecastUseFeelsLike ? (f.main?.feels_like) : (f.main?.temp);
-            const adjusted = (rawT == null || Number.isNaN(Number(rawT))) ? rawT : (Number(rawT) + (this.tempBiasC || 0));
+            const adjusted = rawT;
             const t = roundOrFix(adjusted);
             const label = this.lang === 'fr' ? (this.forecastUseFeelsLike ? 'ress.' : '') : (this.forecastUseFeelsLike ? 'feels' : '');
             return `<div class="ww-forecast-item"><span>${fmtHour(f.dt)}</span><span>${e}</span><span>${t}°C${label ? ` <small>(${label})</small>` : ''}</span></div>`;
@@ -500,7 +500,7 @@ class WeatherWidget {
             const w = (f.weather && f.weather[0]) || {};
             const e = this.getEmoji(w.main, w.icon);
             const rawT = this.forecastUseFeelsLike ? (f.main?.feels_like) : (f.main?.temp);
-            const adjusted = (rawT == null || Number.isNaN(Number(rawT))) ? rawT : (Number(rawT) + (this.tempBiasC || 0));
+            const adjusted = rawT;
             const t = roundOrFix(adjusted);
             const hour = new Date(f.dt * 1000).getHours();
             return `<div class="ww-mini-forecast">
