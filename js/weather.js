@@ -207,20 +207,42 @@ class WeatherWidget {
         } catch (error) {
             console.error('Weather forecast failed:', error);
             // Fallback avec données statiques en français ou anglais
-            const baseTime = Math.floor(Date.now() / 1000);
-            const fallback = [];
-            const isFrench = this.lang === 'fr';
-            for (let i = 1; i <= 6; i++) {
-                fallback.push({
-                    dt: baseTime + (i * 3600),
-                    main: { temp: 18 + (Math.random() * 4 - 2), feels_like: 17 },
-                    weather: [{ 
-                        description: isFrench ? 'Nuageux' : 'Cloudy',
-                        main: 'Clouds',
-                        icon: '02d' 
-                    }]
-                });
-            }
+                // Générer des données de fallback plus réalistes basées sur l'heure actuelle
+                const baseTime = Math.floor(Date.now() / 1000);
+                const currentHour = new Date().getHours();
+                const fallback = [];
+                const isFrench = this.lang === 'fr';
+                
+                // Températures typiques pour septembre à Québec
+                const typicalTemps = {
+                    night: 8,    // 0h-6h
+                    morning: 12, // 6h-12h
+                    afternoon: 18, // 12h-18h
+                    evening: 14  // 18h-24h
+                };
+                
+                for (let i = 1; i <= 6; i++) {
+                    const futureHour = (currentHour + i) % 24;
+                    let baseTemp;
+                    if (futureHour >= 0 && futureHour < 6) baseTemp = typicalTemps.night;
+                    else if (futureHour >= 6 && futureHour < 12) baseTemp = typicalTemps.morning;
+                    else if (futureHour >= 12 && futureHour < 18) baseTemp = typicalTemps.afternoon;
+                    else baseTemp = typicalTemps.evening;
+                    
+                    // Petite variation réaliste
+                    const variation = Math.random() * 2 - 1; // ±1°C
+                    const temp = Math.round(baseTemp + variation);
+                    
+                    fallback.push({
+                        dt: baseTime + (i * 3600),
+                        main: { temp: temp, feels_like: temp - 1 },
+                        weather: [{ 
+                            description: isFrench ? 'Partiellement nuageux' : 'Partly cloudy',
+                            main: 'Clouds',
+                            icon: futureHour >= 6 && futureHour < 20 ? '02d' : '02n' 
+                        }]
+                    });
+                }
             return fallback;
         }
     }
@@ -387,13 +409,33 @@ class WeatherWidget {
                         name: 'Montreal'
                     };
                     
+                    // Fallback plus réaliste pour Safari iOS
                     const baseTime = Math.floor(Date.now() / 1000);
+                    const currentHour = new Date().getHours();
                     forecast = [];
+                    
                     for (let i = 1; i <= 6; i++) {
+                        const futureHour = (currentHour + i) % 24;
+                        // Variation progressive de température
+                        let tempOffset = 0;
+                        if (futureHour >= 10 && futureHour <= 16) {
+                            tempOffset = 2; // Plus chaud l'après-midi
+                        } else if (futureHour >= 0 && futureHour < 6) {
+                            tempOffset = -2; // Plus frais la nuit
+                        }
+                        
                         forecast.push({
                             dt: baseTime + (i * 3600),
-                            main: { temp: 18 + (Math.random() * 2 - 1), feels_like: 17 },
-                            weather: current.weather
+                            main: { 
+                                temp: current.main.temp + tempOffset + (Math.random() * 1 - 0.5), 
+                                feels_like: current.main.temp + tempOffset - 1 
+                            },
+                            weather: [{
+                                ...current.weather[0],
+                                icon: futureHour >= 6 && futureHour < 20 ? 
+                                    current.weather[0].icon.replace('n', 'd') : 
+                                    current.weather[0].icon.replace('d', 'n')
+                            }]
                         });
                     }
                 }
@@ -483,10 +525,12 @@ class WeatherWidget {
         const windKmh = wind.speed != null ? Math.round(Number(wind.speed) * 3.6) : '–';
 
             // Afficher en heure de Québec pour cohérence
-        const fmtHour = (ts) => new Date(ts * 1000).toLocaleTimeString(
-            this.lang === 'fr' ? 'fr-CA' : 'en-CA',
-            { hour: '2-digit', minute: '2-digit', timeZone: 'America/Toronto' }
-        );
+        const fmtHour = (ts) => {
+            const date = new Date(ts * 1000);
+            // Utiliser uniquement l'heure pour l'affichage compact
+            const hour = date.getHours();
+            return this.lang === 'fr' ? `${hour}h` : `${hour}:00`;
+        };
 
         const fcHTML = (forecast || []).map(f => {
             const w = (f.weather && f.weather[0]) || {};
@@ -505,9 +549,12 @@ class WeatherWidget {
             const rawT = this.forecastUseFeelsLike ? (f.main?.feels_like) : (f.main?.temp);
             const adjusted = rawT;
             const t = roundOrFix(adjusted);
-            const hour = new Date(f.dt * 1000).getHours();
+            const date = new Date(f.dt * 1000);
+            const hour = date.getHours();
+            // Affichage plus clair de l'heure
+            const timeDisplay = hour.toString().padStart(2, '0') + 'h';
             return `<div class="ww-mini-forecast">
-                <span class="ww-mini-time">${this.lang === 'fr' ? `${hour} h` : `${hour}h`}</span>
+                <span class="ww-mini-time">${timeDisplay}</span>
                 <span class="ww-mini-icon">${e}</span>
                 <span class="ww-mini-temp">${t}°</span>
             </div>`;

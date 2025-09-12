@@ -368,29 +368,101 @@ app.get('/api/weather/forecast', async (req, res) => {
     }
 });
 
-// OneCall passthrough: current + hourly for strict consistency
+// OneCall simulation using standard APIs (OneCall 2.5 is deprecated)
 app.get('/api/weather/onecall', async (req, res) => {
     try {
         const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         const lang = req.query.lang || 'fr';
         const lat = 46.8139;
         const lon = -71.2080;
-        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&exclude=minutely,daily,alerts&appid=${apiKey}&_=${Date.now()}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`OpenWeather OneCall failed: ${response.status}`);
-        const data = await response.json();
+        
+        // Fetch current weather and forecast in parallel
+        const [currentResponse, forecastResponse] = await Promise.all([
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&appid=${apiKey}`),
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&cnt=8&appid=${apiKey}`)
+        ]);
+        
+        if (!currentResponse.ok || !forecastResponse.ok) {
+            throw new Error(`OpenWeather API failed`);
+        }
+        
+        const currentData = await currentResponse.json();
+        const forecastData = await forecastResponse.json();
+        
+        // Convert current weather to OneCall format
+        const current = {
+            dt: currentData.dt,
+            sunrise: currentData.sys.sunrise,
+            sunset: currentData.sys.sunset,
+            temp: currentData.main.temp,
+            feels_like: currentData.main.feels_like,
+            pressure: currentData.main.pressure,
+            humidity: currentData.main.humidity,
+            clouds: currentData.clouds.all,
+            visibility: currentData.visibility,
+            wind_speed: currentData.wind.speed,
+            wind_deg: currentData.wind.deg,
+            weather: currentData.weather
+        };
+        
+        // Convert forecast to hourly format (forecast API gives 3-hour intervals)
+        // We'll interpolate to create hourly data
+        const hourly = [];
+        const now = Date.now() / 1000;
+        
+        for (let i = 0; i < Math.min(forecastData.list.length, 8); i++) {
+            const item = forecastData.list[i];
+            // For the first 6 hours, create hourly entries
+            if (i < 2) {
+                // Interpolate between current and first forecast (3 hours ahead)
+                for (let h = 0; h < 3; h++) {
+                    const weight = h / 3;
+                    const temp = i === 0 ? 
+                        currentData.main.temp + (item.main.temp - currentData.main.temp) * weight :
+                        forecastData.list[i-1].main.temp + (item.main.temp - forecastData.list[i-1].main.temp) * weight;
+                    
+                    hourly.push({
+                        dt: Math.floor(now + ((i * 3 + h + 1) * 3600)),
+                        temp: Math.round(temp * 10) / 10,
+                        feels_like: Math.round((temp - 1) * 10) / 10,
+                        pressure: item.main.pressure,
+                        humidity: item.main.humidity,
+                        clouds: item.clouds.all,
+                        wind_speed: item.wind.speed,
+                        wind_deg: item.wind.deg,
+                        weather: item.weather
+                    });
+                }
+            }
+        }
+        
+        // Ensure we have at least 6 hours
+        while (hourly.length < 6) {
+            const lastHour = hourly[hourly.length - 1] || {
+                dt: Math.floor(now),
+                temp: currentData.main.temp,
+                feels_like: currentData.main.feels_like,
+                weather: currentData.weather
+            };
+            hourly.push({
+                ...lastHour,
+                dt: lastHour.dt + 3600
+            });
+        }
+        
         // CORS headers for Safari
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', 'GET');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
+        
         res.json({
-            current: data.current,
-            timezone_offset: data.timezone_offset,
-            hourly: Array.isArray(data.hourly) ? data.hourly.slice(0, 12) : []
+            current,
+            timezone_offset: -14400, // Quebec timezone offset (EST/EDT)
+            hourly: hourly.slice(0, 12)
         });
     } catch (e) {
         console.error('/api/weather/onecall error:', e);
-        res.status(500).json({ error: 'Failed to fetch OneCall' });
+        res.status(500).json({ error: 'Failed to fetch weather data' });
     }
 });
 
