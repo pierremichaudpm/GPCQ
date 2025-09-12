@@ -670,6 +670,60 @@ app.get('/metrics', (req, res) => {
     });
 });
 
+// Mini dashboard lecture seule pour visualiser les métriques
+app.get('/admin/metrics', (req, res) => {
+    const html = `<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GPCQ - Métriques</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif;margin:0;background:#f5f7f4;color:#123;}
+.wrap{max-width:960px;margin:24px auto;padding:0 16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.title{margin:0 0 8px;font-size:18px;color:#1f6e72}
+.val{font-size:28px;font-weight:800}
+code,pre{background:#eef2ec;border-radius:8px;padding:8px;display:block;overflow:auto}
+.footer{margin-top:18px;color:#678}
+button{background:#1f6e72;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer}
+</style></head>
+<body><div class="wrap">
+ <h1 style="margin:0 0 16px;color:#1f6e72">Métriques GPCQ</h1>
+ <div class="cards">
+  <div class="card"><h2 class="title">Pages ouvertes (total)</h2><div id="pvTotal" class="val">—</div></div>
+  <div class="card"><h2 class="title">Pages ouvertes (aujourd'hui)</h2><div id="pvToday" class="val">—</div></div>
+  <div class="card"><h2 class="title">Utilisateurs actifs (5 min)</h2><div id="u5" class="val">—</div></div>
+  <div class="card"><h2 class="title">Utilisateurs actifs (15 min)</h2><div id="u15" class="val">—</div></div>
+ </div>
+ <h3 style="margin:24px 0 8px">JSON brut</h3>
+ <pre id="raw">Chargement…</pre>
+ <div class="footer"><button id="refresh">Rafraîchir</button> <span id="ts"></span></div>
+</div>
+<script>
+async function load(){
+  try{
+    const r = await fetch('/metrics',{cache:'no-store'});
+    const j = await r.json();
+    const today = new Date().toISOString().slice(0,10);
+    const pvTotal = j.pageviews && j.pageviews.total || 0;
+    const pvToday = j.pageviews && j.pageviews.byDate && j.pageviews.byDate[today] || 0;
+    const u5 = j.users && j.users.active_5m || 0;
+    const u15 = j.users && j.users.active_15m || 0;
+    document.getElementById('pvTotal').textContent = pvTotal;
+    document.getElementById('pvToday').textContent = pvToday;
+    document.getElementById('u5').textContent = u5;
+    document.getElementById('u15').textContent = u15;
+    document.getElementById('raw').textContent = JSON.stringify(j,null,2);
+    document.getElementById('ts').textContent = 'Mis à jour: '+ new Date().toLocaleTimeString();
+  }catch(e){ document.getElementById('raw').textContent = 'Erreur: '+e; }
+}
+document.getElementById('refresh').onclick = load;
+load();
+setInterval(load, 10000);
+</script></body></html>`;
+    res.setHeader('Cache-Control', 'no-cache');
+    res.send(html);
+});
+
 // Handle 404
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'offline.html'));
