@@ -180,14 +180,8 @@ function updateRaceStatus(status) {
             };
             raceInfo.textContent = infoTexts[currentLang];
             raceInfo.style.display = 'block';
-        } else if (status === 'finished') {
-            const infoTexts = {
-                fr: 'Merci d\'avoir suivi la course !',
-                en: 'Thank you for following the race!'
-            };
-            raceInfo.textContent = infoTexts[currentLang];
-            raceInfo.style.display = 'block';
         } else {
+            // Hide message for upcoming and finished states
             raceInfo.style.display = 'none';
         }
     }
