@@ -175,8 +175,8 @@ function updateRaceStatus(status) {
     if (raceInfo) {
         if (status === 'live') {
             const infoTexts = {
-                fr: 'Suivez la course en direct sur les réseaux sociaux #GPCQM',
-                en: 'Follow the race live on social media #GPCQM'
+                fr: 'Course en cours',
+                en: 'Race in progress'
             };
             raceInfo.textContent = infoTexts[currentLang];
             raceInfo.style.display = 'block';
