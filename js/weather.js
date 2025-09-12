@@ -351,35 +351,66 @@ class WeatherWidget {
         }
     }
     
-    // Améliorer les traductions françaises d'OpenWeatherMap
+    // Améliorer les traductions d'OpenWeatherMap
     improveWeatherDescription(description, iconCode, lang) {
-        if (lang !== 'fr' || !description) return description;
+        if (!description) return description;
         
-        // Dictionnaire de traductions améliorées
-        const betterTranslations = {
-            'ciel dégagé': 'Ensoleillé',
-            'peu nuageux': 'Partiellement nuageux',
-            'partiellement nuageux': 'Partiellement nuageux',
-            'nuageux': 'Nuageux',
-            'couvert': 'Très nuageux',
-            'légère pluie': 'Pluie légère',
-            'pluie modérée': 'Pluie modérée',
-            'forte pluie': 'Pluie forte',
-            'bruine légère': 'Bruine',
-            'brouillard': 'Brumeux',
-            'brume': 'Brumeux',
-            'légères chutes de neige': 'Neige légère',
-            'chutes de neige': 'Neige',
-            'fortes chutes de neige': 'Neige abondante'
-        };
+        // Traductions améliorées pour le français
+        if (lang === 'fr') {
+            const frenchTranslations = {
+                'ciel dégagé': 'Ensoleillé',
+                'peu nuageux': 'Partiellement nuageux',
+                'partiellement nuageux': 'Partiellement nuageux',
+                'nuageux': 'Nuageux',
+                'couvert': 'Très nuageux',
+                'légère pluie': 'Pluie légère',
+                'pluie modérée': 'Pluie modérée',
+                'forte pluie': 'Pluie forte',
+                'bruine légère': 'Bruine',
+                'brouillard': 'Brumeux',
+                'brume': 'Brumeux',
+                'légères chutes de neige': 'Neige légère',
+                'chutes de neige': 'Neige',
+                'fortes chutes de neige': 'Neige abondante'
+            };
+            
+            // Cas spéciaux basés sur l'icône
+            if (iconCode === '01n') return 'Ciel dégagé';
+            if (iconCode === '02n') return 'Quelques nuages';
+            
+            const lowerDesc = description.toLowerCase();
+            return frenchTranslations[lowerDesc] || description;
+        }
         
-        // Cas spéciaux basés sur l'icône
-        if (iconCode === '01n') return 'Ciel dégagé';
-        if (iconCode === '02n') return 'Quelques nuages';
+        // Traductions améliorées pour l'anglais
+        if (lang === 'en' || !lang) {
+            const englishTranslations = {
+                'clear sky': 'Clear',
+                'few clouds': 'Partly cloudy',
+                'scattered clouds': 'Partly cloudy',
+                'broken clouds': 'Mostly cloudy',
+                'overcast clouds': 'Overcast',
+                'light rain': 'Light rain',
+                'moderate rain': 'Moderate rain',
+                'heavy intensity rain': 'Heavy rain',
+                'very heavy rain': 'Very heavy rain',
+                'light snow': 'Light snow',
+                'snow': 'Snow',
+                'heavy snow': 'Heavy snow',
+                'mist': 'Misty',
+                'fog': 'Foggy',
+                'haze': 'Hazy'
+            };
+            
+            // Cas spéciaux pour la nuit
+            if (iconCode === '01n') return 'Clear night';
+            if (iconCode === '02n') return 'Partly cloudy';
+            
+            const lowerDesc = description.toLowerCase();
+            return englishTranslations[lowerDesc] || description;
+        }
         
-        // Retourner la traduction améliorée ou l'originale
-        const lowerDesc = description.toLowerCase();
-        return betterTranslations[lowerDesc] || description;
+        return description;
     }
 
     async refresh() {
@@ -715,8 +746,18 @@ async function loadWeather() {
 
 function updateWeatherLanguage() {
     if (!__gpcqmWeatherWidget) return;
-    __gpcqmWeatherWidget.lang = localStorage.getItem('language') || 'fr';
-    if (__gpcqmWeatherWidget.lastData) __gpcqmWeatherWidget.renderWeather();
+    const newLang = localStorage.getItem('language') || 'fr';
+    const oldLang = __gpcqmWeatherWidget.lang;
+    __gpcqmWeatherWidget.lang = newLang;
+    
+    // Si la langue a changé, recharger les données pour obtenir les bonnes traductions
+    if (oldLang !== newLang) {
+        console.log(`Language changed from ${oldLang} to ${newLang}, refreshing weather data...`);
+        __gpcqmWeatherWidget.refresh();
+    } else if (__gpcqmWeatherWidget.lastData) {
+        // Sinon, juste re-render avec les données existantes
+        __gpcqmWeatherWidget.renderWeather();
+    }
 }
 
 // Exports
