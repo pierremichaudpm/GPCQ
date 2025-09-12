@@ -180,6 +180,22 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Lightweight pageview beacon (counts even if HTML served from SW cache)
+app.post('/beacon/pageview', (req, res) => {
+    try {
+        const today = new Date().toISOString().slice(0, 10);
+        pageviews.total += 1;
+        pageviews.byDate[today] = (pageviews.byDate[today] || 0) + 1;
+        persistPageviews();
+        // also touch active user
+        touchClient(req, res);
+        res.status(204).end();
+    } catch (e) {
+        console.warn('beacon/pageview error:', e.message);
+        res.status(204).end();
+    }
+});
+
 // Always serve the PERSISTED riders.json (bypass static) - must come BEFORE express.static
 app.get('/riders.json', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');

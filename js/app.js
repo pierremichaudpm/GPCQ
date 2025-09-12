@@ -472,6 +472,14 @@ function initializeApp() {
     // Export critical functions immediately for onclick handlers
     exportCriticalFunctions();
     
+    // Fire pageview beacon (counts even if page served by SW)
+    try {
+        navigator.sendBeacon && navigator.sendBeacon('/beacon/pageview');
+        setTimeout(() => {
+            fetch('/beacon/pageview', { method: 'POST', keepalive: true }).catch(()=>{});
+        }, 2500);
+    } catch(_) {}
+
     // Initialize language toggle button
     const langToggleBtn = document.getElementById('langToggleBtn');
     if (langToggleBtn) {
