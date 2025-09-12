@@ -368,29 +368,131 @@ app.get('/api/weather/forecast', async (req, res) => {
     }
 });
 
-// OneCall passthrough (v2.5) pour cohérence current/hourly
+// OneCall simulation using standard APIs (OneCall 2.5 is deprecated)
 app.get('/api/weather/onecall', async (req, res) => {
     try {
         const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         const lang = req.query.lang || 'fr';
         const lat = 46.8139;
         const lon = -71.2080;
-        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&exclude=minutely,daily,alerts&appid=${apiKey}&_=${Date.now()}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`OpenWeather OneCall failed: ${response.status}`);
-        const data = await response.json();
+        
+        // Fetch current weather and forecast in parallel
+        const [currentResponse, forecastResponse] = await Promise.all([
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&appid=${apiKey}`),
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&cnt=8&appid=${apiKey}`)
+        ]);
+        
+        if (!currentResponse.ok || !forecastResponse.ok) {
+            throw new Error(`OpenWeather API failed`);
+        }
+        
+        const currentData = await currentResponse.json();
+        const forecastData = await forecastResponse.json();
+        
+        // Convert current weather to OneCall format
+        const current = {
+            dt: currentData.dt,
+            sunrise: currentData.sys.sunrise,
+            sunset: currentData.sys.sunset,
+            temp: currentData.main.temp,
+            feels_like: currentData.main.feels_like,
+            pressure: currentData.main.pressure,
+            humidity: currentData.main.humidity,
+            clouds: currentData.clouds.all,
+            visibility: currentData.visibility,
+            wind_speed: currentData.wind.speed,
+            wind_deg: currentData.wind.deg,
+            weather: currentData.weather
+        };
+        
+        // Convert forecast to hourly format (forecast API gives 3-hour intervals)
+        // Utiliser une interpolation plus réaliste basée sur les tendances météo
+        const hourly = [];
+        const now = Date.now() / 1000;
+        const currentHour = new Date().getHours();
+        
+        // Prendre les 3 premières prévisions (9 heures)
+        const forecasts = forecastData.list.slice(0, 3);
+        
+        // Pour chaque heure des 6 prochaines
+        for (let h = 1; h <= 6; h++) {
+            const targetTime = now + (h * 3600);
+            const targetHour = (currentHour + h) % 24;
+            
+            // Trouver les prévisions encadrantes
+            let before = currentData;
+            let after = forecasts[0] || currentData;
+            
+            // Déterminer quelle prévision utiliser
+            for (let i = 0; i < forecasts.length; i++) {
+                if (forecasts[i].dt <= targetTime) {
+                    before = forecasts[i];
+                    after = forecasts[i + 1] || forecasts[i];
+                } else {
+                    after = forecasts[i];
+                    break;
+                }
+            }
+            
+            // Calculer le poids pour l'interpolation
+            let weight = 0;
+            if (before.dt !== after.dt) {
+                weight = (targetTime - before.dt) / (after.dt - before.dt);
+            }
+            
+            // Interpoler avec une courbe plus naturelle (cosinus pour transition douce)
+            const smoothWeight = (1 - Math.cos(weight * Math.PI)) / 2;
+            
+            // Calculer la température interpolée
+            const beforeTemp = before.main ? before.main.temp : before.temp || currentData.main.temp;
+            const afterTemp = after.main ? after.main.temp : after.temp || currentData.main.temp;
+            const interpolatedTemp = beforeTemp + (afterTemp - beforeTemp) * smoothWeight;
+            
+            // Ajuster selon l'heure de la journée (effet diurne)
+            let diurnalAdjustment = 0;
+            if (targetHour >= 6 && targetHour < 12) {
+                // Matin : léger réchauffement
+                diurnalAdjustment = 0.2;
+            } else if (targetHour >= 12 && targetHour < 16) {
+                // Après-midi : pic de température
+                diurnalAdjustment = 0.5;
+            } else if (targetHour >= 16 && targetHour < 20) {
+                // Soir : refroidissement
+                diurnalAdjustment = -0.2;
+            } else {
+                // Nuit : plus frais
+                diurnalAdjustment = -0.5;
+            }
+            
+            // Appliquer l'ajustement diurne de manière subtile
+            const finalTemp = interpolatedTemp + (diurnalAdjustment * 0.3);
+            
+            hourly.push({
+                dt: Math.floor(targetTime),
+                temp: Math.round(finalTemp * 10) / 10,
+                feels_like: Math.round((finalTemp - 1) * 10) / 10,
+                pressure: after.main ? after.main.pressure : after.pressure || currentData.main.pressure,
+                humidity: after.main ? after.main.humidity : after.humidity || currentData.main.humidity,
+                clouds: after.clouds ? after.clouds.all : currentData.clouds.all,
+                wind_speed: after.wind ? after.wind.speed : currentData.wind.speed,
+                wind_deg: after.wind ? after.wind.deg : currentData.wind.deg || 0,
+                weather: after.weather || currentData.weather
+            });
+        }
+        
         // CORS headers for Safari
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', 'GET');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
+        
         res.json({
-            current: data.current,
-            timezone_offset: data.timezone_offset,
-            hourly: Array.isArray(data.hourly) ? data.hourly.slice(0, 12) : []
+            current,
+            timezone_offset: -14400, // Quebec timezone offset (EST/EDT)
+            hourly: hourly.slice(0, 12)
         });
     } catch (e) {
         console.error('/api/weather/onecall error:', e);
-        res.status(500).json({ error: 'Failed to fetch OneCall' });
+        res.status(500).json({ error: 'Failed to fetch weather data' });
     }
 });
 
