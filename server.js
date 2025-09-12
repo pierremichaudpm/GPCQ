@@ -406,47 +406,77 @@ app.get('/api/weather/onecall', async (req, res) => {
         };
         
         // Convert forecast to hourly format (forecast API gives 3-hour intervals)
-        // We'll interpolate to create hourly data
+        // Utiliser une interpolation plus réaliste basée sur les tendances météo
         const hourly = [];
         const now = Date.now() / 1000;
+        const currentHour = new Date().getHours();
         
-        for (let i = 0; i < Math.min(forecastData.list.length, 8); i++) {
-            const item = forecastData.list[i];
-            // For the first 6 hours, create hourly entries
-            if (i < 2) {
-                // Interpolate between current and first forecast (3 hours ahead)
-                for (let h = 0; h < 3; h++) {
-                    const weight = h / 3;
-                    const temp = i === 0 ? 
-                        currentData.main.temp + (item.main.temp - currentData.main.temp) * weight :
-                        forecastData.list[i-1].main.temp + (item.main.temp - forecastData.list[i-1].main.temp) * weight;
-                    
-                    hourly.push({
-                        dt: Math.floor(now + ((i * 3 + h + 1) * 3600)),
-                        temp: Math.round(temp * 10) / 10,
-                        feels_like: Math.round((temp - 1) * 10) / 10,
-                        pressure: item.main.pressure,
-                        humidity: item.main.humidity,
-                        clouds: item.clouds.all,
-                        wind_speed: item.wind.speed,
-                        wind_deg: item.wind.deg,
-                        weather: item.weather
-                    });
+        // Prendre les 3 premières prévisions (9 heures)
+        const forecasts = forecastData.list.slice(0, 3);
+        
+        // Pour chaque heure des 6 prochaines
+        for (let h = 1; h <= 6; h++) {
+            const targetTime = now + (h * 3600);
+            const targetHour = (currentHour + h) % 24;
+            
+            // Trouver les prévisions encadrantes
+            let before = currentData;
+            let after = forecasts[0] || currentData;
+            
+            // Déterminer quelle prévision utiliser
+            for (let i = 0; i < forecasts.length; i++) {
+                if (forecasts[i].dt <= targetTime) {
+                    before = forecasts[i];
+                    after = forecasts[i + 1] || forecasts[i];
+                } else {
+                    after = forecasts[i];
+                    break;
                 }
             }
-        }
-        
-        // Ensure we have at least 6 hours
-        while (hourly.length < 6) {
-            const lastHour = hourly[hourly.length - 1] || {
-                dt: Math.floor(now),
-                temp: currentData.main.temp,
-                feels_like: currentData.main.feels_like,
-                weather: currentData.weather
-            };
+            
+            // Calculer le poids pour l'interpolation
+            let weight = 0;
+            if (before.dt !== after.dt) {
+                weight = (targetTime - before.dt) / (after.dt - before.dt);
+            }
+            
+            // Interpoler avec une courbe plus naturelle (cosinus pour transition douce)
+            const smoothWeight = (1 - Math.cos(weight * Math.PI)) / 2;
+            
+            // Calculer la température interpolée
+            const beforeTemp = before.main ? before.main.temp : before.temp || currentData.main.temp;
+            const afterTemp = after.main ? after.main.temp : after.temp || currentData.main.temp;
+            const interpolatedTemp = beforeTemp + (afterTemp - beforeTemp) * smoothWeight;
+            
+            // Ajuster selon l'heure de la journée (effet diurne)
+            let diurnalAdjustment = 0;
+            if (targetHour >= 6 && targetHour < 12) {
+                // Matin : léger réchauffement
+                diurnalAdjustment = 0.2;
+            } else if (targetHour >= 12 && targetHour < 16) {
+                // Après-midi : pic de température
+                diurnalAdjustment = 0.5;
+            } else if (targetHour >= 16 && targetHour < 20) {
+                // Soir : refroidissement
+                diurnalAdjustment = -0.2;
+            } else {
+                // Nuit : plus frais
+                diurnalAdjustment = -0.5;
+            }
+            
+            // Appliquer l'ajustement diurne de manière subtile
+            const finalTemp = interpolatedTemp + (diurnalAdjustment * 0.3);
+            
             hourly.push({
-                ...lastHour,
-                dt: lastHour.dt + 3600
+                dt: Math.floor(targetTime),
+                temp: Math.round(finalTemp * 10) / 10,
+                feels_like: Math.round((finalTemp - 1) * 10) / 10,
+                pressure: after.main ? after.main.pressure : after.pressure || currentData.main.pressure,
+                humidity: after.main ? after.main.humidity : after.humidity || currentData.main.humidity,
+                clouds: after.clouds ? after.clouds.all : currentData.clouds.all,
+                wind_speed: after.wind ? after.wind.speed : currentData.wind.speed,
+                wind_deg: after.wind ? after.wind.deg : currentData.wind.deg || 0,
+                weather: after.weather || currentData.weather
             });
         }
         
