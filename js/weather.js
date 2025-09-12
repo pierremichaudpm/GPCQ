@@ -11,7 +11,8 @@ const WEATHER_CONFIG = {
     updateIntervalMs: 10 * 60 * 1000, // 10 minutes
     forecastUseFeelsLike: false,
     precision: 0,
-    tempBiasC: 0
+    tempBiasC: 0,
+    useEccc: false
 };
 
 // Emoji par condition (simplifié)
@@ -161,11 +162,12 @@ class WeatherWidget {
     }
 
     async fetchForecast() {
-        // Préférence ECCC (GeoMet UMOS-RDPS/HRDPS). Fallback OWM si vide
-        const eccc = await this.fetchEcccForecast().catch(() => []);
-        if (Array.isArray(eccc) && eccc.length > 0) {
-            this.forecastSource = 'ECCC';
-            return eccc.slice(0, 6);
+        if (WEATHER_CONFIG.useEccc) {
+            const eccc = await this.fetchEcccForecast().catch(() => []);
+            if (Array.isArray(eccc) && eccc.length > 0) {
+                this.forecastSource = 'ECCC';
+                return eccc.slice(0, 6);
+            }
         }
         this.forecastSource = 'OpenWeatherMap';
         return this.fetchOwForecast();
@@ -185,7 +187,7 @@ class WeatherWidget {
                 return await this.fetchWithXHR(proxyUrl);
             } else {
                 // Pour les autres navigateurs, utiliser One Call (horaire)
-                const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&exclude=minutely,daily,alerts,current&appid=${this.apiKey}`;
+                const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&exclude=minutely,daily,alerts,current&appid=${this.apiKey}&_=${Date.now()}`;
                 const response = await fetch(url, { cache: 'no-store' });
                 
                 if (!response.ok) {
@@ -193,9 +195,10 @@ class WeatherWidget {
                 }
                 
                 const data = await response.json();
+                console.log('[Weather Debug] OWM hourly raw:', data && data.hourly && data.hourly.slice ? data.hourly.slice(0, 8) : data);
                 const hourly = Array.isArray(data.hourly) ? data.hourly : [];
-                // Prendre les 6 prochaines heures (ignorer l'heure courante index 0)
-                return hourly.slice(1, 7).map(item => ({
+                // Prendre les 6 prochaines heures à partir de maintenant (en temps UTC fourni par OWM)
+                return hourly.slice(0, 6).map(item => ({
                     dt: item.dt,
                     main: { temp: item.temp, feels_like: item.feels_like },
                     weather: item.weather

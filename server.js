@@ -344,7 +344,7 @@ app.get('/api/weather/forecast', async (req, res) => {
         const lang = req.query.lang || 'fr';
         const lat = 46.8139;
         const lon = -71.2080;
-        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&exclude=minutely,daily,alerts,current&appid=${apiKey}`;
+        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&exclude=minutely,daily,alerts,current&appid=${apiKey}&_=${Date.now()}`;
         console.log(`[Safari iOS] Fetching hourly forecast: ${url}`);
         const response = await fetch(url);
         if (!response.ok) {
@@ -352,7 +352,7 @@ app.get('/api/weather/forecast', async (req, res) => {
         }
         const data = await response.json();
         const hourly = Array.isArray(data.hourly) ? data.hourly : [];
-        const six = hourly.slice(1, 7).map(item => ({
+        const six = hourly.slice(0, 6).map(item => ({
             dt: item.dt,
             main: { temp: item.temp, feels_like: item.feels_like },
             weather: item.weather
