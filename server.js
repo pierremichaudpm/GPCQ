@@ -27,6 +27,30 @@ const DEFAULT_TEAMS_FILE  = path.join(__dirname, 'teams-data.json');
 const DEFAULT_RIDERS_FILE = path.join(__dirname, 'riders.json');
 const TEAMS_FILE  = path.join(CMS_BASE_DIR, 'teams-data.json');
 const RIDERS_FILE = path.join(CMS_BASE_DIR, 'riders.json');
+const PAGEVIEWS_FILE = path.join(CMS_BASE_DIR, 'pageviews.json');
+
+// Pageviews counter (persisted)
+let pageviews = { total: 0, byDate: {} };
+try {
+    if (fsSync.existsSync(PAGEVIEWS_FILE)) {
+        const pvRaw = fsSync.readFileSync(PAGEVIEWS_FILE, 'utf8');
+        const pv = JSON.parse(pvRaw || '{}');
+        if (pv && typeof pv.total === 'number') pageviews.total = pv.total;
+        if (pv && pv.byDate && typeof pv.byDate === 'object') pageviews.byDate = pv.byDate;
+    } else {
+        fsSync.writeFileSync(PAGEVIEWS_FILE, JSON.stringify(pageviews));
+    }
+} catch (e) {
+    console.warn('Pageviews init:', e.message);
+}
+
+async function persistPageviews() {
+    try {
+        await fs.writeFile(PAGEVIEWS_FILE, JSON.stringify(pageviews));
+    } catch (e) {
+        console.warn('Pageviews persist:', e.message);
+    }
+}
 
 // Initial seed (if empty)
 try {
@@ -135,6 +159,15 @@ app.use((req, res, next) => {
     const url = req.originalUrl || req.url || req.path;
     const wid = process.env.WORKER_ID ? `W${process.env.WORKER_ID}` : 'W?';
     console.log(`${new Date().toISOString()} [${wid}] ${req.method} ${url}`);
+    try {
+        // Count only top-level page views
+        if (req.method === 'GET' && (url === '/' || url.startsWith('/index.html'))) {
+            const today = new Date().toISOString().slice(0, 10);
+            pageviews.total += 1;
+            pageviews.byDate[today] = (pageviews.byDate[today] || 0) + 1;
+            persistPageviews();
+        }
+    } catch (_) {}
     next();
 });
 
@@ -576,7 +609,8 @@ app.get('/metrics', (req, res) => {
         memory: process.memoryUsage(),
         uptime: process.uptime(),
         cpuUsage: process.cpuUsage(),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        pageviews
     });
 });
 
