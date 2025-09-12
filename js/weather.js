@@ -511,18 +511,27 @@ class WeatherWidget {
         }
         const { current, forecast } = this.lastData;
         console.log('Rendering weather data:', { current, forecast });
-        const main = current.main || {};
-        const wind = current.wind || {};
+        
+        // Adapter pour le nouveau format où les données sont directement dans current
+        const main = current.main || {
+            temp: current.temp,
+            feels_like: current.feels_like,
+            humidity: current.humidity
+        };
+        const wind = current.wind || {
+            speed: current.wind_speed,
+            deg: current.wind_deg
+        };
         const weather = (current.weather && current.weather[0]) || {};
         const emoji = this.getEmoji(weather.main, weather.icon);
         const roundOrFix = (v) => {
             if (v == null || Number.isNaN(Number(v))) return '–';
             return this.precision > 0 ? Number(v).toFixed(this.precision) : Math.round(Number(v));
         };
-        const feels = roundOrFix(main.feels_like);
-        const temp = roundOrFix(main.temp);
-        const humidity = main.humidity != null ? `${main.humidity}%` : '–';
-        const windKmh = wind.speed != null ? Math.round(Number(wind.speed) * 3.6) : '–';
+        const feels = roundOrFix(main.feels_like || current.feels_like);
+        const temp = roundOrFix(main.temp || current.temp);
+        const humidity = (main.humidity || current.humidity) != null ? `${main.humidity || current.humidity}%` : '–';
+        const windKmh = (wind.speed || current.wind_speed) != null ? Math.round(Number(wind.speed || current.wind_speed) * 3.6) : '–';
 
             // Afficher en heure de Québec pour cohérence
         const fmtHour = (ts) => {
